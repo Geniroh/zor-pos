@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { LogOut, Settings, User as UserIcon } from "lucide-react";
+import Tooltip from "../Tooltip";
 import "./UserMenu.css";
 
 interface UserMenuProps {
@@ -77,22 +78,23 @@ function UserMenu({
         </div>
       )}
 
-      <button
-        type="button"
-        className="user-menu-trigger"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        title={collapsed ? userName : undefined}
-      >
-        <span className="user-menu-avatar">{initials(userName)}</span>
-        {!collapsed && (
-          <span className="user-menu-trigger-text">
-            <strong>{userName}</strong>
-            <small>{userRole}</small>
-          </span>
-        )}
-      </button>
+      <Tooltip label={userName} disabled={!collapsed}>
+        <button
+          type="button"
+          className="user-menu-trigger"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+        >
+          <span className="user-menu-avatar">{initials(userName)}</span>
+          {!collapsed && (
+            <span className="user-menu-trigger-text">
+              <strong>{userName}</strong>
+              <small>{userRole}</small>
+            </span>
+          )}
+        </button>
+      </Tooltip>
     </div>
   );
 }

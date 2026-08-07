@@ -22,6 +22,7 @@ import { useTheme } from "../../context/ThemeContext";
 import NotificationsMenu from "./NotificationsMenu";
 import HelpModal from "./HelpModal";
 import AiAssistDrawer from "./AiAssistDrawer";
+import Tooltip from "../Tooltip";
 import "./TitleBar.css";
 
 const platform = window.electronAPI?.platform ?? "win32";
@@ -89,39 +90,47 @@ function TitleBar({
     <header className={`titlebar${isMac ? " titlebar--mac" : ""}`}>
       {isMac && (
         <div className="titlebar-traffic-lights">
-          <button
-            type="button"
-            className="traffic-light traffic-light--close"
-            onClick={() => window.electronAPI?.closeWindow()}
-            aria-label="Close"
-          />
-          <button
-            type="button"
-            className="traffic-light traffic-light--minimize"
-            onClick={() => window.electronAPI?.minimizeWindow()}
-            aria-label="Minimize"
-          />
-          <button
-            type="button"
-            className="traffic-light traffic-light--maximize"
-            onClick={() => window.electronAPI?.toggleMaximizeWindow()}
-            aria-label={isMaximized ? "Restore" : "Maximize"}
-          />
+          <Tooltip label="Close">
+            <button
+              type="button"
+              className="traffic-light traffic-light--close"
+              onClick={() => window.electronAPI?.closeWindow()}
+              aria-label="Close"
+            />
+          </Tooltip>
+          <Tooltip label="Minimize">
+            <button
+              type="button"
+              className="traffic-light traffic-light--minimize"
+              onClick={() => window.electronAPI?.minimizeWindow()}
+              aria-label="Minimize"
+            />
+          </Tooltip>
+          <Tooltip label={isMaximized ? "Restore" : "Maximize"}>
+            <button
+              type="button"
+              className="traffic-light traffic-light--maximize"
+              onClick={() => window.electronAPI?.toggleMaximizeWindow()}
+              aria-label={isMaximized ? "Restore" : "Maximize"}
+            />
+          </Tooltip>
         </div>
       )}
 
       <div className="titlebar-controls">
         <div className="titlebar-menu-wrap" ref={menuRef}>
-          <button
-            type="button"
-            className="titlebar-btn"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-haspopup="menu"
-            aria-expanded={menuOpen}
-            aria-label="Menu"
-          >
-            <MenuIcon className="titlebar-icon" />
-          </button>
+          <Tooltip label="Menu">
+            <button
+              type="button"
+              className="titlebar-btn"
+              onClick={() => setMenuOpen((o) => !o)}
+              aria-haspopup="menu"
+              aria-expanded={menuOpen}
+              aria-label="Menu"
+            >
+              <MenuIcon className="titlebar-icon" />
+            </button>
+          </Tooltip>
 
           {menuOpen && (
             <div className="titlebar-menu" role="menu">
@@ -139,38 +148,47 @@ function TitleBar({
         </div>
 
         {isDashboard && (
-          <button
-            type="button"
-            className="titlebar-btn"
-            onClick={toggleCollapsed}
-            aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+          <Tooltip
+            label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            command="Ctrl B"
           >
-            {collapsed ? (
-              <PanelLeftOpen className="titlebar-icon" />
-            ) : (
-              <PanelLeftClose className="titlebar-icon" />
-            )}
-          </button>
+            <button
+              type="button"
+              className="titlebar-btn"
+              onClick={toggleCollapsed}
+              aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
+            >
+              {collapsed ? (
+                <PanelLeftOpen className="titlebar-icon" />
+              ) : (
+                <PanelLeftClose className="titlebar-icon" />
+              )}
+            </button>
+          </Tooltip>
         )}
 
         {isDashboard && (
           <>
-            <button
-              type="button"
-              className="titlebar-btn"
-              onClick={() => navigate(-1)}
-              aria-label="Back"
-            >
-              <ArrowLeft className="titlebar-icon" />
-            </button>
-            <button
-              type="button"
-              className="titlebar-btn"
-              onClick={() => navigate(1)}
-              aria-label="Forward"
-            >
-              <ArrowRight className="titlebar-icon" />
-            </button>
+            <Tooltip label="Back" command="Alt ←">
+              <button
+                type="button"
+                className="titlebar-btn"
+                onClick={() => navigate(-1)}
+                aria-label="Back"
+              >
+                <ArrowLeft className="titlebar-icon" />
+              </button>
+            </Tooltip>
+            <Tooltip label="Forward" command="Alt →">
+              <button
+                type="button"
+                className="titlebar-btn"
+                onClick={() => navigate(1)}
+                aria-label="Forward"
+              >
+                <ArrowRight className="titlebar-icon" />
+              </button>
+            </Tooltip>
           </>
         )}
       </div>
@@ -197,78 +215,92 @@ function TitleBar({
 
             <NotificationsMenu notificationCount={notificationCount} />
 
-            <button
-              type="button"
-              className="titlebar-ai-btn"
-              onClick={() => setAiOpen((o) => !o)}
-            >
-              <Sparkles className="titlebar-icon" />
-              AI Assist
-            </button>
+            <Tooltip label="AI Assist" command="Ctrl I">
+              <button
+                type="button"
+                className="titlebar-ai-btn"
+                onClick={() => setAiOpen((o) => !o)}
+              >
+                <Sparkles className="titlebar-icon" />
+                AI Assist
+              </button>
+            </Tooltip>
           </>
         )}
 
         <div className="titlebar-theme-toggle" role="group" aria-label="Theme">
-          <button
-            type="button"
-            className={theme === "light" ? "active" : ""}
-            aria-pressed={theme === "light"}
-            aria-label="Light theme"
-            onClick={() => setTheme("light")}
-          >
-            <Sun className="titlebar-icon" />
-          </button>
-          <button
-            type="button"
-            className={theme === "dark" ? "active" : ""}
-            aria-pressed={theme === "dark"}
-            aria-label="Dark theme"
-            onClick={() => setTheme("dark")}
-          >
-            <Moon className="titlebar-icon" />
-          </button>
+          <Tooltip label="Light theme">
+            <button
+              type="button"
+              className={theme === "light" ? "active" : ""}
+              aria-pressed={theme === "light"}
+              aria-label="Light theme"
+              onClick={() => setTheme("light")}
+            >
+              <Sun className="titlebar-icon" />
+            </button>
+          </Tooltip>
+          <Tooltip label="Dark theme">
+            <button
+              type="button"
+              className={theme === "dark" ? "active" : ""}
+              aria-pressed={theme === "dark"}
+              aria-label="Dark theme"
+              onClick={() => setTheme("dark")}
+            >
+              <Moon className="titlebar-icon" />
+            </button>
+          </Tooltip>
         </div>
 
-        <button
-          type="button"
-          className="titlebar-btn"
-          aria-label="Help"
-          onClick={() => setHelpOpen(true)}
-        >
-          <HelpCircle className="titlebar-icon" />
-        </button>
+        <Tooltip label="Help" command="F1">
+          <button
+            type="button"
+            className="titlebar-btn"
+            aria-label="Help"
+            onClick={() => setHelpOpen(true)}
+          >
+            <HelpCircle className="titlebar-icon" />
+          </button>
+        </Tooltip>
       </div>
 
       {!isMac && (
         <div className="titlebar-window-controls">
-          <button
-            type="button"
-            className="window-btn"
-            onClick={() => window.electronAPI?.minimizeWindow()}
-            aria-label="Minimize"
-          >
-            <Minus className="titlebar-icon" />
-          </button>
-          <button
-            type="button"
-            className="window-btn"
-            onClick={() => window.electronAPI?.toggleMaximizeWindow()}
-            aria-label={isMaximized ? "Restore" : "Maximize"}
-          >
-            {isMaximized ? (
-              <Copy className="titlebar-icon" />
-            ) : (
-              <Square className="titlebar-icon" />
-            )}
-          </button>
-          <button
-            type="button"
-            className="window-btn window-btn--close"
-            onClick={() => window.electronAPI?.closeWindow()}
-            aria-label="Close"
-          >
-            <X className="titlebar-icon" />
-          </button>
+          <Tooltip label="Minimize">
+            <button
+              type="button"
+              className="window-btn"
+              onClick={() => window.electronAPI?.minimizeWindow()}
+              aria-label="Minimize"
+            >
+              <Minus className="titlebar-icon" />
+            </button>
+          </Tooltip>
+          <Tooltip label={isMaximized ? "Restore" : "Maximize"}>
+            <button
+              type="button"
+              className="window-btn"
+              onClick={() => window.electronAPI?.toggleMaximizeWindow()}
+              aria-label={isMaximized ? "Restore" : "Maximize"}
+            >
+              {isMaximized ? (
+                <Copy className="titlebar-icon" />
+              ) : (
+                <Square className="titlebar-icon" />
+              )}
+            </button>
+          </Tooltip>
+          <Tooltip label="Close" command="Alt F4">
+            <button
+              type="button"
+              className="window-btn window-btn--close"
+              onClick={() => window.electronAPI?.closeWindow()}
+              aria-label="Close"
+            >
+              <X className="titlebar-icon" />
+            </button>
+          </Tooltip>
         </div>
       )}
 

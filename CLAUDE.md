@@ -20,6 +20,8 @@ weigh before changing it — not the conclusion itself.
     anymore — see below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
     (predates the lucide-react adoption below; don't add more to it).
+  - `components/Tooltip.tsx` — the app's one tooltip primitive. See
+    "Custom tooltip" below before touching hover labels anywhere.
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
     lifted out of `Sidebar` because `TitleBar` (a sibling, not a
     descendant) also needs to toggle it.
@@ -174,6 +176,47 @@ inlined as base64) — deliberately outside the Vite/React build so it can
 render before the bundle is ready. It is **not** compiled by `tsc`; the
 `transpile:electron` script copies it into `dist-electron/` as a separate
 step. If you rename or move it, update that copy step in `package.json`.
+
+## Custom tooltip
+
+`components/Tooltip.tsx` replaced the native browser `title` attribute
+everywhere in `Sidebar` and `TitleBar` (Slack-style dark pill, optional
+keyboard-shortcut badge below the label). A few things that aren't
+obvious from reading a single call site:
+
+- **It renders via `createPortal` to `document.body`**, not inline —
+  necessary so it isn't clipped by any ancestor's `overflow` and so its
+  `position: fixed` coordinates (computed from `getBoundingClientRect()`)
+  are simple viewport pixels, not relative to some scrolled/positioned
+  ancestor.
+- **Placement is fully auto-detected, not passed in.** It measures
+  available space on all four sides of the trigger and picks whichever
+  has the most room — this is *why* sidebar tooltips end up on the right
+  (little room to the left, at the window edge) and title bar tooltips
+  end up on the bottom (little room above, at the window edge) without
+  either call site specifying a side. Don't add a manual `side` prop
+  unless the auto-detection genuinely gets something wrong — that was a
+  deliberate choice over simpler manual placement.
+- **`disabled` means "don't attach hover behavior," not "hide."** Sidebar
+  items pass `disabled={!collapsed}` — when the sidebar is expanded, the
+  label is already visible as text next to the icon, so the tooltip would
+  be redundant. Title bar buttons never pass `disabled` since they're
+  always icon-only.
+- **The `command` prop is decorative in almost every case.** Only
+  `Ctrl K` (title bar search) reflects a real key handler
+  (`searchRef.current?.focus()` in `TitleBar.tsx`). Everything else —
+  `F2` (Quick Sale), `F1` (Help), `Ctrl B` (sidebar toggle), `Ctrl I` (AI
+  Assist), `Alt ←`/`Alt →` (back/forward), `Alt F4` (close) — is a
+  plausible-looking hint with no keydown listener behind it, consistent
+  with how the rest of this app treats "looks real, isn't wired yet." If
+  you wire up a real global shortcut, keep its `command` text in sync
+  with whatever key combo you actually bind.
+- **`children` is typed `ReactElement<any>` deliberately** (not tightened
+  further) — it needs to `cloneElement` an arbitrary single child (a
+  `<button>` here, a `NavLink` there) to inject a ref and hover/focus
+  handlers, and TypeScript's `ref` prop typing doesn't unify cleanly
+  across different element types without that escape hatch. Don't try to
+  "fix" this to a stricter type without re-deriving why it was loosened.
 
 ## Brand palette / theming convention
 

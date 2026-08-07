@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Check, ChevronDown, Plus, Store } from "lucide-react";
+import Tooltip from "../Tooltip";
 import "./BranchSelector.css";
 
 interface Branch {
@@ -47,27 +48,28 @@ function BranchSelector({ collapsed = false }: BranchSelectorProps) {
 
   return (
     <div className="branch-selector" ref={rootRef}>
-      <button
-        type="button"
-        className="branch-trigger"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        title={collapsed ? active.name : undefined}
-      >
-        <span className="branch-avatar">
-          <Store className="branch-avatar-icon" />
-        </span>
-        {!collapsed && (
-          <>
-            <span className="branch-trigger-text">
-              <strong>{active.name}</strong>
-              <small>{active.location}</small>
-            </span>
-            <ChevronDown className="branch-chevron" />
-          </>
-        )}
-      </button>
+      <Tooltip label={active.name} disabled={!collapsed}>
+        <button
+          type="button"
+          className="branch-trigger"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+        >
+          <span className="branch-avatar">
+            <Store className="branch-avatar-icon" />
+          </span>
+          {!collapsed && (
+            <>
+              <span className="branch-trigger-text">
+                <strong>{active.name}</strong>
+                <small>{active.location}</small>
+              </span>
+              <ChevronDown className="branch-chevron" />
+            </>
+          )}
+        </button>
+      </Tooltip>
 
       {open && (
         <div className="branch-menu" role="menu">

@@ -8,6 +8,7 @@ import {
   UserPlus,
   type LucideIcon,
 } from "lucide-react";
+import Tooltip from "../Tooltip";
 import "./NotificationsMenu.css";
 
 interface Notification {
@@ -118,19 +119,21 @@ function NotificationsMenu({ notificationCount = 0 }: NotificationsMenuProps) {
 
   return (
     <div className="notifications-menu" ref={rootRef}>
-      <button
-        type="button"
-        className="titlebar-btn"
-        onClick={() => setOpen((o) => !o)}
-        aria-haspopup="menu"
-        aria-expanded={open}
-        aria-label="Notifications"
-      >
-        <Bell className="titlebar-icon" />
-        {notificationCount > 0 && (
-          <span className="titlebar-badge">{notificationCount}</span>
-        )}
-      </button>
+      <Tooltip label="Notifications">
+        <button
+          type="button"
+          className="titlebar-btn"
+          onClick={() => setOpen((o) => !o)}
+          aria-haspopup="menu"
+          aria-expanded={open}
+          aria-label="Notifications"
+        >
+          <Bell className="titlebar-icon" />
+          {notificationCount > 0 && (
+            <span className="titlebar-badge">{notificationCount}</span>
+          )}
+        </button>
+      </Tooltip>
 
       {open && (
         <div className="notifications-panel" role="menu">
