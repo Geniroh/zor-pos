@@ -1,15 +1,4 @@
 .login-page {
-  color-scheme: light;
-  --cream: #f5f2e9;
-  --page-bg: #eeebe0;
-  --white: #ffffff;
-  --ink: #1c2b3a;
-  --muted: #6b7280;
-  --border: #e7e2d3;
-  --green: #4f7d52;
-  --green-dark: #3e6641;
-  --green-bg: rgba(79, 125, 82, 0.1);
-
   flex: 1;
   min-height: 0;
   width: 100%;
@@ -21,19 +10,6 @@
   background: var(--page-bg);
   font-family: system-ui, "Segoe UI", Roboto, sans-serif;
   color: var(--ink);
-}
-
-.login-page--dark {
-  color-scheme: dark;
-  --cream: #1f232b;
-  --page-bg: #14161b;
-  --white: #191c22;
-  --ink: #f1f1f1;
-  --muted: #9aa1ab;
-  --border: #2c303a;
-  --green: #6cab6f;
-  --green-dark: #85bf88;
-  --green-bg: rgba(108, 171, 111, 0.14);
 }
 
 .login-page * {
@@ -181,40 +157,6 @@
   margin: 0;
   font-size: 14px;
   color: var(--muted);
-}
-
-.theme-toggle {
-  display: flex;
-  gap: 2px;
-  padding: 4px;
-  flex-shrink: 0;
-  background: var(--cream);
-  border: 1px solid var(--border);
-  border-radius: 999px;
-}
-
-.theme-toggle button {
-  width: 30px;
-  height: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 999px;
-  background: transparent;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.theme-toggle button svg {
-  width: 15px;
-  height: 15px;
-}
-
-.theme-toggle button.active {
-  background: var(--white);
-  color: var(--ink);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .login-tabs {

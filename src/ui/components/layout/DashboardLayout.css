@@ -1,14 +1,4 @@
 .dashboard-layout {
-  --cream: #f5f2e9;
-  --page-bg: #eeebe0;
-  --white: #ffffff;
-  --ink: #1c2b3a;
-  --muted: #6b7280;
-  --border: #e7e2d3;
-  --green: #4f7d52;
-  --green-dark: #3e6641;
-  --green-bg: rgba(79, 125, 82, 0.1);
-
   display: flex;
   flex: 1;
   min-height: 0;

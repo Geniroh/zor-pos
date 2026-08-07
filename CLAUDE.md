@@ -22,6 +22,11 @@ weigh before changing it — not the conclusion itself.
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
     lifted out of `Sidebar` because `TitleBar` (a sibling, not a
     descendant) also needs to toggle it.
+  - `context/ThemeContext.tsx` — app-wide light/dark theme. Sets
+    `document.documentElement.dataset.theme`, which drives the global
+    `:root` / `:root[data-theme="dark"]` token blocks in `index.css` (see
+    "Brand palette" below). The only UI for it is the sun/moon toggle in
+    `TitleBar`.
 
 ## Decisions already made — don't re-litigate without reason
 
@@ -67,10 +72,19 @@ scope call, not an oversight.
 **Title bar vs TopNav responsibility split**: search and "AI Assist" live
 in `TitleBar` only (dashboard routes only — gated on
 `location.pathname.startsWith("/dashboard")`, hidden on `Login` since
-there's nothing to search before signing in). They were deliberately
-*removed* from `TopNav` to avoid duplicating the same control at two
-levels of chrome. `TopNav` keeps: branch selector, online status,
-notifications, user block. Don't add a second search box or AI button to
+there's nothing to search before signing in). The theme toggle lives in
+`TitleBar` too, but *ungated* — it applies globally and needs to work from
+`Login` as well. All three were deliberately *removed* from `TopNav`/
+`Login` to avoid duplicating the same control at two levels of chrome.
+`TopNav` keeps: branch selector, online status, notifications. Don't add
+a second search box, AI button, or theme toggle anywhere else.
+
+**User profile lives in the sidebar, not TopNav.** `Sidebar` renders
+`UserMenu` pinned at the very bottom of the rail (Slack's pattern: avatar
++ name/role, click opens a popover anchored *upward* since it's at the
+bottom). `TopNav` no longer shows any user identity. If a page needs to
+know who's signed in, that data should come from wherever `UserMenu`
+eventually gets real auth data from — don't re-add a user block to
 `TopNav`.
 
 **Title bar menu/help are placeholders.** The hamburger menu dropdown
@@ -125,24 +139,27 @@ step. If you rename or move it, update that copy step in `package.json`.
 
 ## Brand palette / theming convention
 
-There is no single global theme file. Each major surface defines its own
-CSS custom properties scoped to its own root class, following the pattern
-already in `Login.css` (`.login-page { --green: #4f7d52; ... }`) and
-`DashboardLayout.css` (`.dashboard-layout { ... }`, same values). Colors:
-cream `#f5f2e9`, page background `#eeebe0`, ink (headings) `#1c2b3a`,
-muted (secondary text) `#6b7280`, green (brand/accent) `#4f7d52`, green-dark
-`#3e6641`, border `#e7e2d3`.
+Single source of truth: `index.css`'s `:root` block defines the light
+tokens (`--cream`, `--page-bg`, `--white`, `--ink`, `--muted`, `--border`,
+`--green`, `--green-dark`, `--green-bg`); `:root[data-theme="dark"]`
+overrides them. `ThemeContext` sets `data-theme` on `<html>`, so every
+descendant — `Login`, `DashboardLayout`, `TitleBar`, everything — inherits
+the same tokens automatically. `color-scheme` is set explicitly per theme
+(not `light dark`) so native form controls (checkboxes, etc.) render to
+match the active theme instead of the OS's — this was a real bug once
+(see git history around the login checkbox) if you're tempted to revert
+it to `light dark`.
 
-`TitleBar.css` renders at the app root — a sibling of `.login-page` and
-`.dashboard-layout`, not a descendant of either — so it can't inherit
-their scoped tokens. Its `var(--x, #hexfallback)` calls carry hardcoded
-fallbacks matching the same palette. If the palette ever changes, grep for
-all three definitions (`Login.css`, `DashboardLayout.css`, the fallbacks
-in `TitleBar.css`) — there is no single source of truth yet.
+Individual surfaces (`Login.css`, `DashboardLayout.css`) used to each
+redefine this exact palette locally, and `TitleBar.css` carried hardcoded
+`var(--x, #hexfallback)` duplicates because it rendered outside both their
+scopes. That's been consolidated — none of them should redefine `--green`
+etc. locally anymore. If you find a local redefinition creeping back in,
+that's drift; delete it and let the global tokens inherit down.
 
-`Login` also has its own light/dark toggle (`--green` etc. redefined under
-`.login-page--dark`), independent of the OS theme. Nothing else in the app
-has a dark mode; don't assume `Login`'s toggle implies a global one.
+Don't add a second theme toggle. The only one is in `TitleBar`
+(`ThemeContext`'s `setTheme`), and it controls the whole app, including
+`Login` — there is no more per-page theme state.
 
 ## Before adding a dependency or new architectural pattern
 

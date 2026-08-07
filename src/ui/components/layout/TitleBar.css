@@ -5,8 +5,8 @@
   height: 44px;
   flex-shrink: 0;
   padding: 0 10px;
-  background: var(--cream, #f5f2e9);
-  border-bottom: 1px solid var(--border, #e7e2d3);
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
   -webkit-app-region: drag;
 }
 
@@ -69,13 +69,13 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: var(--muted, #6b7280);
+  color: var(--muted);
   cursor: pointer;
 }
 
 .titlebar-btn:hover {
-  background: var(--green-bg, rgba(79, 125, 82, 0.1));
-  color: var(--ink, #1c2b3a);
+  background: var(--green-bg);
+  color: var(--ink);
 }
 
 .titlebar-icon {
@@ -85,7 +85,7 @@
 }
 
 .titlebar-icon--muted {
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .titlebar-menu {
@@ -97,8 +97,8 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
-  background: var(--white, #fff);
-  border: 1px solid var(--border, #e7e2d3);
+  background: var(--white);
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: 0 16px 32px -14px rgba(20, 18, 10, 0.35);
   z-index: 40;
@@ -109,7 +109,7 @@
   border: none;
   border-radius: 7px;
   background: transparent;
-  color: var(--ink, #1c2b3a);
+  color: var(--ink);
   font-size: 13px;
   font-family: inherit;
   text-align: left;
@@ -117,7 +117,7 @@
 }
 
 .titlebar-menu button:hover {
-  background: var(--cream, #f5f2e9);
+  background: var(--cream);
 }
 
 .titlebar-search {
@@ -127,9 +127,9 @@
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
-  border: 1px solid var(--border, #e7e2d3);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--white, #fff);
+  background: var(--white);
   -webkit-app-region: no-drag;
 }
 
@@ -141,21 +141,21 @@
   outline: none;
   font-size: 13px;
   font-family: inherit;
-  color: var(--ink, #1c2b3a);
+  color: var(--ink);
 }
 
 .titlebar-search input::placeholder {
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .titlebar-search kbd {
   padding: 2px 6px;
   border-radius: 5px;
-  border: 1px solid var(--border, #e7e2d3);
-  background: var(--cream, #f5f2e9);
+  border: 1px solid var(--border);
+  background: var(--cream);
   font-family: inherit;
   font-size: 11px;
-  color: var(--muted, #6b7280);
+  color: var(--muted);
 }
 
 .titlebar-actions {
@@ -172,14 +172,42 @@
   align-items: center;
   gap: 6px;
   padding: 7px 12px;
-  border: 1px solid var(--border, #e7e2d3);
+  border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--green-bg, rgba(79, 125, 82, 0.1));
-  color: var(--green-dark, #3e6641);
+  background: var(--green-bg);
+  color: var(--green-dark);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.titlebar-theme-toggle {
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.titlebar-theme-toggle button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.titlebar-theme-toggle button.active {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
 .titlebar-window-controls {
@@ -198,7 +226,7 @@
   width: 46px;
   border: none;
   background: transparent;
-  color: var(--ink, #1c2b3a);
+  color: var(--ink);
   cursor: pointer;
 }
 

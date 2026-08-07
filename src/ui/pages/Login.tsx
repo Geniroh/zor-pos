@@ -11,13 +11,10 @@ import {
   CloudIcon,
   ChartIcon,
   LogInIcon,
-  SunIcon,
-  MoonIcon,
 } from "../components/icons";
 import "./Login.css";
 
 type Tab = "email" | "phone";
-type Theme = "light" | "dark";
 
 const FEATURES = [
   {
@@ -39,7 +36,6 @@ const FEATURES = [
 
 function Login() {
   const navigate = useNavigate();
-  const [theme, setTheme] = useState<Theme>("light");
   const [tab, setTab] = useState<Tab>("email");
   const [showPassword, setShowPassword] = useState(false);
   const [otpSent, setOtpSent] = useState(false);
@@ -50,7 +46,7 @@ function Login() {
   }
 
   return (
-    <div className={`login-page login-page--${theme}`}>
+    <div className="login-page">
       <div className="login-card">
         <section className="login-brand">
           <div className="brand-mark">
@@ -99,26 +95,6 @@ function Login() {
                 Welcome back <span aria-hidden="true">👋</span>
               </h2>
               <p>Sign in to continue to your account</p>
-            </div>
-            <div className="theme-toggle" role="group" aria-label="Theme">
-              <button
-                type="button"
-                className={theme === "light" ? "active" : ""}
-                aria-pressed={theme === "light"}
-                aria-label="Light theme"
-                onClick={() => setTheme("light")}
-              >
-                <SunIcon />
-              </button>
-              <button
-                type="button"
-                className={theme === "dark" ? "active" : ""}
-                aria-pressed={theme === "dark"}
-                aria-label="Dark theme"
-                onClick={() => setTheme("dark")}
-              >
-                <MoonIcon />
-              </button>
             </div>
           </div>
 

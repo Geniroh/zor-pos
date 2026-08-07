@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Zap } from "lucide-react";
 import { NAV_ITEMS } from "./nav-items";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
+import UserMenu from "./UserMenu";
 import { useSidebar } from "../../context/SidebarContext";
 import "./Sidebar.css";
 
@@ -39,6 +40,10 @@ function Sidebar() {
             </>
           )}
         </button>
+      </div>
+
+      <div className="sidebar-user">
+        <UserMenu collapsed={collapsed} />
       </div>
     </aside>
   );

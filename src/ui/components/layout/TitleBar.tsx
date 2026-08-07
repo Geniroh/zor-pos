@@ -7,14 +7,17 @@ import {
   HelpCircle,
   Menu as MenuIcon,
   Minus,
+  Moon,
   PanelLeftClose,
   PanelLeftOpen,
   Search,
   Sparkles,
   Square,
+  Sun,
   X,
 } from "lucide-react";
 import { useSidebar } from "../../context/SidebarContext";
+import { useTheme } from "../../context/ThemeContext";
 import "./TitleBar.css";
 
 const platform = window.electronAPI?.platform ?? "win32";
@@ -24,6 +27,7 @@ function TitleBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { collapsed, toggleCollapsed } = useSidebar();
+  const { theme, setTheme } = useTheme();
   const [isMaximized, setIsMaximized] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -176,6 +180,28 @@ function TitleBar() {
             AI Assist
           </button>
         )}
+
+        <div className="titlebar-theme-toggle" role="group" aria-label="Theme">
+          <button
+            type="button"
+            className={theme === "light" ? "active" : ""}
+            aria-pressed={theme === "light"}
+            aria-label="Light theme"
+            onClick={() => setTheme("light")}
+          >
+            <Sun className="titlebar-icon" />
+          </button>
+          <button
+            type="button"
+            className={theme === "dark" ? "active" : ""}
+            aria-pressed={theme === "dark"}
+            aria-label="Dark theme"
+            onClick={() => setTheme("dark")}
+          >
+            <Moon className="titlebar-icon" />
+          </button>
+        </div>
+
         <button type="button" className="titlebar-btn" aria-label="Help">
           <HelpCircle className="titlebar-icon" />
         </button>

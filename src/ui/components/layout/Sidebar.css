@@ -91,3 +91,10 @@
   font-family: inherit;
   font-size: 11px;
 }
+
+.sidebar-user {
+  margin-top: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}

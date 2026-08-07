@@ -5,40 +5,43 @@ import DashboardLayout from "./components/layout/DashboardLayout";
 import TitleBar from "./components/layout/TitleBar";
 import { NAV_ITEMS } from "./components/layout/nav-items";
 import { SidebarProvider } from "./context/SidebarContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import "./App.css";
 
 function App() {
   return (
-    <SidebarProvider>
-      <div className="app-shell">
-        <TitleBar />
-        <div className="app-content">
-          <Routes>
-            <Route path="/" element={<Login />} />
+    <ThemeProvider>
+      <SidebarProvider>
+        <div className="app-shell">
+          <TitleBar />
+          <div className="app-content">
+            <Routes>
+              <Route path="/" element={<Login />} />
 
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              {NAV_ITEMS.map(({ label, path }) =>
-                path === "" ? (
-                  <Route
-                    key={label}
-                    index
-                    element={<PlaceholderPage title={label} />}
-                  />
-                ) : (
-                  <Route
-                    key={label}
-                    path={path}
-                    element={<PlaceholderPage title={label} />}
-                  />
-                ),
-              )}
-            </Route>
+              <Route path="/dashboard" element={<DashboardLayout />}>
+                {NAV_ITEMS.map(({ label, path }) =>
+                  path === "" ? (
+                    <Route
+                      key={label}
+                      index
+                      element={<PlaceholderPage title={label} />}
+                    />
+                  ) : (
+                    <Route
+                      key={label}
+                      path={path}
+                      element={<PlaceholderPage title={label} />}
+                    />
+                  ),
+                )}
+              </Route>
 
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </ThemeProvider>
   );
 }
 

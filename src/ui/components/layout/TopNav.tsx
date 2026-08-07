@@ -4,26 +4,13 @@ import "./TopNav.css";
 interface TopNavProps {
   branchName?: string;
   branchLocation?: string;
-  userName?: string;
-  userRole?: string;
   notificationCount?: number;
   isOnline?: boolean;
-}
-
-function initials(name: string) {
-  return name
-    .split(" ")
-    .map((part) => part[0])
-    .slice(0, 2)
-    .join("")
-    .toUpperCase();
 }
 
 function TopNav({
   branchName = "Main Branch Pharmacy",
   branchLocation = "Set your pharmacy location",
-  userName = "Guest User",
-  userRole = "Staff",
   notificationCount = 0,
   isOnline = true,
 }: TopNavProps) {
@@ -51,14 +38,6 @@ function TopNav({
           <span className="topnav-badge">{notificationCount}</span>
         )}
       </button>
-
-      <div className="topnav-user">
-        <span className="topnav-avatar">{initials(userName)}</span>
-        <span className="topnav-user-text">
-          <strong>{userName}</strong>
-          <small>{userRole}</small>
-        </span>
-      </div>
     </header>
   );
 }
