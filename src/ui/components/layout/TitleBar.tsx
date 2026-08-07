@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
-  Bell,
   Circle,
   Copy,
   HelpCircle,
@@ -20,6 +19,9 @@ import {
 } from "lucide-react";
 import { useSidebar } from "../../context/SidebarContext";
 import { useTheme } from "../../context/ThemeContext";
+import NotificationsMenu from "./NotificationsMenu";
+import HelpModal from "./HelpModal";
+import AiAssistDrawer from "./AiAssistDrawer";
 import "./TitleBar.css";
 
 const platform = window.electronAPI?.platform ?? "win32";
@@ -40,6 +42,8 @@ function TitleBar({
   const { theme, setTheme } = useTheme();
   const [isMaximized, setIsMaximized] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -191,18 +195,13 @@ function TitleBar({
               {isOnline ? "Online" : "Offline"}
             </div>
 
+            <NotificationsMenu notificationCount={notificationCount} />
+
             <button
               type="button"
-              className="titlebar-btn"
-              aria-label="Notifications"
+              className="titlebar-ai-btn"
+              onClick={() => setAiOpen((o) => !o)}
             >
-              <Bell className="titlebar-icon" />
-              {notificationCount > 0 && (
-                <span className="titlebar-badge">{notificationCount}</span>
-              )}
-            </button>
-
-            <button type="button" className="titlebar-ai-btn">
               <Sparkles className="titlebar-icon" />
               AI Assist
             </button>
@@ -230,7 +229,12 @@ function TitleBar({
           </button>
         </div>
 
-        <button type="button" className="titlebar-btn" aria-label="Help">
+        <button
+          type="button"
+          className="titlebar-btn"
+          aria-label="Help"
+          onClick={() => setHelpOpen(true)}
+        >
           <HelpCircle className="titlebar-icon" />
         </button>
       </div>
@@ -267,6 +271,9 @@ function TitleBar({
           </button>
         </div>
       )}
+
+      <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
+      <AiAssistDrawer open={aiOpen} onClose={() => setAiOpen(false)} />
     </header>
   );
 }

@@ -90,9 +90,28 @@ Don't recreate a TopNav-style horizontal bar under the title bar — if
 something needs dashboard-only chrome, it belongs in one of the two
 places above.
 
-**Title bar menu/help are placeholders.** The hamburger menu dropdown
-(Preferences / Check for Updates / About Zorpill) and the Help button are
-inert — visual scaffolding, not a signal that a menu/help system exists.
+**Title bar menu is a placeholder; Help, Notifications, and AI Assist are
+not (UI-wise).** The hamburger menu dropdown (Preferences / Check for
+Updates / About Zorpill) is still inert scaffolding. `HelpModal` (opened
+from the Help button), `NotificationsMenu` (the bell, in
+`titlebar-actions`), and `AiAssistDrawer` (opened from the "AI Assist"
+button) are fully-built UI with no real backend behind them:
+  - `HelpModal` mirrors Slack's Help panel — hardcoded
+    `DISCOVER_CARDS`/`HELP_TOPICS` in `HelpModal.tsx`.
+  - `NotificationsMenu` mirrors Slack's Activity dropdown, adapted to
+    pharmacy-relevant dummy events (stock alerts, sales, purchase
+    orders) instead of chat/mentions — hardcoded `NOTIFICATIONS` array.
+    Its "Unreads" toggle does real local filtering of that array — the
+    one exception to "cosmetic only" in this group, since filtering a
+    hardcoded list client-side needed no backend to implement honestly.
+  - `AiAssistDrawer` is an original design (no reference screenshot was
+    given for it) — a right-side slide-over below the title bar, welcome
+    message bubble, hardcoded `SUGGESTIONS` prompts, and a text input.
+    The input and suggestion buttons don't do anything; there's no chat
+    logic behind them.
+None of these three are "coming soon" placeholders like the hamburger
+menu — they're deliberately complete UI waiting on real data/logic, not
+signals that more UI work is needed before they're usable.
 
 ## Frameless window / custom title bar
 
@@ -101,7 +120,16 @@ inert — visual scaffolding, not a signal that a menu/help system exists.
 toggle, back/forward, search, online status, notifications, AI Assist,
 theme toggle, help, and OS-aware window controls (hand-drawn macOS
 traffic lights vs. Windows/Linux `− □ ✕`, switched on
-`window.electronAPI.platform`).
+`window.electronAPI.platform`). `HelpModal` and `AiAssistDrawer` render
+as children of `TitleBar` but are `position: fixed` overlays that
+visually cover far more than the title bar strip — see the app-region
+note below before assuming DOM nesting matches visual placement.
+
+`AiAssistDrawer` hardcodes `top: 44px` to sit below the title bar rather
+than covering it — that's the same number as `.titlebar`'s `height: 44px`
+in `TitleBar.css`, duplicated because there's no shared layout-constant
+file yet. If the title bar's height ever changes, grep for `44px` in
+`AiAssistDrawer.css` too.
 
 Things that will break silently if changed carelessly:
 
@@ -109,6 +137,12 @@ Things that will break silently if changed carelessly:
   `drag`; every interactive child (buttons, inputs, menus) is explicitly
   `no-drag`. Adding a new interactive element to the title bar without
   marking it `no-drag` makes it unclickable (drag intercepts the click).
+  This applies even to `position: fixed` overlays that visually escape the
+  title bar's box — `app-region` inherits down the *DOM* tree, not by
+  screen position, so `HelpModal`'s backdrop and `AiAssistDrawer`'s panel
+  (both rendered as children of `TitleBar`) each need their own explicit
+  `no-drag`, even though neither is confined to the title bar strip
+  visually.
 - **Flex layout needs an explicit right-anchor.** `.titlebar-search` has
   `flex: 1` capped at `max-width: 420px` — once it hits that cap, leftover
   space has nowhere to go unless something absorbs it. `.titlebar-actions`
