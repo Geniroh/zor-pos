@@ -61,6 +61,7 @@
 }
 
 .titlebar-btn {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -165,6 +166,43 @@
   margin-left: auto;
   flex-shrink: 0;
   -webkit-app-region: no-drag;
+}
+
+.titlebar-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 6px;
+  font-size: 12px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.titlebar-status-dot {
+  width: 8px;
+  height: 8px;
+  fill: var(--muted);
+  color: var(--muted);
+}
+
+.titlebar-status-dot.online {
+  fill: var(--green);
+  color: var(--green);
+}
+
+.titlebar-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  min-width: 14px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #d1453b;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
 }
 
 .titlebar-ai-btn {

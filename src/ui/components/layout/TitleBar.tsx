@@ -3,6 +3,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   ArrowRight,
+  Bell,
+  Circle,
   Copy,
   HelpCircle,
   Menu as MenuIcon,
@@ -23,7 +25,15 @@ import "./TitleBar.css";
 const platform = window.electronAPI?.platform ?? "win32";
 const isMac = platform === "darwin";
 
-function TitleBar() {
+interface TitleBarProps {
+  notificationCount?: number;
+  isOnline?: boolean;
+}
+
+function TitleBar({
+  notificationCount = 0,
+  isOnline = true,
+}: TitleBarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const { collapsed, toggleCollapsed } = useSidebar();
@@ -175,10 +185,28 @@ function TitleBar() {
 
       <div className="titlebar-actions">
         {isDashboard && (
-          <button type="button" className="titlebar-ai-btn">
-            <Sparkles className="titlebar-icon" />
-            AI Assist
-          </button>
+          <>
+            <div className="titlebar-status">
+              <Circle className={`titlebar-status-dot${isOnline ? " online" : ""}`} />
+              {isOnline ? "Online" : "Offline"}
+            </div>
+
+            <button
+              type="button"
+              className="titlebar-btn"
+              aria-label="Notifications"
+            >
+              <Bell className="titlebar-icon" />
+              {notificationCount > 0 && (
+                <span className="titlebar-badge">{notificationCount}</span>
+              )}
+            </button>
+
+            <button type="button" className="titlebar-ai-btn">
+              <Sparkles className="titlebar-icon" />
+              AI Assist
+            </button>
+          </>
         )}
 
         <div className="titlebar-theme-toggle" role="group" aria-label="Theme">

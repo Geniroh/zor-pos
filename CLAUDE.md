@@ -13,10 +13,11 @@ weigh before changing it — not the conclusion itself.
 - `src/ui/` — the React app (Vite root is the project root; `index.html`
   points at `src/ui/main.tsx`).
   - `pages/` — routed screens (`Login`, `PlaceholderPage`).
-  - `components/layout/` — `TitleBar`, `Sidebar`, `TopNav`,
-    `DashboardLayout`, `WorkspaceSwitcher`, plus `nav-items.ts` (the single
-    source of truth for sidebar links, shared between `Sidebar` and the
-    route table in `App.tsx`).
+  - `components/layout/` — `TitleBar`, `Sidebar`, `DashboardLayout`,
+    `WorkspaceSwitcher`, `BranchSelector`, `UserMenu`, plus `nav-items.ts`
+    (the single source of truth for sidebar links, shared between
+    `Sidebar` and the route table in `App.tsx`). There is no `TopNav`
+    anymore — see below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
     (predates the lucide-react adoption below; don't add more to it).
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
@@ -56,36 +57,38 @@ the login flow as a security boundary; it isn't one yet.
 the layout is reusable across sections) — building out a real feature
 page means adding a route in `App.tsx`, not "fixing" the placeholder.
 
-**Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` (in the
-sidebar) represents which pharmacy business/tenant you belong to.
-`TopNav`'s branch button represents which physical location within the
-current workspace. Keep these separate; don't merge them.
+**Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` represents
+which pharmacy business/tenant you belong to; `BranchSelector` (rendered
+right below it in `Sidebar`) represents which physical location within
+the current workspace. They're stacked deliberately — org-level switcher
+above, location-level switcher below. Keep these separate; don't merge
+them into one control.
 
-**Workspace switching is cosmetic.** Clicking a workspace in
-`WorkspaceSwitcher` just changes local highlighted state — there's no
-multi-tenant backend for it to actually switch. Same for the title bar's
-back/forward buttons: simple `navigate(-1)/navigate(1)` pass-through,
-always enabled, no tracked history stack. Don't "fix" these into stateful
-features unless a real backend/requirement shows up — it was a deliberate
-scope call, not an oversight.
+**Workspace/branch switching is cosmetic.** Both `WorkspaceSwitcher` and
+`BranchSelector` are dropdowns over hardcoded dummy arrays
+(`WORKSPACES`/`BRANCHES` at the top of each file) — clicking an item just
+changes local highlighted state, closes the menu, and does nothing else.
+There's no multi-tenant/multi-branch backend for either to actually
+switch. Same deal for the title bar's back/forward buttons: simple
+`navigate(-1)/navigate(1)` pass-through, always enabled, no tracked
+history stack. Don't "fix" any of these into stateful features unless a
+real backend/requirement shows up — deliberate scope calls, not
+oversights.
 
-**Title bar vs TopNav responsibility split**: search and "AI Assist" live
-in `TitleBar` only (dashboard routes only — gated on
-`location.pathname.startsWith("/dashboard")`, hidden on `Login` since
-there's nothing to search before signing in). The theme toggle lives in
-`TitleBar` too, but *ungated* — it applies globally and needs to work from
-`Login` as well. All three were deliberately *removed* from `TopNav`/
-`Login` to avoid duplicating the same control at two levels of chrome.
-`TopNav` keeps: branch selector, online status, notifications. Don't add
-a second search box, AI button, or theme toggle anywhere else.
-
-**User profile lives in the sidebar, not TopNav.** `Sidebar` renders
-`UserMenu` pinned at the very bottom of the rail (Slack's pattern: avatar
-+ name/role, click opens a popover anchored *upward* since it's at the
-bottom). `TopNav` no longer shows any user identity. If a page needs to
-know who's signed in, that data should come from wherever `UserMenu`
-eventually gets real auth data from — don't re-add a user block to
-`TopNav`.
+**There is no `TopNav` — everything lives in `TitleBar` or `Sidebar`
+now.** The app went through a `TopNav` phase (branch selector, online
+status, notifications, user block) that got dissolved once the title bar
+took over search/AI/theme and the sidebar took over the user menu, leaving
+`TopNav` too sparse to justify its own row. Where things ended up:
+  - `TitleBar` (dashboard-gated, `isDashboard`): search, AI Assist, online
+    status, notification bell.
+  - `TitleBar` (ungated, works on `Login` too): menu, theme toggle, help,
+    window controls.
+  - `Sidebar`: `WorkspaceSwitcher`, `BranchSelector`, nav links, Quick
+    Sale, `UserMenu`.
+Don't recreate a TopNav-style horizontal bar under the title bar — if
+something needs dashboard-only chrome, it belongs in one of the two
+places above.
 
 **Title bar menu/help are placeholders.** The hamburger menu dropdown
 (Preferences / Check for Updates / About Zorpill) and the Help button are
@@ -95,9 +98,10 @@ inert — visual scaffolding, not a signal that a menu/help system exists.
 
 `frame: false` is set on the main window — there is no native OS chrome.
 `TitleBar.tsx` is the entire replacement: drag region, menu, sidebar
-toggle, back/forward, search, AI Assist, help, and OS-aware window
-controls (hand-drawn macOS traffic lights vs. Windows/Linux `− □ ✕`,
-switched on `window.electronAPI.platform`).
+toggle, back/forward, search, online status, notifications, AI Assist,
+theme toggle, help, and OS-aware window controls (hand-drawn macOS
+traffic lights vs. Windows/Linux `− □ ✕`, switched on
+`window.electronAPI.platform`).
 
 Things that will break silently if changed carelessly:
 

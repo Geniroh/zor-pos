@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { Zap } from "lucide-react";
 import { NAV_ITEMS } from "./nav-items";
 import WorkspaceSwitcher from "./WorkspaceSwitcher";
+import BranchSelector from "./BranchSelector";
 import UserMenu from "./UserMenu";
 import { useSidebar } from "../../context/SidebarContext";
 import "./Sidebar.css";
@@ -12,6 +13,7 @@ function Sidebar() {
   return (
     <aside className={`sidebar${collapsed ? " sidebar--collapsed" : ""}`}>
       <WorkspaceSwitcher collapsed={collapsed} />
+      <BranchSelector collapsed={collapsed} />
 
       <nav className="sidebar-nav">
         {NAV_ITEMS.map(({ label, path, icon: Icon }) => (
