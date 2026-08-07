@@ -1,0 +1,146 @@
+.topnav {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 24px;
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.topnav-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--green);
+}
+
+.topnav-icon--muted {
+  color: var(--muted);
+}
+
+.topnav-branch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--cream);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.topnav-branch-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.topnav-branch-text strong {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.topnav-branch-text small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.topnav-spacer {
+  flex: 1;
+}
+
+.topnav-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  fill: var(--muted);
+  color: var(--muted);
+}
+
+.status-dot.online {
+  fill: var(--green);
+  color: var(--green);
+}
+
+.topnav-bell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.topnav-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  min-width: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #d1453b;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 16px;
+  text-align: center;
+}
+
+.topnav-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.topnav-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.topnav-user-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.topnav-user-text strong {
+  font-size: 13px;
+  color: var(--ink);
+}
+
+.topnav-user-text small {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+@media (max-width: 1100px) {
+  .topnav-branch-text,
+  .topnav-user-text {
+    display: none;
+  }
+}

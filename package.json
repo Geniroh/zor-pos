@@ -9,7 +9,7 @@
     "dev:react": "vite",
     "dev:electron": "npm-run-all transpile:electron start:electron",
     "start:electron": "cross-env NODE_ENV=development electron .",
-    "transpile:electron": "tsc --project src/electron/tsconfig.json",
+    "transpile:electron": "tsc --project src/electron/tsconfig.json && node -e \"require('fs').cpSync('src/electron/splash.html','dist-electron/splash.html')\"",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
@@ -18,8 +18,10 @@
     "dist:linux": "npm-run-all transpile:electron build && electron-builder --linux --x64"
   },
   "dependencies": {
+    "lucide-react": "^1.30.0",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

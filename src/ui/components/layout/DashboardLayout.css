@@ -1,0 +1,36 @@
+.dashboard-layout {
+  --cream: #f5f2e9;
+  --page-bg: #eeebe0;
+  --white: #ffffff;
+  --ink: #1c2b3a;
+  --muted: #6b7280;
+  --border: #e7e2d3;
+  --green: #4f7d52;
+  --green-dark: #3e6641;
+  --green-bg: rgba(79, 125, 82, 0.1);
+
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+  background: var(--page-bg);
+  color: var(--ink);
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+}
+
+.dashboard-layout * {
+  box-sizing: border-box;
+}
+
+.dashboard-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dashboard-content {
+  flex: 1;
+  overflow: auto;
+  padding: 24px 28px;
+}
