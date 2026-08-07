@@ -1,0 +1,28 @@
+{
+  "appId": "com.zorpill.desktop",
+  "productName": "Zorpill",
+  "directories": {
+    "output": "dist-electron"
+  },
+  "files": ["dist-electron", "dist-react"],
+  "icon": "./desktop-icon.png",
+  "mac": {
+    "target": ["dmg"]
+  },
+  "linux": {
+    "target": ["AppImage"],
+    "category": "Utility"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "msi",
+        "arch": ["x64", "ia32"]
+      }
+    ]
+  }
+}
