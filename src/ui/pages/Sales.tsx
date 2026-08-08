@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import SalesActionPills from "../components/pos/SalesActionPills";
 import HeldSalesView from "../components/pos/HeldSalesView";
 import ProductSearch from "../components/pos/ProductSearch";
+import type { LostSaleDraft } from "../components/pos/LogLostSaleModal";
 import SaleTable from "../components/pos/SaleTable";
 import SaleSummaryPanel from "../components/pos/SaleSummaryPanel";
 import CheckoutModal, { type TenderState } from "../components/pos/CheckoutModal";
@@ -131,6 +132,11 @@ function Sales() {
     flash("Scanned · " + product.name);
   }
 
+  function logLostSale(draft: LostSaleDraft) {
+    setQuery("");
+    flash("Logged lost sale · " + draft.product);
+  }
+
   function openCheckout() {
     if (lines.length === 0) {
       flash("Add an item before checkout");
@@ -250,6 +256,7 @@ function Sales() {
               lines={lines}
               onAddProduct={addProduct}
               onScan={simulateScan}
+              onLogLostSale={logLostSale}
               inputRef={searchInputRef}
             />
 
