@@ -38,6 +38,14 @@
   margin-top: 2px;
 }
 
+.checkout-meta-secondary {
+  font-size: 11px;
+  color: var(--muted);
+  opacity: 0.75;
+  margin-top: 2px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
 .checkout-close {
   width: 30px;
   height: 30px;

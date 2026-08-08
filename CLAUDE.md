@@ -12,12 +12,18 @@ weigh before changing it — not the conclusion itself.
   part of the Vite/React bundle — see "Splash screen" below).
 - `src/ui/` — the React app (Vite root is the project root; `index.html`
   points at `src/ui/main.tsx`).
-  - `pages/` — routed screens (`Login`, `PlaceholderPage`).
+  - `pages/` — routed screens (`Login`, `PlaceholderPage`, `Sales`,
+    `SalesHistory`). `Sales` and `SalesHistory` are real, built-out
+    features, not placeholders — see "Point of Sale" below.
   - `components/layout/` — `TitleBar`, `Sidebar`, `DashboardLayout`,
     `WorkspaceSwitcher`, `BranchSelector`, `UserMenu`, plus `nav-items.ts`
     (the single source of truth for sidebar links, shared between
     `Sidebar` and the route table in `App.tsx`). There is no `TopNav`
     anymore — see below.
+  - `components/pos/` — everything the `Sales` (POS) and `SalesHistory`
+    pages are built from: table/summary/search/modal components plus
+    `pos-data.ts` and `sales-history-data.ts` for dummy data. See "Point
+    of Sale" below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
     (predates the lucide-react adoption below; don't add more to it).
   - `components/Tooltip.tsx` — the app's one tooltip primitive. See
@@ -58,6 +64,8 @@ the login flow as a security boundary; it isn't one yet.
 (POS)" render the generic `PlaceholderPage`. That's intentional (proves
 the layout is reusable across sections) — building out a real feature
 page means adding a route in `App.tsx`, not "fixing" the placeholder.
+"Sales (POS)" is genuinely built out (see "Point of Sale" below) — it's
+the template to follow when a next section graduates from placeholder.
 
 **Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` represents
 which pharmacy business/tenant you belong to; `BranchSelector` (rendered
@@ -167,7 +175,107 @@ Things that will break silently if changed carelessly:
   window-chrome IPC.
 - **Window handlers resolve via `BrowserWindow.fromWebContents(event.sender)`**,
   not a captured `mainWindow` variable — keep it that way if more windows
-  ever need the same handlers.
+  ever need the same handlers. This stopped being theoretical: the Sales
+  History window (see "Point of Sale" below) reuses these same
+  `titlebar:*` handlers for free. The maximize/unmaximize push-event
+  wiring (`win.on("maximize"/"unmaximize", ...)`) is factored into a
+  `wireWindowChrome(win)` helper in `main.ts` for the same reason — call
+  it for any new `BrowserWindow` rather than repeating the two `.on()`
+  calls inline.
+
+## Point of Sale (Sales page + Sales History window)
+
+`Sales` (routed at `/dashboard`, the "Sales (POS)" nav item) is the one
+fully-built-out feature page in the app, following a UI design reference
+the user supplied, then reworked over several decluttering passes. Like
+everything else in this app, **it's all local React state — no backend,
+nothing persists across a restart.** Dummy data lives in
+`components/pos/pos-data.ts` (`CATALOG`, `CUSTOMERS`, `STAFF`,
+`INITIAL_PARKED`, `TODAY_STATS`) and `components/pos/sales-history-data.ts`
+(`SALES_HISTORY` — deterministically generated, not `Math.random()`, so
+the dataset is stable across renders/reloads).
+
+**Layout, top to bottom:**
+- `SalesActionPills` — New Sale / Hold Sale / Sales History. These
+  replaced an earlier `ParkedStrip` chip row entirely (deleted, not kept
+  around).
+- Left column: `ProductSearch` (compact bar, results as an absolute-
+  positioned overlay dropdown that only appears while typing) above
+  `SaleTable`.
+- Right column: `SaleSummaryPanel`.
+- `StatsDrawer` — collapsible daily-totals bar along the bottom, spans
+  both columns.
+
+**`SaleTable` is the single source of truth for what's on the sale —
+`SaleSummaryPanel` never lists line items.** This split is the result of
+two rounds of user feedback: the first build had a table on the left
+*and* a cart list on the right both showing the same lines (plus a
+separate "Sale totals" card duplicating the cart's own totals, plus qty
+adjustable in three different places) — genuinely too cluttered. The fix
+was **not** "pick one panel and put everything in it" but **give each
+panel a distinct, non-overlapping job**: `SaleTable` owns the items
+(select a row, `+`/`−`/delete rail, click a price cell to edit it
+inline — this is the one place per-line price override happens, there is
+no separate line-editor panel anymore), `SaleSummaryPanel` owns
+everything else about the sale as a whole (Customer/Sale date/Served
+by/Invoice no, Subtotal/Discount/VAT/Total, Checkout). If you're tempted
+to add item rendering back into `SaleSummaryPanel` "for convenience,"
+don't — that's the exact duplication that got removed. `ProductSearch`
+reverted from an earlier "persistent full-catalog browser" design back
+to the compact overlay-dropdown style specifically to free up vertical
+space in the left column for `SaleTable`; the two designs are mutually
+exclusive because both want the same flex space.
+
+**Modals: `CheckoutModal`, `DiscountModal`, `AddCustomerModal`.** All
+three are backdrop-centered overlays, but they use two different mount
+patterns — don't homogenize them without re-reading this:
+- `CheckoutModal` and `AddCustomerModal` are **always mounted**, take an
+  `open` boolean, and `return null` when closed. This works because
+  neither syncs incoming props into local draft state on open.
+- `DiscountModal` is **conditionally rendered by its parent**
+  (`{discountModalOpen && <DiscountModal .../>}`) and has *no* `open`
+  prop at all. It needs local draft state (`draftMode`/`draftValue`) so
+  Cancel/Escape can discard edits without committing them, and the only
+  React-blessed way to initialize that draft state from the current
+  `discountMode`/`discountInput` props on every open is a fresh mount —
+  syncing it via a `useEffect(() => setDraftX(x), [open])` instead trips
+  the `react-hooks/set-state-in-effect` lint rule (setState synchronously
+  in an effect body). If a future modal needs "local draft state seeded
+  from props, discardable on cancel," copy `DiscountModal`'s
+  conditional-mount pattern, not `CheckoutModal`'s `open`-prop one.
+
+**Held Sale is a view toggle, not a route.** Clicking the "Hold Sale"
+pill flips `Sales`'s local `view` state between `"sale"` and `"held"`,
+swapping the entire main-grid for `HeldSalesView` (a card grid) in
+place — it doesn't navigate anywhere. `ParkedSale` entries carry a real
+`lines: SaleLine[]` snapshot (plus `customer`/`servedBy`/`heldAt`), so
+"Resume" actually restores the sale (renumbers line keys off the current
+`seq` counter to avoid colliding with new lines added since) rather than
+just showing a toast. There used to be a `"Draft"` kind alongside
+`"Hold"` — it was removed outright (not deprecated) once the "Give
+discount" button replaced the Draft button in `SaleSummaryPanel`: Draft
+had no viewer anywhere in the UI even before that, so keeping the `kind`
+field around would've been dead code with no path to reach it.
+
+**Sales History opens a real second `BrowserWindow`** — this was an
+explicit ask (not the default "just make it a bigger modal" choice), and
+it's the first time this app has had more than one window. How it works:
+`main.ts`'s `openSalesHistoryWindow()` is a singleton (focuses the
+existing window instead of opening a second one) that creates another
+`frame: false` window with the *same* preload script, loading the same
+bundle at the `#/sales-history` hash route
+(`loadURL(DEV_SERVER_URL + "#/sales-history")` in dev,
+`loadFile(..., { hash: "/sales-history" })` in prod) — `App.tsx` has
+`/sales-history` as a top-level route, a sibling of `/dashboard`, *not*
+nested under `DashboardLayout`, so that window gets `TitleBar` (in its
+non-dashboard mode: menu/theme/help/window-controls, no
+search/AI/notifications) but no `Sidebar`. Triggered from the renderer
+via `window.electronAPI.openSalesHistory()` →
+`ipcRenderer.invoke("sales-history:open")` — a deliberately different
+channel prefix from `titlebar:*` since it's "open a window," not
+"control the current window's chrome." The page itself gates on its
+filters (date preset + staff via `STAFF`): results only render after
+clicking "View Sales" once, not on every filter change.
 
 ## Splash screen
 

@@ -128,6 +128,33 @@
   color: var(--muted);
 }
 
+.sale-table-price {
+  border-bottom: 1px dotted transparent;
+}
+
+.sale-table-price:hover {
+  border-bottom-color: var(--green);
+  color: var(--green-dark);
+}
+
+.sale-table-price-input {
+  width: 100%;
+  height: 26px;
+  border: 1.5px solid var(--green);
+  border-radius: 6px;
+  padding: 0 6px;
+  text-align: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  background: var(--white);
+}
+
+.sale-table-price-input:focus {
+  outline: none;
+}
+
 .sale-table-qty {
   font-size: 13px;
   font-weight: 800;

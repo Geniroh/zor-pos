@@ -1,0 +1,63 @@
+.sales-pills {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 20px 0;
+}
+
+.sales-pill {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sales-pill:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+.sales-pill-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.sales-pill--active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+.sales-pill--active:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--white);
+}
+
+.sales-pill-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.3);
+  font-size: 10.5px;
+  font-weight: 800;
+}
+
+.sales-pill:not(.sales-pill--active) .sales-pill-badge {
+  background: var(--green-bg);
+  color: var(--green-dark);
+}

@@ -31,6 +31,8 @@ interface CheckoutModalProps {
   customer: string;
   lineCount: number;
   invoiceNo: string;
+  saleDate: string;
+  servedBy: string;
   total: number;
   tender: TenderState;
   onChangeTender: (key: TenderKey, value: string) => void;
@@ -44,6 +46,8 @@ function CheckoutModal({
   customer,
   lineCount,
   invoiceNo,
+  saleDate,
+  servedBy,
   total,
   tender,
   onChangeTender,
@@ -66,6 +70,9 @@ function CheckoutModal({
             <div className="checkout-title">Take payment</div>
             <div className="checkout-meta">
               {customer} · {lineCount} items · {invoiceNo}
+            </div>
+            <div className="checkout-meta-secondary">
+              {saleDate} · Served by {servedBy}
             </div>
           </div>
           <button type="button" className="checkout-close" onClick={onClose} aria-label="Close">

@@ -1,20 +1,17 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import ParkedStrip from "../components/pos/ParkedStrip";
-import SaleInfoBar from "../components/pos/SaleInfoBar";
+import SalesActionPills from "../components/pos/SalesActionPills";
+import HeldSalesView from "../components/pos/HeldSalesView";
 import ProductSearch from "../components/pos/ProductSearch";
 import SaleTable from "../components/pos/SaleTable";
-import LineEditor from "../components/pos/LineEditor";
-import TotalsPanel from "../components/pos/TotalsPanel";
-import CartPanel from "../components/pos/CartPanel";
-import CheckoutModal, {
-  type TenderState,
-} from "../components/pos/CheckoutModal";
+import SaleSummaryPanel from "../components/pos/SaleSummaryPanel";
+import CheckoutModal, { type TenderState } from "../components/pos/CheckoutModal";
 import StatsDrawer from "../components/pos/StatsDrawer";
 import {
   CATALOG,
+  CUSTOMERS,
   INITIAL_PARKED,
   VAT_RATE,
-  formatNaira,
+  type Customer,
   type ParkedSale,
   type Product,
   type SaleLine,
@@ -22,69 +19,43 @@ import {
 import "./Sales.css";
 
 const SERVED_BY = "Chibuzor Irobuisi";
+const DEFAULT_CUSTOMER = "Walk-in Customer";
 
 const INITIAL_LINES: SaleLine[] = [
-  {
-    key: 1,
-    pid: "PRD-1042",
-    name: "Paracetamol 500mg",
-    form: "Tablet · 10s card",
-    price: 900,
-    qty: 2,
-    stock: 240,
-    vat: true,
-  },
-  {
-    key: 2,
-    pid: "PRD-1204",
-    name: "Cough Syrup 100ml",
-    form: "Syrup · bottle",
-    price: 1100,
-    qty: 1,
-    stock: 44,
-    vat: true,
-  },
+  { key: 1, pid: "PRD-1042", name: "Paracetamol 500mg", form: "Tablet · 10s card", price: 900, qty: 2, stock: 240, vat: true },
+  { key: 2, pid: "PRD-1204", name: "Cough Syrup 100ml", form: "Syrup · bottle", price: 1100, qty: 1, stock: 44, vat: true },
 ];
 
 function makeInvoiceNo() {
   return "INV-" + Date.now().toString().slice(-10);
 }
 
+type View = "sale" | "held";
+
 function Sales() {
+  const [view, setView] = useState<View>("sale");
   const [lines, setLines] = useState<SaleLine[]>(INITIAL_LINES);
-  const [seq, setSeq] = useState(3);
+  const [seq, setSeq] = useState(1000);
   const [selected, setSelected] = useState<number | null>(1);
   const [query, setQuery] = useState("");
-  const [customer, setCustomer] = useState("Walk-in Customer");
-  const [discountOpen, setDiscountOpen] = useState(false);
+  const [customer, setCustomer] = useState(DEFAULT_CUSTOMER);
+  const [customers, setCustomers] = useState<Customer[]>(CUSTOMERS);
   const [discountMode, setDiscountMode] = useState<"pct" | "amt">("amt");
   const [discountInput, setDiscountInput] = useState("0");
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [toast, setToast] = useState("");
-  const [tender, setTender] = useState<TenderState>({
-    cash: "",
-    pos: "",
-    transfer: "",
-    cheque: "",
-  });
+  const [tender, setTender] = useState<TenderState>({ cash: "", pos: "", transfer: "", cheque: "" });
   const [parked, setParked] = useState<ParkedSale[]>(INITIAL_PARKED);
 
-  const [invoiceNo] = useState(makeInvoiceNo);
+  const [invoiceNo, setInvoiceNo] = useState(makeInvoiceNo);
   const saleDate = useMemo(
-    () =>
-      new Date().toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "short",
-        year: "numeric",
-      }),
+    () => new Date().toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }),
     [],
   );
 
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const toastTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(
-    undefined,
-  );
+  const toastTimeout = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const flash = (message: string) => {
     setToast(message);
@@ -92,43 +63,17 @@ function Sales() {
     toastTimeout.current = setTimeout(() => setToast(""), 2200);
   };
 
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === "Escape") setCheckoutOpen(false);
-      if (event.key === "F3") {
-        event.preventDefault();
-        searchInputRef.current?.focus();
-      }
-      if (event.key === "F5") {
-        event.preventDefault();
-        openCheckout();
-      }
-    }
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [lines.length]);
-
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
     if (!q) return [];
     return CATALOG.filter(
-      (p) =>
-        p.name.toLowerCase().includes(q) ||
-        p.id.toLowerCase().includes(q) ||
-        p.form.toLowerCase().includes(q),
+      (p) => p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q) || p.form.toLowerCase().includes(q),
     ).slice(0, 6);
   }, [query]);
 
-  const selectedLine = useMemo(
-    () => lines.find((l) => l.key === selected) ?? null,
-    [lines, selected],
-  );
+  const selectedLine = useMemo(() => lines.find((l) => l.key === selected) ?? null, [lines, selected]);
 
-  const gross = useMemo(
-    () => lines.reduce((sum, l) => sum + l.price * l.qty, 0),
-    [lines],
-  );
+  const gross = useMemo(() => lines.reduce((sum, l) => sum + l.price * l.qty, 0), [lines]);
 
   const discount = useMemo(() => {
     const v = parseFloat(discountInput) || 0;
@@ -139,9 +84,7 @@ function Sales() {
   const vatAmount = useMemo(() => {
     if (!gross) return 0;
     const ratio = 1 - discount / gross;
-    const vatableGross = lines
-      .filter((l) => l.vat)
-      .reduce((sum, l) => sum + l.price * l.qty, 0);
+    const vatableGross = lines.filter((l) => l.vat).reduce((sum, l) => sum + l.price * l.qty, 0);
     return vatableGross * ratio * VAT_RATE;
   }, [lines, gross, discount]);
 
@@ -152,36 +95,25 @@ function Sales() {
       const existing = prev.find((l) => l.pid === product.id);
       if (existing) {
         setSelected(existing.key);
-        return prev.map((l) =>
-          l.pid === product.id ? { ...l, qty: l.qty + 1 } : l,
-        );
+        return prev.map((l) => (l.pid === product.id ? { ...l, qty: l.qty + 1 } : l));
       }
       const key = seq;
       setSeq(key + 1);
       setSelected(key);
       return [
         ...prev,
-        {
-          key,
-          pid: product.id,
-          name: product.name,
-          form: product.form,
-          price: product.price,
-          qty: 1,
-          stock: product.stock,
-          vat: product.vat,
-        },
+        { key, pid: product.id, name: product.name, form: product.form, price: product.price, qty: 1, stock: product.stock, vat: product.vat },
       ];
     });
     setQuery("");
   }
 
   function bump(key: number, delta: number) {
-    setLines((prev) =>
-      prev.map((l) =>
-        l.key === key ? { ...l, qty: Math.max(1, l.qty + delta) } : l,
-      ),
-    );
+    setLines((prev) => prev.map((l) => (l.key === key ? { ...l, qty: Math.max(1, l.qty + delta) } : l)));
+  }
+
+  function changePrice(key: number, price: number) {
+    setLines((prev) => prev.map((l) => (l.key === key ? { ...l, price } : l)));
   }
 
   function removeLine(key: number) {
@@ -203,6 +135,23 @@ function Sales() {
     setCheckoutOpen(true);
   }
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setCheckoutOpen(false);
+      if (event.key === "F3") {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      if (event.key === "F5") {
+        event.preventDefault();
+        openCheckout();
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lines.length]);
+
   function completeSale() {
     setCheckoutOpen(false);
     setLines([]);
@@ -212,22 +161,32 @@ function Sales() {
     flash("Sale completed · receipt printing");
   }
 
-  function parkSale(kind: "Hold" | "Draft") {
+  function holdSale() {
     if (lines.length === 0) {
-      flash("Nothing to " + kind.toLowerCase());
+      flash("Nothing to hold");
       return;
     }
     const entry: ParkedSale = {
-      id: kind[0].toLowerCase() + Date.now(),
-      kind,
-      name: customer,
-      meta: `${lines.length} item(s) · ${formatNaira(total)}`,
+      id: "h" + Date.now(),
+      customer,
+      servedBy: SERVED_BY,
+      heldAt: Date.now(),
+      lines,
     };
     setParked((prev) => [entry, ...prev]);
     setLines([]);
     setSelected(null);
     setDiscountInput("0");
-    flash(kind + "ed · " + customer);
+    flash("Held · " + customer);
+  }
+
+  function applyDiscount(mode: "pct" | "amt", value: string) {
+    setDiscountMode(mode);
+    setDiscountInput(value);
+  }
+
+  function addCustomer(newCustomer: Customer) {
+    setCustomers((prev) => [...prev, newCustomer]);
   }
 
   function clearSale() {
@@ -237,116 +196,96 @@ function Sales() {
     flash("Sale cleared");
   }
 
-  function resumeParked(sale: ParkedSale) {
-    flash("Resumed " + sale.kind.toLowerCase() + " · " + sale.name);
+  function newSale() {
+    setLines([]);
+    setSelected(null);
+    setDiscountInput("0");
+    setCustomer(DEFAULT_CUSTOMER);
+    setQuery("");
+    setTender({ cash: "", pos: "", transfer: "", cheque: "" });
+    setCheckoutOpen(false);
+    setInvoiceNo(makeInvoiceNo());
+    setView("sale");
+    flash("New sale started");
+  }
+
+  function resumeHeld(sale: ParkedSale) {
+    const base = seq;
+    const renumbered = sale.lines.map((l, i) => ({ ...l, key: base + i }));
+    setSeq(base + renumbered.length);
+    setLines(renumbered);
+    setSelected(renumbered[0]?.key ?? null);
+    setCustomer(sale.customer);
+    setParked((prev) => prev.filter((p) => p.id !== sale.id));
+    setView("sale");
+    flash("Resumed · " + sale.customer);
   }
 
   const vatRatePct = VAT_RATE * 100;
+  const isHeldView = view === "held";
 
   return (
     <div className="sales-page">
-      <ParkedStrip parked={parked} onResume={resumeParked} />
+      <SalesActionPills
+        isHeldViewActive={isHeldView}
+        heldCount={parked.length}
+        onNewSale={newSale}
+        onToggleHeldView={() => setView((v) => (v === "held" ? "sale" : "held"))}
+        onOpenHistory={() => window.electronAPI?.openSalesHistory()}
+      />
 
-      <div className="sales-main-grid">
-        <div className="sales-left-column">
-          <SaleInfoBar
-            customer={customer}
-            onSelectCustomer={setCustomer}
-            saleDate={saleDate}
-            servedBy={SERVED_BY}
-            invoiceNo={invoiceNo}
-          />
-
-          <ProductSearch
-            query={query}
-            onQueryChange={setQuery}
-            results={results}
-            onAddProduct={addProduct}
-            onScan={simulateScan}
-            inputRef={searchInputRef}
-          />
-
-          <SaleTable
-            lines={lines}
-            selectedKey={selected}
-            onSelectLine={setSelected}
-            onIncSelected={() => selectedLine && bump(selectedLine.key, 1)}
-            onDecSelected={() => selectedLine && bump(selectedLine.key, -1)}
-            onRemoveSelected={() =>
-              selectedLine && removeLine(selectedLine.key)
-            }
-          />
-
-          <div className="sales-bottom-row">
-            <LineEditor
-              selectedLine={selectedLine}
-              onChangePrice={(price) =>
-                selectedLine &&
-                setLines((prev) =>
-                  prev.map((l) =>
-                    l.key === selectedLine.key ? { ...l, price } : l,
-                  ),
-                )
-              }
-              onChangeQty={(qty) =>
-                selectedLine &&
-                setLines((prev) =>
-                  prev.map((l) =>
-                    l.key === selectedLine.key ? { ...l, qty } : l,
-                  ),
-                )
-              }
-              onPost={() =>
-                flash(
-                  selectedLine
-                    ? selectedLine.name + " updated on the sale"
-                    : "Select a line first",
-                )
-              }
+      {isHeldView ? (
+        <HeldSalesView sales={parked} onResume={resumeHeld} />
+      ) : (
+        <div className="sales-main-grid">
+          <div className="sales-left-column">
+            <ProductSearch
+              query={query}
+              onQueryChange={setQuery}
+              results={results}
+              onAddProduct={addProduct}
+              onScan={simulateScan}
+              inputRef={searchInputRef}
             />
 
-            <TotalsPanel
+            <SaleTable
               lines={lines}
+              selectedKey={selected}
+              onSelectLine={setSelected}
+              onIncSelected={() => selectedLine && bump(selectedLine.key, 1)}
+              onDecSelected={() => selectedLine && bump(selectedLine.key, -1)}
+              onRemoveSelected={() => selectedLine && removeLine(selectedLine.key)}
+              onChangePrice={changePrice}
+            />
+          </div>
+
+          <div className="sales-right-column">
+            <SaleSummaryPanel
+              lineCount={lines.length}
+              customer={customer}
+              customers={customers}
+              onSelectCustomer={setCustomer}
+              onAddCustomer={addCustomer}
+              saleDate={saleDate}
+              servedBy={SERVED_BY}
+              invoiceNo={invoiceNo}
+              onHold={holdSale}
+              onClear={clearSale}
+              onCheckout={openCheckout}
               gross={gross}
               discount={discount}
               vatAmount={vatAmount}
               vatRatePct={vatRatePct}
               total={total}
-              discountOpen={discountOpen}
-              onToggleDiscount={() => setDiscountOpen((o) => !o)}
               discountMode={discountMode}
-              onSetDiscountMode={setDiscountMode}
               discountInput={discountInput}
-              onChangeDiscountInput={setDiscountInput}
+              onApplyDiscount={applyDiscount}
             />
           </div>
         </div>
+      )}
 
-        <div className="sales-right-column">
-          <CartPanel
-            lines={lines}
-            selectedKey={selected}
-            onSelectLine={setSelected}
-            onInc={(key) => bump(key, 1)}
-            onDec={(key) => bump(key, -1)}
-            onRemove={removeLine}
-            onHold={() => parkSale("Hold")}
-            onClear={clearSale}
-            onDraft={() => parkSale("Draft")}
-            onCheckout={openCheckout}
-            gross={gross}
-            discount={discount}
-            vatAmount={vatAmount}
-            vatRatePct={vatRatePct}
-            total={total}
-          />
-        </div>
-      </div>
-
-      <StatsDrawer
-        open={drawerOpen}
-        onToggle={() => setDrawerOpen((o) => !o)}
-      />
+      <StatsDrawer open={drawerOpen} onToggle={() => setDrawerOpen((o) => !o)} />
 
       <CheckoutModal
         open={checkoutOpen}
@@ -354,21 +293,18 @@ function Sales() {
         customer={customer}
         lineCount={lines.length}
         invoiceNo={invoiceNo}
+        saleDate={saleDate}
+        servedBy={SERVED_BY}
         total={total}
         tender={tender}
-        onChangeTender={(key, value) =>
-          setTender((prev) => ({ ...prev, [key]: value }))
-        }
+        onChangeTender={(key, value) => setTender((prev) => ({ ...prev, [key]: value }))}
         onFillBalance={(key) => {
           const allocatedElsewhere = Object.entries(tender).reduce(
             (sum, [k, v]) => sum + (k === key ? 0 : parseFloat(v) || 0),
             0,
           );
           const remaining = Math.max(0, total - allocatedElsewhere);
-          setTender((prev) => ({
-            ...prev,
-            [key]: String(Math.round(remaining * 100) / 100),
-          }));
+          setTender((prev) => ({ ...prev, [key]: String(Math.round(remaining * 100) / 100) }));
         }}
         onComplete={completeSale}
       />

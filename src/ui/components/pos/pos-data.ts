@@ -10,6 +10,8 @@ export interface Product {
 export interface Customer {
   name: string;
   phone: string;
+  email?: string;
+  gender?: string;
 }
 
 export interface SaleLine {
@@ -25,10 +27,18 @@ export interface SaleLine {
 
 export interface ParkedSale {
   id: string;
-  kind: "Hold" | "Draft";
-  name: string;
-  meta: string;
+  customer: string;
+  servedBy: string;
+  heldAt: number;
+  lines: SaleLine[];
 }
+
+export const STAFF: string[] = [
+  "Chibuzor Irobuisi",
+  "Amaka Eze",
+  "Tunde Bakare",
+  "Ifeoma Chukwu",
+];
 
 export const VAT_RATE = 0.075;
 
@@ -53,10 +63,39 @@ export const CUSTOMERS: Customer[] = [
   { name: "Fatima Bello", phone: "0706 220 9914" },
 ];
 
+const MINUTE = 60_000;
+
 export const INITIAL_PARKED: ParkedSale[] = [
-  { id: "h1", kind: "Hold", name: "Ngozi Adeyemi", meta: "3 items · ₦4,250.00" },
-  { id: "h2", kind: "Hold", name: "Walk-in Customer", meta: "1 item · ₦900.00" },
-  { id: "d1", kind: "Draft", name: "St. Luke's Clinic", meta: "12 items · ₦86,400.00" },
+  {
+    id: "h1",
+    customer: "Ngozi Adeyemi",
+    servedBy: "Chibuzor Irobuisi",
+    heldAt: Date.now() - 12 * MINUTE,
+    lines: [
+      { key: 101, pid: "PRD-1130", name: "Vitamin C 1000mg", form: "Tablet · 20s tin", price: 850, qty: 2, stock: 150, vat: false },
+      { key: 102, pid: "PRD-1512", name: "Ibuprofen 400mg", form: "Tablet · 10s card", price: 750, qty: 2, stock: 210, vat: true },
+    ],
+  },
+  {
+    id: "h2",
+    customer: "Walk-in Customer",
+    servedBy: "Amaka Eze",
+    heldAt: Date.now() - 40 * MINUTE,
+    lines: [
+      { key: 201, pid: "PRD-1042", name: "Paracetamol 500mg", form: "Tablet · 10s card", price: 900, qty: 1, stock: 240, vat: true },
+    ],
+  },
+  {
+    id: "h3",
+    customer: "St. Luke's Clinic",
+    servedBy: "Tunde Bakare",
+    heldAt: Date.now() - 2 * 60 * MINUTE,
+    lines: [
+      { key: 301, pid: "PRD-1088", name: "Amoxicillin 500mg", form: "Capsule · 10s card", price: 1200, qty: 6, stock: 96, vat: true },
+      { key: 302, pid: "PRD-1401", name: "Blood Glucose Strips", form: "Device · 50s", price: 8500, qty: 2, stock: 18, vat: true },
+      { key: 303, pid: "PRD-1310", name: "Lisinopril 10mg", form: "Tablet · 28s pack", price: 2400, qty: 4, stock: 72, vat: true },
+    ],
+  },
 ];
 
 export const TODAY_STATS = {
@@ -70,6 +109,14 @@ export const TODAY_STATS = {
   lowStockCount: 1,
   lowStockItem: "Coartem 20/120",
 };
+
+export function saleLinesTotal(lines: SaleLine[]): number {
+  return lines.reduce((sum, l) => sum + l.price * l.qty, 0);
+}
+
+export function saleLinesItemCount(lines: SaleLine[]): number {
+  return lines.reduce((sum, l) => sum + l.qty, 0);
+}
 
 export function formatNaira(amount: number): string {
   return (

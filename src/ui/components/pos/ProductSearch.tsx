@@ -30,13 +30,11 @@ function ProductSearch({ query, onQueryChange, results, onAddProduct, onScan, in
             if (e.key === "Enter" && results[0]) onAddProduct(results[0]);
           }}
         />
-        <div className="product-search-actions">
-          <kbd className="product-search-kbd">F3</kbd>
-          <button type="button" className="product-search-scan" onClick={onScan}>
-            <ScanLine className="product-search-scan-icon" />
-            Scan
-          </button>
-        </div>
+        <kbd className="product-search-kbd">F3</kbd>
+        <button type="button" className="product-search-scan" onClick={onScan}>
+          <ScanLine className="product-search-scan-icon" />
+          Scan
+        </button>
       </div>
 
       {showResults && (

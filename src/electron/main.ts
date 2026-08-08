@@ -28,6 +28,51 @@ ipcMain.handle("titlebar:is-maximized", (event) => {
   return BrowserWindow.fromWebContents(event.sender)?.isMaximized() ?? false;
 });
 
+function wireWindowChrome(win: BrowserWindow) {
+  win.on("maximize", () => win.webContents.send("titlebar:maximized-changed", true));
+  win.on("unmaximize", () => win.webContents.send("titlebar:maximized-changed", false));
+}
+
+let salesHistoryWindow: BrowserWindow | null = null;
+
+function openSalesHistoryWindow() {
+  if (salesHistoryWindow && !salesHistoryWindow.isDestroyed()) {
+    salesHistoryWindow.focus();
+    return;
+  }
+
+  salesHistoryWindow = new BrowserWindow({
+    width: 1100,
+    height: 760,
+    minWidth: 820,
+    minHeight: 560,
+    frame: false,
+    show: false,
+    webPreferences: {
+      preload: path.join(app.getAppPath(), "dist-electron/preload.cjs"),
+    },
+  });
+
+  wireWindowChrome(salesHistoryWindow);
+
+  if (isDev()) {
+    salesHistoryWindow.loadURL(DEV_SERVER_URL + "#/sales-history");
+  } else {
+    salesHistoryWindow.loadFile(path.join(app.getAppPath(), "dist-react/index.html"), {
+      hash: "/sales-history",
+    });
+  }
+
+  salesHistoryWindow.once("ready-to-show", () => salesHistoryWindow?.show());
+  salesHistoryWindow.on("closed", () => {
+    salesHistoryWindow = null;
+  });
+}
+
+ipcMain.handle("sales-history:open", () => {
+  openSalesHistoryWindow();
+});
+
 app.on("ready", () => {
   Menu.setApplicationMenu(null);
 
@@ -57,12 +102,7 @@ app.on("ready", () => {
     },
   });
 
-  mainWindow.on("maximize", () =>
-    mainWindow.webContents.send("titlebar:maximized-changed", true),
-  );
-  mainWindow.on("unmaximize", () =>
-    mainWindow.webContents.send("titlebar:maximized-changed", false),
-  );
+  wireWindowChrome(mainWindow);
 
   if (isDev()) {
     mainWindow.loadURL(DEV_SERVER_URL);

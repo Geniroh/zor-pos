@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Sales from "./pages/Sales";
+import SalesHistory from "./pages/SalesHistory";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import TitleBar from "./components/layout/TitleBar";
@@ -18,6 +19,7 @@ function App() {
           <div className="app-content">
             <Routes>
               <Route path="/" element={<Login />} />
+              <Route path="/sales-history" element={<SalesHistory />} />
 
               <Route path="/dashboard" element={<DashboardLayout />}>
                 {NAV_ITEMS.map(({ label, path }) =>
