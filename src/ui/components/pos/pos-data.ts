@@ -5,6 +5,7 @@ export interface Product {
   price: number;
   stock: number;
   vat: boolean;
+  description: string;
 }
 
 export interface Customer {
@@ -43,16 +44,99 @@ export const STAFF: string[] = [
 export const VAT_RATE = 0.075;
 
 export const CATALOG: Product[] = [
-  { id: "PRD-1042", name: "Paracetamol 500mg", form: "Tablet · 10s card", price: 900, stock: 240, vat: true },
-  { id: "PRD-1088", name: "Amoxicillin 500mg", form: "Capsule · 10s card", price: 1200, stock: 96, vat: true },
-  { id: "PRD-1130", name: "Vitamin C 1000mg", form: "Tablet · 20s tin", price: 850, stock: 150, vat: false },
-  { id: "PRD-1204", name: "Cough Syrup 100ml", form: "Syrup · bottle", price: 1100, stock: 44, vat: true },
-  { id: "PRD-1255", name: "Coartem 20/120", form: "Tablet · 24s pack", price: 3200, stock: 6, vat: true },
-  { id: "PRD-1310", name: "Lisinopril 10mg", form: "Tablet · 28s pack", price: 2400, stock: 72, vat: true },
-  { id: "PRD-1366", name: "Insulin Syringe 1ml", form: "Device · single", price: 300, stock: 400, vat: false },
-  { id: "PRD-1401", name: "Blood Glucose Strips", form: "Device · 50s", price: 8500, stock: 18, vat: true },
-  { id: "PRD-1470", name: "ORS Sachet", form: "Powder · sachet", price: 250, stock: 320, vat: false },
-  { id: "PRD-1512", name: "Ibuprofen 400mg", form: "Tablet · 10s card", price: 750, stock: 210, vat: true },
+  {
+    id: "PRD-1042",
+    name: "Paracetamol 500mg",
+    form: "Tablet · 10s card",
+    price: 900,
+    stock: 240,
+    vat: true,
+    description:
+      "A common analgesic and antipyretic used to relieve mild-to-moderate pain and reduce fever.",
+  },
+  {
+    id: "PRD-1088",
+    name: "Amoxicillin 500mg",
+    form: "Capsule · 10s card",
+    price: 1200,
+    stock: 96,
+    vat: true,
+    description: "A penicillin-type antibiotic used to treat a range of bacterial infections.",
+  },
+  {
+    id: "PRD-1130",
+    name: "Vitamin C 1000mg",
+    form: "Tablet · 20s tin",
+    price: 850,
+    stock: 150,
+    vat: false,
+    description: "A dietary supplement used to support immune function and act as an antioxidant.",
+  },
+  {
+    id: "PRD-1204",
+    name: "Cough Syrup 100ml",
+    form: "Syrup · bottle",
+    price: 1100,
+    stock: 44,
+    vat: true,
+    description: "A combination syrup used to relieve cough and associated cold symptoms.",
+  },
+  {
+    id: "PRD-1255",
+    name: "Coartem 20/120",
+    form: "Tablet · 24s pack",
+    price: 3200,
+    stock: 6,
+    vat: true,
+    description:
+      "An artemisinin-based combination therapy (ACT) used to treat uncomplicated malaria.",
+  },
+  {
+    id: "PRD-1310",
+    name: "Lisinopril 10mg",
+    form: "Tablet · 28s pack",
+    price: 2400,
+    stock: 72,
+    vat: true,
+    description: "An ACE inhibitor used to manage high blood pressure and certain heart conditions.",
+  },
+  {
+    id: "PRD-1366",
+    name: "Insulin Syringe 1ml",
+    form: "Device · single",
+    price: 300,
+    stock: 400,
+    vat: false,
+    description: "A single-use syringe for accurate self-administration of insulin doses.",
+  },
+  {
+    id: "PRD-1401",
+    name: "Blood Glucose Strips",
+    form: "Device · 50s",
+    price: 8500,
+    stock: 18,
+    vat: true,
+    description: "Test strips used with a glucometer to monitor blood glucose levels.",
+  },
+  {
+    id: "PRD-1470",
+    name: "ORS Sachet",
+    form: "Powder · sachet",
+    price: 250,
+    stock: 320,
+    vat: false,
+    description:
+      "Oral rehydration salts used to replace fluids and electrolytes lost through dehydration.",
+  },
+  {
+    id: "PRD-1512",
+    name: "Ibuprofen 400mg",
+    form: "Tablet · 10s card",
+    price: 750,
+    stock: 210,
+    vat: true,
+    description: "A nonsteroidal anti-inflammatory drug (NSAID) used to relieve pain, inflammation, and fever.",
+  },
 ];
 
 export const CUSTOMERS: Customer[] = [
@@ -109,6 +193,22 @@ export const TODAY_STATS = {
   lowStockCount: 1,
   lowStockItem: "Coartem 20/120",
 };
+
+export function findProduct(pid: string): Product | undefined {
+  return CATALOG.find((p) => p.id === pid);
+}
+
+export function productName(pid: string): string {
+  return findProduct(pid)?.name ?? pid;
+}
+
+export function productInfoExchange(product: Product) {
+  return {
+    contextLabel: `About · ${product.name}`,
+    prompt: `What is ${product.name} and what is it used for?`,
+    response: product.description,
+  };
+}
 
 export function saleLinesTotal(lines: SaleLine[]): number {
   return lines.reduce((sum, l) => sum + l.price * l.qty, 0);

@@ -243,6 +243,7 @@ function Sales() {
               query={query}
               onQueryChange={setQuery}
               results={results}
+              lines={lines}
               onAddProduct={addProduct}
               onScan={simulateScan}
               inputRef={searchInputRef}

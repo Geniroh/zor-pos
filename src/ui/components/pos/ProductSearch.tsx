@@ -1,20 +1,24 @@
-import { Search, ScanLine } from "lucide-react";
+import { AlertTriangle, Info, Search, ScanLine } from "lucide-react";
 import type { RefObject } from "react";
-import type { Product } from "./pos-data";
-import { formatNaira } from "./pos-data";
+import type { Product, SaleLine } from "./pos-data";
+import { formatNaira, productInfoExchange, productName } from "./pos-data";
+import { interactionsForCandidate, interactionExchange, otherPid } from "./drug-interactions-data";
+import { useAiAssist } from "../../context/AiAssistContext";
 import "./ProductSearch.css";
 
 interface ProductSearchProps {
   query: string;
   onQueryChange: (value: string) => void;
   results: Product[];
+  lines: SaleLine[];
   onAddProduct: (product: Product) => void;
   onScan: () => void;
   inputRef: RefObject<HTMLInputElement | null>;
 }
 
-function ProductSearch({ query, onQueryChange, results, onAddProduct, onScan, inputRef }: ProductSearchProps) {
+function ProductSearch({ query, onQueryChange, results, lines, onAddProduct, onScan, inputRef }: ProductSearchProps) {
   const showResults = results.length > 0;
+  const { openWithExchange } = useAiAssist();
 
   return (
     <div className="product-search">
@@ -39,26 +43,56 @@ function ProductSearch({ query, onQueryChange, results, onAddProduct, onScan, in
 
       {showResults && (
         <div className="product-search-results">
-          {results.map((product) => (
-            <button
-              key={product.id}
-              type="button"
-              className="product-search-result"
-              onClick={() => onAddProduct(product)}
-            >
-              <span className="product-search-result-name">
-                <span className="product-search-result-title">{product.name}</span>
-                <span className="product-search-result-form">{product.form}</span>
-              </span>
-              <span className="product-search-result-id">{product.id}</span>
-              <span className="product-search-result-price">{formatNaira(product.price)}</span>
-              <span
-                className={`product-search-result-stock${product.stock < 10 ? " product-search-result-stock--low" : ""}`}
+          {results.map((product) => {
+            const interactions = interactionsForCandidate(product.id, lines);
+            return (
+              <div
+                key={product.id}
+                className="product-search-result"
+                onClick={() => onAddProduct(product)}
               >
-                {product.stock} in stock
-              </span>
-            </button>
-          ))}
+                <span className="product-search-result-name">
+                  <span className="product-search-result-name-row">
+                    <span className="product-search-result-title">{product.name}</span>
+                    <button
+                      type="button"
+                      className="product-search-info-btn"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        openWithExchange(productInfoExchange(product));
+                      }}
+                      title={`What is ${product.name}?`}
+                      aria-label={`What is ${product.name}?`}
+                    >
+                      <Info />
+                    </button>
+                    {interactions.length > 0 && (
+                      <button
+                        type="button"
+                        className="product-search-interaction-btn"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          openWithExchange(interactionExchange(interactions[0]));
+                        }}
+                        title={`Interacts with ${productName(otherPid(interactions[0], product.id))} already in the sale`}
+                        aria-label={`Interacts with ${productName(otherPid(interactions[0], product.id))}`}
+                      >
+                        <AlertTriangle />
+                      </button>
+                    )}
+                  </span>
+                  <span className="product-search-result-form">{product.form}</span>
+                </span>
+                <span className="product-search-result-id">{product.id}</span>
+                <span className="product-search-result-price">{formatNaira(product.price)}</span>
+                <span
+                  className={`product-search-result-stock${product.stock < 10 ? " product-search-result-stock--low" : ""}`}
+                >
+                  {product.stock} in stock
+                </span>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

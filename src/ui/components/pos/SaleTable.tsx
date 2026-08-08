@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Plus, Minus, Trash2 } from "lucide-react";
+import { AlertTriangle, Info, Plus, Minus, Trash2 } from "lucide-react";
 import type { SaleLine } from "./pos-data";
-import { VAT_RATE, formatNaira } from "./pos-data";
+import { VAT_RATE, findProduct, formatNaira, productInfoExchange, productName } from "./pos-data";
+import { interactionExchange, interactionsForLine, otherPid } from "./drug-interactions-data";
+import { useAiAssist } from "../../context/AiAssistContext";
 import "./SaleTable.css";
 
 interface SaleTableProps {
@@ -26,6 +28,7 @@ function SaleTable({
   const hasSelection = selectedKey !== null;
   const [editingKey, setEditingKey] = useState<number | null>(null);
   const [draftPrice, setDraftPrice] = useState("");
+  const { openWithExchange } = useAiAssist();
 
   function startEditing(line: SaleLine) {
     setEditingKey(line.key);
@@ -63,6 +66,8 @@ function SaleTable({
               const amount = line.price * line.qty;
               const vatAmount = line.vat ? formatNaira(amount * VAT_RATE) : "—";
               const isEditingPrice = editingKey === line.key;
+              const interactions = interactionsForLine(line.pid, lines);
+              const product = findProduct(line.pid);
               return (
                 <div
                   key={line.key}
@@ -71,7 +76,37 @@ function SaleTable({
                 >
                   <div className="sale-table-mono sale-table-muted">{line.pid}</div>
                   <div className="sale-table-name">
-                    <span className="sale-table-name-title">{line.name}</span>
+                    <div className="sale-table-name-row">
+                      <span className="sale-table-name-title">{line.name}</span>
+                      {product && (
+                        <button
+                          type="button"
+                          className="sale-table-info-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openWithExchange(productInfoExchange(product));
+                          }}
+                          title={`What is ${product.name}?`}
+                          aria-label={`What is ${product.name}?`}
+                        >
+                          <Info />
+                        </button>
+                      )}
+                      {interactions.length > 0 && (
+                        <button
+                          type="button"
+                          className="sale-table-interaction-btn"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            openWithExchange(interactionExchange(interactions[0]));
+                          }}
+                          title={`Interacts with ${productName(otherPid(interactions[0], line.pid))} — click to ask AI Assist`}
+                          aria-label={`Interacts with ${productName(otherPid(interactions[0], line.pid))}`}
+                        >
+                          <AlertTriangle />
+                        </button>
+                      )}
+                    </div>
                     <span className="sale-table-name-sub">{line.form}</span>
                   </div>
                   {isEditingPrice ? (

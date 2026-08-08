@@ -114,6 +114,13 @@
   flex-direction: column;
 }
 
+.sale-table-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
 .sale-table-name-title {
   font-size: 13.5px;
   font-weight: 700;
@@ -126,6 +133,59 @@
 .sale-table-name-sub {
   font-size: 11px;
   color: var(--muted);
+}
+
+.sale-table-info-btn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  opacity: 0;
+}
+
+.sale-table-line:hover .sale-table-info-btn,
+.sale-table-info-btn:focus-visible {
+  opacity: 1;
+}
+
+.sale-table-info-btn:hover {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.sale-table-info-btn svg {
+  width: 12px;
+  height: 12px;
+}
+
+.sale-table-interaction-btn {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: none;
+  border-radius: 6px;
+  background: #fffaf0;
+  color: #c07a12;
+  cursor: pointer;
+}
+
+.sale-table-interaction-btn:hover {
+  background: #f5e4c4;
+}
+
+.sale-table-interaction-btn svg {
+  width: 13px;
+  height: 13px;
 }
 
 .sale-table-price {
