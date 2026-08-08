@@ -1,0 +1,189 @@
+.totals-panel {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+.totals-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.totals-panel-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.totals-panel-discount {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.totals-panel-discount-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1.5px solid var(--green);
+  border-radius: 9px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+}
+
+.totals-panel-discount-toggle:hover {
+  background: var(--green-bg);
+}
+
+.totals-panel-discount-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.totals-panel-discount-seg {
+  display: flex;
+  border: 1.5px solid var(--green);
+  border-radius: 9px;
+  overflow: hidden;
+  height: 30px;
+}
+
+.totals-panel-seg-btn {
+  width: 34px;
+  border: none;
+  background: var(--white);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.totals-panel-seg-btn--active {
+  background: var(--green);
+  color: var(--white);
+}
+
+.totals-panel-discount-input {
+  width: 92px;
+  height: 30px;
+  border: 1.5px solid var(--green);
+  border-radius: 9px;
+  padding: 0 9px;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ink);
+  background: var(--white);
+}
+
+.totals-panel-discount-input:focus {
+  outline: none;
+}
+
+.totals-panel-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(148px, 1fr));
+  gap: 10px;
+}
+
+.totals-panel-tile {
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 11px;
+  padding: 9px 11px;
+}
+
+.totals-panel-tile--highlight {
+  border: 1.5px solid var(--green);
+  background: var(--green-bg);
+}
+
+.totals-panel-tile-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.totals-panel-tile-label--highlight {
+  color: var(--green-dark);
+}
+
+.totals-panel-tile-value {
+  font-size: 17px;
+  font-weight: 800;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  margin-top: 3px;
+  color: var(--ink);
+}
+
+.totals-panel-tile-value--danger {
+  color: #d9435e;
+}
+
+.totals-panel-tile-value--highlight {
+  color: var(--green-dark);
+}
+
+.totals-panel-chips {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  overflow-x: auto;
+  padding-top: 2px;
+}
+
+.totals-panel-chips-label {
+  flex: none;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.totals-panel-chip {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--cream);
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.totals-panel-chip-qty {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.totals-panel-chip-amount {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.totals-panel-vat-note {
+  font-size: 10.5px;
+  color: var(--muted);
+}

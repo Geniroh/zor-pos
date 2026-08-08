@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
+import Sales from "./pages/Sales";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import TitleBar from "./components/layout/TitleBar";
@@ -21,11 +22,7 @@ function App() {
               <Route path="/dashboard" element={<DashboardLayout />}>
                 {NAV_ITEMS.map(({ label, path }) =>
                   path === "" ? (
-                    <Route
-                      key={label}
-                      index
-                      element={<PlaceholderPage title={label} />}
-                    />
+                    <Route key={label} index element={<Sales />} />
                   ) : (
                     <Route
                       key={label}

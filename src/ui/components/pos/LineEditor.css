@@ -1,0 +1,123 @@
+.line-editor {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.line-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.line-editor-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.line-editor-selected {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--green);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.line-editor-grid {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+
+.line-editor-field-label {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.line-editor-input {
+  height: 34px;
+  border: 1.5px solid var(--green);
+  border-radius: 9px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--white);
+  color: var(--ink);
+}
+
+.line-editor-input:focus {
+  outline: none;
+}
+
+.line-editor-input:disabled {
+  border-color: var(--border);
+  background: var(--cream);
+  color: var(--muted);
+}
+
+.line-editor-static {
+  height: 34px;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 9px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.line-editor-static--between {
+  justify-content: space-between;
+  font-size: 12.5px;
+}
+
+.line-editor-static-hint {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.line-editor-post {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 2px;
+}
+
+.line-editor-post:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.line-editor-post:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}

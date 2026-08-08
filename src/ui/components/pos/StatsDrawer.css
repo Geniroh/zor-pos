@@ -1,0 +1,141 @@
+.stats-drawer {
+  flex: none;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+}
+
+.stats-drawer-bar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  height: 42px;
+  padding: 0 20px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+
+.stats-drawer-today {
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stats-drawer-sales {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.stats-drawer-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.stats-drawer-divider {
+  width: 1px;
+  height: 16px;
+  background: var(--border);
+}
+
+.stats-drawer-item {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.stats-drawer-item--warning {
+  color: #c07a12;
+}
+
+.stats-drawer-spacer {
+  flex: 1;
+}
+
+.stats-drawer-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.stats-drawer-label svg {
+  width: 13px;
+  height: 13px;
+}
+
+.stats-drawer-body {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 20px 16px;
+  background: var(--white);
+}
+
+.stats-drawer-tile {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.stats-drawer-tile--warning {
+  border-color: #f5e4c4;
+  background: #fffaf0;
+}
+
+.stats-drawer-tile-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stats-drawer-tile-label--warning {
+  color: #c07a12;
+}
+
+.stats-drawer-tile-value {
+  font-size: 21px;
+  font-weight: 800;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  margin-top: 5px;
+  color: var(--ink);
+}
+
+.stats-drawer-tile-value--warning {
+  color: #c07a12;
+}
+
+.stats-drawer-tile-note {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 3px;
+}
+
+.stats-drawer-tile-note--positive {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.stats-drawer-tile-note--warning {
+  color: #a9803a;
+}
+
+.stats-drawer-shortcuts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
+  margin-top: 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
