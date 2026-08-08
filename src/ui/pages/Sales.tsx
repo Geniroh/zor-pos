@@ -6,6 +6,7 @@ import SaleTable from "../components/pos/SaleTable";
 import SaleSummaryPanel from "../components/pos/SaleSummaryPanel";
 import CheckoutModal, { type TenderState } from "../components/pos/CheckoutModal";
 import StatsDrawer from "../components/pos/StatsDrawer";
+import { useSidebar } from "../context/SidebarContext";
 import {
   CATALOG,
   CUSTOMERS,
@@ -33,6 +34,9 @@ function makeInvoiceNo() {
 type View = "sale" | "held";
 
 function Sales() {
+  const { collapsed: sidebarCollapsed, toggleCollapsed: toggleSidebarCollapsed } = useSidebar();
+  const summaryCollapsed = !sidebarCollapsed;
+
   const [view, setView] = useState<View>("sale");
   const [lines, setLines] = useState<SaleLine[]>(INITIAL_LINES);
   const [seq, setSeq] = useState(1000);
@@ -237,7 +241,7 @@ function Sales() {
       {isHeldView ? (
         <HeldSalesView sales={parked} onResume={resumeHeld} />
       ) : (
-        <div className="sales-main-grid">
+        <div className={`sales-main-grid${summaryCollapsed ? " sales-main-grid--summary-collapsed" : ""}`}>
           <div className="sales-left-column">
             <ProductSearch
               query={query}
@@ -281,6 +285,8 @@ function Sales() {
               discountMode={discountMode}
               discountInput={discountInput}
               onApplyDiscount={applyDiscount}
+              collapsed={summaryCollapsed}
+              onToggleCollapsed={toggleSidebarCollapsed}
             />
           </div>
         </div>

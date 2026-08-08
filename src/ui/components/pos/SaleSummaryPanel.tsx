@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Percent } from "lucide-react";
+import { PanelRightClose, PanelRightOpen, Percent } from "lucide-react";
 import CustomerPicker from "./CustomerPicker";
 import DiscountModal from "./DiscountModal";
 import type { Customer } from "./pos-data";
@@ -26,6 +26,8 @@ interface SaleSummaryPanelProps {
   discountMode: "pct" | "amt";
   discountInput: string;
   onApplyDiscount: (mode: "pct" | "amt", value: string) => void;
+  collapsed: boolean;
+  onToggleCollapsed: () => void;
 }
 
 function SaleSummaryPanel({
@@ -48,9 +50,50 @@ function SaleSummaryPanel({
   discountMode,
   discountInput,
   onApplyDiscount,
+  collapsed,
+  onToggleCollapsed,
 }: SaleSummaryPanelProps) {
   const isEmpty = lineCount === 0;
   const [discountModalOpen, setDiscountModalOpen] = useState(false);
+
+  if (collapsed) {
+    return (
+      <div className="sale-summary-panel sale-summary-panel--collapsed">
+        <button
+          type="button"
+          className="sale-summary-collapse-toggle"
+          onClick={onToggleCollapsed}
+          aria-label="Expand sale summary"
+          title="Expand sale summary"
+        >
+          <PanelRightOpen />
+        </button>
+
+        <div className="sale-summary-mini-field">
+          <span className="sale-summary-info-label">Customer</span>
+          <span className="sale-summary-mini-value">{customer}</span>
+        </div>
+        <div className="sale-summary-mini-field">
+          <span className="sale-summary-info-label">Items</span>
+          <span className="sale-summary-mini-value">{lineCount}</span>
+        </div>
+
+        <div className="sale-summary-mini-spacer" />
+
+        <div className="sale-summary-mini-field">
+          <span className="sale-summary-info-label">Total</span>
+          <span className="sale-summary-mini-total">{formatNaira(total)}</span>
+        </div>
+
+        <button type="button" className="sale-summary-mini-checkout" disabled={isEmpty} onClick={onCheckout}>
+          Checkout
+        </button>
+        <button type="button" className="sale-summary-mini-hold" onClick={onHold}>
+          Hold
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="sale-summary-panel">
@@ -65,6 +108,15 @@ function SaleSummaryPanel({
           </button>
           <button type="button" className="sale-summary-clear-btn" onClick={onClear}>
             Clear
+          </button>
+          <button
+            type="button"
+            className="sale-summary-collapse-toggle"
+            onClick={onToggleCollapsed}
+            aria-label="Collapse sale summary"
+            title="Collapse sale summary"
+          >
+            <PanelRightClose />
           </button>
         </div>
       </div>

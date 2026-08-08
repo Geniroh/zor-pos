@@ -70,6 +70,30 @@
   background: #fef2f4;
 }
 
+.sale-summary-collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sale-summary-collapse-toggle:hover {
+  background: var(--green-bg);
+  color: var(--green-dark);
+  border-color: var(--green);
+}
+
+.sale-summary-collapse-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
 .sale-summary-info-grid {
   flex: none;
   display: grid;
@@ -265,4 +289,93 @@
 .sale-summary-secondary-btn-icon {
   width: 14px;
   height: 14px;
+}
+
+/* Collapsed mode — swaps in when the main app sidebar is expanded, so the
+   product table (not this panel) keeps the room. Shows only what's needed
+   to keep working: who it's for, how many items, the total, and the two
+   primary actions. */
+
+.sale-summary-panel--collapsed {
+  align-items: center;
+  padding: 12px 10px;
+  gap: 10px;
+}
+
+.sale-summary-panel--collapsed .sale-summary-collapse-toggle {
+  flex: none;
+  align-self: flex-start;
+}
+
+.sale-summary-mini-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.sale-summary-mini-value {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sale-summary-mini-spacer {
+  flex: 1;
+}
+
+.sale-summary-mini-total {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sale-summary-mini-checkout {
+  width: 100%;
+  flex: none;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sale-summary-mini-checkout:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.sale-summary-mini-checkout:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.sale-summary-mini-hold {
+  width: 100%;
+  flex: none;
+  height: 34px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sale-summary-mini-hold:hover {
+  border-color: var(--green);
+  color: var(--green);
 }
