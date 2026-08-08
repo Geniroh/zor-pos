@@ -1,0 +1,219 @@
+.sales-history-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--page-bg);
+  color: var(--ink);
+  padding: 20px 24px 24px;
+  overflow: auto;
+}
+
+.sales-history-header h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.sales-history-header p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.sales-history-tabs {
+  flex: none;
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sales-history-tab {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sales-history-tab:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+.sales-history-tab--active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+.sales-history-tab--active:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--white);
+}
+
+.sales-history-tab-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.sales-history-filters {
+  flex: none;
+  display: flex;
+  align-items: end;
+  gap: 12px;
+  margin-top: 12px;
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.sales-history-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sales-history-field-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sales-history-select {
+  height: 38px;
+  min-width: 180px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.sales-history-select:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.sales-history-view-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sales-history-view-btn:hover {
+  background: var(--green-dark);
+}
+
+.sales-history-view-icon {
+  width: 15px;
+  height: 15px;
+}
+
+.sales-history-prompt {
+  margin-top: 40px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sales-history-summary {
+  flex: none;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 18px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.sales-history-summary-total {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sales-history-table-card {
+  flex: 1;
+  min-height: 0;
+  margin-top: 10px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: auto;
+}
+
+.sales-history-empty {
+  padding: 40px 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sales-history-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.sales-history-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sales-history-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+}
+
+.sales-history-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.sales-history-table tbody tr:hover td {
+  background: var(--cream);
+}
+
+.sales-history-align-right {
+  text-align: right;
+}
+
+.sales-history-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}

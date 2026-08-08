@@ -12,19 +12,31 @@ weigh before changing it — not the conclusion itself.
   part of the Vite/React bundle — see "Splash screen" below).
 - `src/ui/` — the React app (Vite root is the project root; `index.html`
   points at `src/ui/main.tsx`).
-  - `pages/` — routed screens (`Login`, `PlaceholderPage`).
+  - `pages/` — routed screens (`Login`, `PlaceholderPage`, `Sales`,
+    `SalesHistory`). `Sales` and `SalesHistory` are real, built-out
+    features, not placeholders — see "Point of Sale" below.
   - `components/layout/` — `TitleBar`, `Sidebar`, `DashboardLayout`,
     `WorkspaceSwitcher`, `BranchSelector`, `UserMenu`, plus `nav-items.ts`
     (the single source of truth for sidebar links, shared between
     `Sidebar` and the route table in `App.tsx`). There is no `TopNav`
     anymore — see below.
+  - `components/pos/` — everything the `Sales` (POS) and `SalesHistory`
+    pages are built from: table/summary/search/modal components plus
+    `pos-data.ts`, `sales-history-data.ts`, `drug-interactions-data.ts`,
+    and `lost-sales-data.ts` for dummy data. See "Point of Sale" below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
     (predates the lucide-react adoption below; don't add more to it).
   - `components/Tooltip.tsx` — the app's one tooltip primitive. See
     "Custom tooltip" below before touching hover labels anywhere.
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
     lifted out of `Sidebar` because `TitleBar` (a sibling, not a
-    descendant) also needs to toggle it.
+    descendant) also needs to toggle it. `Sales` also reads it now, to
+    collapse `SaleSummaryPanel` when the sidebar is expanded — see
+    "Point of Sale" below.
+  - `context/AiAssistContext.tsx` — same sibling-communication problem as
+    `SidebarContext` (something outside `TitleBar` needs to control
+    `AiAssistDrawer`, which renders inside it), solved the same way. See
+    "Point of Sale" below for what actually opens it and why.
   - `context/ThemeContext.tsx` — app-wide light/dark theme. Sets
     `document.documentElement.dataset.theme`, which drives the global
     `:root` / `:root[data-theme="dark"]` token blocks in `index.css` (see
@@ -58,6 +70,8 @@ the login flow as a security boundary; it isn't one yet.
 (POS)" render the generic `PlaceholderPage`. That's intentional (proves
 the layout is reusable across sections) — building out a real feature
 page means adding a route in `App.tsx`, not "fixing" the placeholder.
+"Sales (POS)" is genuinely built out (see "Point of Sale" below) — it's
+the template to follow when a next section graduates from placeholder.
 
 **Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` represents
 which pharmacy business/tenant you belong to; `BranchSelector` (rendered
@@ -109,8 +123,11 @@ button) are fully-built UI with no real backend behind them:
   - `AiAssistDrawer` is an original design (no reference screenshot was
     given for it) — a right-side slide-over below the title bar, welcome
     message bubble, hardcoded `SUGGESTIONS` prompts, and a text input.
-    The input and suggestion buttons don't do anything; there's no chat
-    logic behind them.
+    The input and suggestion buttons still don't do anything — that part
+    is unchanged. What *did* change: the drawer can now also be opened
+    pre-loaded with a real (simulated) answer from elsewhere in the app
+    — see "Point of Sale" below for how and why. Typing your own message
+    still goes nowhere; only the seeded-exchange path produces content.
 None of these three are "coming soon" placeholders like the hamburger
 menu — they're deliberately complete UI waiting on real data/logic, not
 signals that more UI work is needed before they're usable.
@@ -167,7 +184,167 @@ Things that will break silently if changed carelessly:
   window-chrome IPC.
 - **Window handlers resolve via `BrowserWindow.fromWebContents(event.sender)`**,
   not a captured `mainWindow` variable — keep it that way if more windows
-  ever need the same handlers.
+  ever need the same handlers. This stopped being theoretical: the Sales
+  History window (see "Point of Sale" below) reuses these same
+  `titlebar:*` handlers for free. The maximize/unmaximize push-event
+  wiring (`win.on("maximize"/"unmaximize", ...)`) is factored into a
+  `wireWindowChrome(win)` helper in `main.ts` for the same reason — call
+  it for any new `BrowserWindow` rather than repeating the two `.on()`
+  calls inline.
+
+## Point of Sale (Sales page + Sales History window)
+
+`Sales` (routed at `/dashboard`, the "Sales (POS)" nav item) is the one
+fully-built-out feature page in the app, following a UI design reference
+the user supplied, then reworked over several decluttering passes. Like
+everything else in this app, **it's all local React state — no backend,
+nothing persists across a restart.** Dummy data lives in
+`components/pos/pos-data.ts` (`CATALOG`, `CUSTOMERS`, `STAFF`,
+`INITIAL_PARKED`, `TODAY_STATS`), `components/pos/sales-history-data.ts`
+(`SALES_HISTORY`), `components/pos/drug-interactions-data.ts`
+(`DRUG_INTERACTIONS`), and `components/pos/lost-sales-data.ts`
+(`LOST_SALES`) — the latter three are deterministically generated (a
+seeded pseudo-random spread), not `Math.random()`, so each dataset is
+stable across renders/reloads instead of reshuffling.
+
+**Layout, top to bottom:**
+- `SalesActionPills` — New Sale / Hold Sale / Sales History. These
+  replaced an earlier `ParkedStrip` chip row entirely (deleted, not kept
+  around).
+- Left column: `ProductSearch` (compact bar, results as an absolute-
+  positioned overlay dropdown that only appears while typing) above
+  `SaleTable`.
+- Right column: `SaleSummaryPanel`.
+- `StatsDrawer` — collapsible daily-totals bar along the bottom, spans
+  both columns.
+
+**`SaleTable` is the single source of truth for what's on the sale —
+`SaleSummaryPanel` never lists line items.** This split is the result of
+two rounds of user feedback: the first build had a table on the left
+*and* a cart list on the right both showing the same lines (plus a
+separate "Sale totals" card duplicating the cart's own totals, plus qty
+adjustable in three different places) — genuinely too cluttered. The fix
+was **not** "pick one panel and put everything in it" but **give each
+panel a distinct, non-overlapping job**: `SaleTable` owns the items
+(select a row, `+`/`−`/delete rail, click a price cell to edit it
+inline — this is the one place per-line price override happens, there is
+no separate line-editor panel anymore), `SaleSummaryPanel` owns
+everything else about the sale as a whole (Customer/Sale date/Served
+by/Invoice no, Subtotal/Discount/VAT/Total, Checkout). If you're tempted
+to add item rendering back into `SaleSummaryPanel` "for convenience,"
+don't — that's the exact duplication that got removed. `ProductSearch`
+reverted from an earlier "persistent full-catalog browser" design back
+to the compact overlay-dropdown style specifically to free up vertical
+space in the left column for `SaleTable`; the two designs are mutually
+exclusive because both want the same flex space.
+
+**Modals: `CheckoutModal`, `DiscountModal`, `AddCustomerModal`.** All
+three are backdrop-centered overlays, but they use two different mount
+patterns — don't homogenize them without re-reading this:
+- `CheckoutModal` and `AddCustomerModal` are **always mounted**, take an
+  `open` boolean, and `return null` when closed. This works because
+  neither syncs incoming props into local draft state on open.
+- `DiscountModal` is **conditionally rendered by its parent**
+  (`{discountModalOpen && <DiscountModal .../>}`) and has *no* `open`
+  prop at all. It needs local draft state (`draftMode`/`draftValue`) so
+  Cancel/Escape can discard edits without committing them, and the only
+  React-blessed way to initialize that draft state from the current
+  `discountMode`/`discountInput` props on every open is a fresh mount —
+  syncing it via a `useEffect(() => setDraftX(x), [open])` instead trips
+  the `react-hooks/set-state-in-effect` lint rule (setState synchronously
+  in an effect body). If a future modal needs "local draft state seeded
+  from props, discardable on cancel," copy `DiscountModal`'s
+  conditional-mount pattern, not `CheckoutModal`'s `open`-prop one.
+
+**Held Sale is a view toggle, not a route.** Clicking the "Hold Sale"
+pill flips `Sales`'s local `view` state between `"sale"` and `"held"`,
+swapping the entire main-grid for `HeldSalesView` (a card grid) in
+place — it doesn't navigate anywhere. `ParkedSale` entries carry a real
+`lines: SaleLine[]` snapshot (plus `customer`/`servedBy`/`heldAt`), so
+"Resume" actually restores the sale (renumbers line keys off the current
+`seq` counter to avoid colliding with new lines added since) rather than
+just showing a toast. There used to be a `"Draft"` kind alongside
+`"Hold"` — it was removed outright (not deprecated) once the "Give
+discount" button replaced the Draft button in `SaleSummaryPanel`: Draft
+had no viewer anywhere in the UI even before that, so keeping the `kind`
+field around would've been dead code with no path to reach it.
+
+**Sales History opens a real second `BrowserWindow`** — this was an
+explicit ask (not the default "just make it a bigger modal" choice), and
+it's the first time this app has had more than one window. How it works:
+`main.ts`'s `openSalesHistoryWindow()` is a singleton (focuses the
+existing window instead of opening a second one) that creates another
+`frame: false` window with the *same* preload script, loading the same
+bundle at the `#/sales-history` hash route
+(`loadURL(DEV_SERVER_URL + "#/sales-history")` in dev,
+`loadFile(..., { hash: "/sales-history" })` in prod) — `App.tsx` has
+`/sales-history` as a top-level route, a sibling of `/dashboard`, *not*
+nested under `DashboardLayout`, so that window gets `TitleBar` (in its
+non-dashboard mode: menu/theme/help/window-controls, no
+search/AI/notifications) but no `Sidebar`. Triggered from the renderer
+via `window.electronAPI.openSalesHistory()` →
+`ipcRenderer.invoke("sales-history:open")` — a deliberately different
+channel prefix from `titlebar:*` since it's "open a window," not
+"control the current window's chrome." The page itself gates on its
+filters (date preset + staff via `STAFF`): results only render after
+clicking "View Sales" once, not on every filter change.
+
+**`SaleSummaryPanel` collapses when the sidebar expands, not the other
+way around.** Early on, opening the main nav `Sidebar` shrank
+`sales-main-grid`'s left column (since `SaleSummaryPanel` was a fixed
+372px) and the product table's name column got visibly cramped. The fix
+ties `SaleSummaryPanel`'s collapsed state directly to
+`useSidebar().collapsed` in `Sales.tsx`
+(`summaryCollapsed = !sidebarCollapsed`) — there's no separate local
+toggle state to keep in sync. When collapsed, `SaleSummaryPanel` renders
+an entirely different, narrow (160px) layout showing only
+Customer/Items/Total/Checkout/Hold, not a squeezed version of the full
+one. The collapse-arrow button on the panel itself (`PanelRightClose`/
+`PanelRightOpen`, matching the sidebar's own toggle icons) calls the
+*same* `toggleCollapsed()` from `useSidebar()` rather than owning
+independent state, so it also visibly toggles the main sidebar — that's
+intentional, not a side effect to "fix." There's one "give me more room"
+control, reachable from either side of the screen.
+
+**AI Assist can now explain a drug interaction or "what is this
+product," via `AiAssistContext`.** `SaleTable` and `ProductSearch` each
+show two small per-product icon affordances: an always-visible amber ⚠
+(only when that product is — or, in `ProductSearch`'s case, would be —
+interacting with something already on the sale) and a hover-reveal ⓘ
+(always available). Both call `useAiAssist().openWithExchange({...})`
+directly, no prop drilling through `Sales.tsx`, since `AiAssistContext`
+is global. `drug-interactions-data.ts` holds a small hardcoded
+`DRUG_INTERACTIONS` list (pid pairs + severity + explanation) checked
+against whatever's actually in `lines`; `pos-data.ts`'s
+`Product.description` field backs the info icon. Opening the drawer this
+way seeds `AiAssistContext`'s `exchange` (contextLabel + prompt + canned
+response) — `AiAssistDrawer` renders that as a completed user/assistant
+exchange instead of its normal welcome+suggestions state. This is a
+**simulated single exchange, not a chat** — no follow-up, and the
+free-text input still does nothing (see the "Title bar menu" note
+above). Opening AI Assist from the title bar button (`openBlank()`)
+clears any active exchange back to the normal welcome state.
+
+**Lost sales: capture in `ProductSearch`, review in `SalesHistory`.**
+When there's a search query typed, the results dropdown now always shows
+a "Log a lost sale" footer link, whether or not any products matched —
+that's the moment a pharmacist notices they can't fulfill a request, so
+that's where the capture affordance lives, not a separate always-there
+button. It opens `LogLostSaleModal` (product/qty/reason/optional
+customer/optional notes, prefilled with the search text) and, like
+`DiscountModal`, is conditionally rendered by its parent rather than
+taking an `open` prop, for the same prop-into-draft-state reason
+documented above. **Submitting only flashes a toast in the main window —
+it does not feed into `SalesHistory`'s "Lost Sales" tab.** That tab reads
+its own independent seeded dummy dataset (`lost-sales-data.ts`'s
+`LOST_SALES`, generated the same deterministic way as `SALES_HISTORY`).
+This mirrors how `SalesHistory` already worked before this feature (it
+was never wired to the live cart session either) — the two windows are
+separate renderer processes with no shared store or IPC-based state
+sync, and building that was out of scope for what was asked here. If
+real cross-window persistence is ever wanted, that's the "new
+architectural pattern" the "Before adding a dependency" section below
+says to raise before building, not something to add quietly.
 
 ## Splash screen
 

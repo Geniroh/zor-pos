@@ -14,4 +14,5 @@ contextBridge.exposeInMainWorld("electronAPI", {
     return () =>
       ipcRenderer.removeListener("titlebar:maximized-changed", listener);
   },
+  openSalesHistory: () => ipcRenderer.invoke("sales-history:open"),
 });

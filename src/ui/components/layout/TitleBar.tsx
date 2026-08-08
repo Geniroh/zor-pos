@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { useSidebar } from "../../context/SidebarContext";
 import { useTheme } from "../../context/ThemeContext";
+import { useAiAssist } from "../../context/AiAssistContext";
 import NotificationsMenu from "./NotificationsMenu";
 import HelpModal from "./HelpModal";
 import AiAssistDrawer from "./AiAssistDrawer";
@@ -41,10 +42,10 @@ function TitleBar({
   const navigate = useNavigate();
   const { collapsed, toggleCollapsed } = useSidebar();
   const { theme, setTheme } = useTheme();
+  const { open: aiOpen, exchange: aiExchange, openBlank: openAiBlank, close: closeAi } = useAiAssist();
   const [isMaximized, setIsMaximized] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [helpOpen, setHelpOpen] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -219,7 +220,7 @@ function TitleBar({
               <button
                 type="button"
                 className="titlebar-ai-btn"
-                onClick={() => setAiOpen((o) => !o)}
+                onClick={() => (aiOpen ? closeAi() : openAiBlank())}
               >
                 <Sparkles className="titlebar-icon" />
                 AI Assist
@@ -305,7 +306,7 @@ function TitleBar({
       )}
 
       <HelpModal open={helpOpen} onClose={() => setHelpOpen(false)} />
-      <AiAssistDrawer open={aiOpen} onClose={() => setAiOpen(false)} />
+      <AiAssistDrawer open={aiOpen} exchange={aiExchange} onClose={closeAi} />
     </header>
   );
 }

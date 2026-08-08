@@ -1,0 +1,381 @@
+.sale-summary-panel {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 18px rgba(20, 18, 10, 0.05);
+}
+
+.sale-summary-header {
+  flex: none;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sale-summary-title-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sale-summary-title {
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.sale-summary-subtitle {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.sale-summary-header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.sale-summary-hold-btn,
+.sale-summary-clear-btn {
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sale-summary-hold-btn {
+  color: var(--muted);
+}
+
+.sale-summary-hold-btn:hover {
+  background: var(--green-bg);
+  color: var(--green-dark);
+}
+
+.sale-summary-clear-btn {
+  color: #d9435e;
+}
+
+.sale-summary-clear-btn:hover {
+  background: #fef2f4;
+}
+
+.sale-summary-collapse-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sale-summary-collapse-toggle:hover {
+  background: var(--green-bg);
+  color: var(--green-dark);
+  border-color: var(--green);
+}
+
+.sale-summary-collapse-toggle svg {
+  width: 15px;
+  height: 15px;
+}
+
+.sale-summary-info-grid {
+  flex: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.sale-summary-info-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sale-summary-info-field--span2 {
+  grid-column: span 2;
+}
+
+.sale-summary-info-label {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.sale-summary-info-static {
+  height: 38px;
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--border);
+  background: var(--cream);
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.sale-summary-info-static--between {
+  justify-content: space-between;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sale-summary-info-auto {
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.sale-summary-footer {
+  flex: 1;
+  min-height: 0;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.sale-summary-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 34px;
+  border: 1px dashed var(--border);
+  border-radius: 9px;
+  padding: 0 11px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.sale-summary-note:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.sale-summary-totals-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.sale-summary-totals-value {
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--ink);
+}
+
+.sale-summary-totals-value--danger {
+  color: #d9435e;
+}
+
+.sale-summary-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.sale-summary-total-value {
+  font-size: 26px;
+  font-weight: 800;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  letter-spacing: -0.02em;
+}
+
+.sale-summary-checkout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  border: none;
+  border-radius: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--white);
+  background: var(--green);
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(79, 125, 82, 0.28);
+  margin-top: auto;
+}
+
+.sale-summary-checkout:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.sale-summary-checkout:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.sale-summary-checkout kbd {
+  font-size: 10.5px;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 3px 7px;
+  border-radius: 6px;
+}
+
+.sale-summary-secondary-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 9px;
+}
+
+.sale-summary-secondary-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 40px;
+  border: 1.5px solid var(--border);
+  border-radius: 11px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.sale-summary-secondary-btn:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.sale-summary-secondary-btn kbd {
+  font-size: 10px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sale-summary-secondary-btn-icon {
+  width: 14px;
+  height: 14px;
+}
+
+/* Collapsed mode — swaps in when the main app sidebar is expanded, so the
+   product table (not this panel) keeps the room. Shows only what's needed
+   to keep working: who it's for, how many items, the total, and the two
+   primary actions. */
+
+.sale-summary-panel--collapsed {
+  align-items: center;
+  padding: 12px 10px;
+  gap: 10px;
+}
+
+.sale-summary-panel--collapsed .sale-summary-collapse-toggle {
+  flex: none;
+  align-self: flex-start;
+}
+
+.sale-summary-mini-field {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.sale-summary-mini-value {
+  width: 100%;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sale-summary-mini-spacer {
+  flex: 1;
+}
+
+.sale-summary-mini-total {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.sale-summary-mini-checkout {
+  width: 100%;
+  flex: none;
+  height: 38px;
+  border: none;
+  border-radius: 10px;
+  background: var(--green);
+  color: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.sale-summary-mini-checkout:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.sale-summary-mini-checkout:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}
+
+.sale-summary-mini-hold {
+  width: 100%;
+  flex: none;
+  height: 34px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.sale-summary-mini-hold:hover {
+  border-color: var(--green);
+  color: var(--green);
+}

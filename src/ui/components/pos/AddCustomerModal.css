@@ -1,0 +1,155 @@
+.add-customer-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 85;
+  background: rgba(20, 18, 10, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.add-customer-modal {
+  width: 420px;
+  max-width: 94vw;
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 40px 90px -20px rgba(20, 18, 10, 0.4);
+}
+
+.add-customer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 18px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.add-customer-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.add-customer-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.add-customer-close svg {
+  width: 15px;
+  height: 15px;
+}
+
+.add-customer-close:hover {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.add-customer-body {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-customer-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.add-customer-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.add-customer-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.add-customer-label em {
+  font-style: normal;
+  font-weight: 500;
+  opacity: 0.7;
+  margin-left: 3px;
+}
+
+.add-customer-input,
+.add-customer-select {
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.add-customer-input:focus,
+.add-customer-select:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.add-customer-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 18px 18px;
+}
+
+.add-customer-cancel {
+  height: 38px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.add-customer-cancel:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.add-customer-submit {
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9px;
+  background: var(--green);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.add-customer-submit:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.add-customer-submit:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}

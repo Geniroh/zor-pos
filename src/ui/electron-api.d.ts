@@ -11,6 +11,7 @@ declare global {
       onWindowMaximizedChange: (
         callback: (isMaximized: boolean) => void,
       ) => () => void;
+      openSalesHistory: () => Promise<void>;
     };
   }
 }
