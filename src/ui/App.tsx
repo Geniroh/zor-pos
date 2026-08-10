@@ -2,6 +2,11 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import Sales from "./pages/Sales";
 import SalesHistory from "./pages/SalesHistory";
+import Inventory from "./pages/Inventory";
+import AddProduct from "./pages/AddProduct";
+import ViewProducts from "./pages/ViewProducts";
+import StockLevels from "./pages/StockLevels";
+import StockAdjustment from "./pages/StockAdjustment";
 import PlaceholderPage from "./pages/PlaceholderPage";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import TitleBar from "./components/layout/TitleBar";
@@ -24,17 +29,39 @@ function App() {
                 <Route path="/sales-history" element={<SalesHistory />} />
 
                 <Route path="/dashboard" element={<DashboardLayout />}>
-                  {NAV_ITEMS.map(({ label, path }) =>
-                    path === "" ? (
-                      <Route key={label} index element={<Sales />} />
-                    ) : (
+                  {NAV_ITEMS.map(({ label, path }) => {
+                    if (path === "") {
+                      return <Route key={label} index element={<Sales />} />;
+                    }
+                    if (path === "inventory") {
+                      return (
+                        <Route key={label} path={path} element={<Inventory />} />
+                      );
+                    }
+                    return (
                       <Route
                         key={label}
                         path={path}
                         element={<PlaceholderPage title={label} />}
                       />
-                    ),
-                  )}
+                    );
+                  })}
+                  <Route
+                    path="inventory/add-product"
+                    element={<AddProduct />}
+                  />
+                  <Route
+                    path="inventory/view-product"
+                    element={<ViewProducts />}
+                  />
+                  <Route
+                    path="inventory/stock-levels"
+                    element={<StockLevels />}
+                  />
+                  <Route
+                    path="inventory/stock-adjustment"
+                    element={<StockAdjustment />}
+                  />
                 </Route>
 
                 <Route path="*" element={<Navigate to="/" replace />} />

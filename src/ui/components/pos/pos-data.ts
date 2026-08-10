@@ -2,6 +2,7 @@ export interface Product {
   id: string;
   name: string;
   form: string;
+  barcode: string;
   price: number;
   stock: number;
   vat: boolean;
@@ -43,11 +44,22 @@ export const STAFF: string[] = [
 
 export const VAT_RATE = 0.075;
 
+export const LOW_STOCK_THRESHOLD = 10;
+
+export type StockStatus = "In Stock" | "Low Stock" | "Out of Stock";
+
+export function stockStatus(stock: number): StockStatus {
+  if (stock === 0) return "Out of Stock";
+  if (stock < LOW_STOCK_THRESHOLD) return "Low Stock";
+  return "In Stock";
+}
+
 export const CATALOG: Product[] = [
   {
     id: "PRD-1042",
     name: "Paracetamol 500mg",
     form: "Tablet · 10s card",
+    barcode: "6151042000011",
     price: 900,
     stock: 240,
     vat: true,
@@ -58,6 +70,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1088",
     name: "Amoxicillin 500mg",
     form: "Capsule · 10s card",
+    barcode: "6151088000022",
     price: 1200,
     stock: 96,
     vat: true,
@@ -67,6 +80,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1130",
     name: "Vitamin C 1000mg",
     form: "Tablet · 20s tin",
+    barcode: "6151130000033",
     price: 850,
     stock: 150,
     vat: false,
@@ -76,6 +90,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1204",
     name: "Cough Syrup 100ml",
     form: "Syrup · bottle",
+    barcode: "6151204000044",
     price: 1100,
     stock: 44,
     vat: true,
@@ -85,6 +100,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1255",
     name: "Coartem 20/120",
     form: "Tablet · 24s pack",
+    barcode: "6151255000055",
     price: 3200,
     stock: 6,
     vat: true,
@@ -95,6 +111,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1310",
     name: "Lisinopril 10mg",
     form: "Tablet · 28s pack",
+    barcode: "6151310000066",
     price: 2400,
     stock: 72,
     vat: true,
@@ -104,6 +121,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1366",
     name: "Insulin Syringe 1ml",
     form: "Device · single",
+    barcode: "6151366000077",
     price: 300,
     stock: 400,
     vat: false,
@@ -113,6 +131,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1401",
     name: "Blood Glucose Strips",
     form: "Device · 50s",
+    barcode: "6151401000088",
     price: 8500,
     stock: 18,
     vat: true,
@@ -122,6 +141,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1470",
     name: "ORS Sachet",
     form: "Powder · sachet",
+    barcode: "6151470000099",
     price: 250,
     stock: 320,
     vat: false,
@@ -132,6 +152,7 @@ export const CATALOG: Product[] = [
     id: "PRD-1512",
     name: "Ibuprofen 400mg",
     form: "Tablet · 10s card",
+    barcode: "6151512000010",
     price: 750,
     stock: 210,
     vat: true,

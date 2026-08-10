@@ -1,0 +1,321 @@
+.stock-levels-page {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--page-bg);
+  color: var(--ink);
+  padding: 20px 24px 24px;
+  overflow: auto;
+}
+
+.stock-levels-header h1 {
+  margin: 0 0 4px;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.stock-levels-header p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.stock-levels-summary {
+  flex: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.stock-levels-tile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.stock-levels-tile--warning {
+  border-color: #f5e4c4;
+  background: #fffaf0;
+}
+
+.stock-levels-tile-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.stock-levels-tile--warning .stock-levels-tile-icon {
+  background: rgba(192, 122, 18, 0.14);
+  color: #c07a12;
+}
+
+.stock-levels-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.stock-levels-tile-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stock-levels-tile-value {
+  font-size: 19px;
+  font-weight: 800;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  margin-top: 3px;
+  color: var(--ink);
+}
+
+.stock-levels-toolbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.stock-levels-search {
+  flex: 1;
+  max-width: 320px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+}
+
+.stock-levels-search:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px var(--green-bg);
+}
+
+.stock-levels-filter-pills {
+  display: flex;
+  gap: 6px;
+}
+
+.stock-levels-pill {
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--white);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stock-levels-pill:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+.stock-levels-pill--active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+.stock-levels-pill--active:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--white);
+}
+
+.stock-levels-table-card {
+  flex: 1;
+  min-height: 0;
+  margin-top: 12px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: auto;
+}
+
+.stock-levels-empty {
+  padding: 40px 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stock-levels-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+}
+
+.stock-levels-table thead th {
+  position: sticky;
+  top: 0;
+  background: var(--cream);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.stock-levels-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.stock-levels-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.stock-levels-table tbody tr:hover td {
+  background: var(--cream);
+}
+
+.stock-levels-name {
+  font-weight: 700;
+}
+
+.stock-levels-form {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.stock-levels-align-right {
+  text-align: right;
+}
+
+.stock-levels-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.stock-levels-status {
+  display: inline-flex;
+  padding: 3px 9px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.stock-levels-status--in-stock {
+  background: var(--green-bg);
+  color: var(--green-dark);
+}
+
+.stock-levels-status--low-stock {
+  background: rgba(192, 122, 18, 0.14);
+  color: #c07a12;
+}
+
+.stock-levels-status--out-of-stock {
+  background: rgba(200, 60, 60, 0.12);
+  color: #c83c3c;
+}
+
+.stock-levels-adjust-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 30px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stock-levels-adjust-btn:hover {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+.stock-levels-adjust-icon {
+  width: 13px;
+  height: 13px;
+}
+
+.stock-levels-pagination {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.stock-levels-pagination-controls {
+  display: flex;
+  gap: 6px;
+}
+
+.stock-levels-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.stock-levels-page-btn:hover:not(:disabled) {
+  border-color: var(--green);
+  color: var(--green-dark);
+}
+
+.stock-levels-page-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.stock-levels-page-btn--active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--white);
+}
+
+.stock-levels-page-btn--active:hover {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: var(--white);
+}
+
+@media (max-width: 900px) {
+  .stock-levels-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
