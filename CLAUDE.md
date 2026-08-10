@@ -13,8 +13,11 @@ weigh before changing it — not the conclusion itself.
 - `src/ui/` — the React app (Vite root is the project root; `index.html`
   points at `src/ui/main.tsx`).
   - `pages/` — routed screens (`Login`, `PlaceholderPage`, `Sales`,
-    `SalesHistory`). `Sales` and `SalesHistory` are real, built-out
-    features, not placeholders — see "Point of Sale" below.
+    `SalesHistory`, `Inventory`, `AddProduct`, `ViewProducts`,
+    `StockLevels`, `StockAdjustment`), each its own `Name/index.tsx` +
+    `index.css` folder (see "Component file layout" below). `Sales` and
+    `SalesHistory` are real, built-out features, not placeholders — see
+    "Point of Sale" below.
   - `components/layout/` — `TitleBar`, `Sidebar`, `DashboardLayout`,
     `WorkspaceSwitcher`, `BranchSelector`, `UserMenu`, plus `nav-items.ts`
     (the single source of truth for sidebar links, shared between
@@ -25,9 +28,13 @@ weigh before changing it — not the conclusion itself.
     `pos-data.ts`, `sales-history-data.ts`, `drug-interactions-data.ts`,
     and `lost-sales-data.ts` for dummy data. See "Point of Sale" below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
-    (predates the lucide-react adoption below; don't add more to it).
-  - `components/Tooltip.tsx` — the app's one tooltip primitive. See
-    "Custom tooltip" below before touching hover labels anywhere.
+    (predates the lucide-react adoption below; don't add more to it). Not
+    yet moved to the folder convention below since it isn't a single
+    component's JSX/CSS pair.
+  - `components/common/` — shared components with no feature-specific
+    home: `Tooltip` (the app's one tooltip primitive — see "Custom
+    tooltip" below before touching hover labels anywhere) and
+    `Accordion` (used by `AddProduct`).
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
     lifted out of `Sidebar` because `TitleBar` (a sibling, not a
     descendant) also needs to toggle it. `Sales` also reads it now, to
@@ -42,6 +49,22 @@ weigh before changing it — not the conclusion itself.
     `:root` / `:root[data-theme="dark"]` token blocks in `index.css` (see
     "Brand palette" below). The only UI for it is the sun/moon toggle in
     `TitleBar`.
+
+## Component file layout
+
+A component's or page's JSX and CSS live together in their own folder
+rather than as flat sibling files: `Name/index.tsx` + `Name/index.css`,
+imported from outside as `"./Name"` (folder resolution) — not
+`"./Name/Name"`. This is applied throughout `components/pos/`,
+`components/layout/`, `components/common/`, and `pages/` — every
+component and every routed page follows it. New components/pages should
+follow it too. Files that aren't a single component's JSX/CSS pair
+(`pos-data.ts` and friends, `nav-items.ts`, `App.tsx`) stay flat — this
+convention is specifically for the JSX+CSS pair pattern, not every file
+in the tree. `components/icons.tsx` is the one deliberate holdout among
+component-ish files (see the note next to it above) — it's a bag of
+hand-rolled SVGs, not a single component, so it doesn't fit the folder
+shape.
 
 ## Decisions already made — don't re-litigate without reason
 
@@ -356,7 +379,7 @@ step. If you rename or move it, update that copy step in `package.json`.
 
 ## Custom tooltip
 
-`components/Tooltip.tsx` replaced the native browser `title` attribute
+`components/common/Tooltip` replaced the native browser `title` attribute
 everywhere in `Sidebar` and `TitleBar` (Slack-style dark pill, optional
 keyboard-shortcut badge below the label). A few things that aren't
 obvious from reading a single call site:
