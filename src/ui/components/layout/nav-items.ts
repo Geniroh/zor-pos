@@ -1,7 +1,6 @@
 import type { ComponentType } from "react";
 import {
   ShoppingCart,
-  Package,
   Boxes,
   Truck,
   Users,
@@ -20,8 +19,7 @@ export interface NavItem {
 
 export const NAV_ITEMS: NavItem[] = [
   { label: "Sales (POS)", path: "", icon: ShoppingCart },
-  { label: "Products", path: "products", icon: Package },
-  { label: "Stock", path: "stock", icon: Boxes },
+  { label: "Inventory", path: "inventory", icon: Boxes },
   { label: "Purchases", path: "purchases", icon: Truck },
   { label: "Customers", path: "customers", icon: Users },
   { label: "Suppliers", path: "suppliers", icon: Building2 },
