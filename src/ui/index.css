@@ -16,6 +16,21 @@
   --green-dark: #3e6641;
   --green-bg: rgba(79, 125, 82, 0.1);
 
+  /* Chart tokens — status severity (aging: Due → Outstanding → Overdue → Critical)
+     and a fixed-order categorical set for comparing suppliers by identity.
+     Validated for CVD/contrast against this theme's chart surface. */
+  --chart-status-due: #2a78d6;
+  --chart-status-outstanding: #e0836b;
+  --chart-status-overdue: #cf5a1f;
+  --chart-status-critical: #a3121f;
+  --chart-cat-1: #2a78d6;
+  --chart-cat-2: #eb6834;
+  --chart-cat-3: #1baf7a;
+  --chart-cat-4: #eda100;
+  --chart-cat-5: #e87ba4;
+  --chart-grid: var(--border);
+  --chart-axis: #c3c2b7;
+
   font: 16px/1.5 system-ui, "Segoe UI", Roboto, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,6 +49,18 @@
   --green: #6cab6f;
   --green-dark: #85bf88;
   --green-bg: rgba(108, 171, 111, 0.14);
+
+  --chart-status-due: #3987e5;
+  --chart-status-outstanding: #e2916f;
+  --chart-status-overdue: #d9631f;
+  --chart-status-critical: #c81f3a;
+  --chart-cat-1: #3987e5;
+  --chart-cat-2: #d95926;
+  --chart-cat-3: #199e70;
+  --chart-cat-4: #c98500;
+  --chart-cat-5: #d55181;
+  --chart-grid: var(--border);
+  --chart-axis: #383835;
 }
 
 body {
