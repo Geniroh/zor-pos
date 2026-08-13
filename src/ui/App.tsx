@@ -8,6 +8,20 @@ import ReceiveNewStock from "./pages/ReceiveNewStock";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import SupplierManagement from "./pages/SupplierManagement";
 import AccountsPayable from "./pages/AccountsPayable";
+import CustomersCare from "./pages/CustomersCare";
+import CustomerDirectory from "./pages/CustomerDirectory";
+import PatientFolders from "./pages/PatientFolders";
+import CustomerDetail from "./pages/CustomerDetail";
+import FollowUpsOutreach from "./pages/FollowUpsOutreach";
+import Consultations from "./pages/Consultations";
+import Reports from "./pages/Reports";
+import ReportsOverview from "./pages/ReportsOverview";
+import SalesReport from "./pages/SalesReport";
+import CategoryReport from "./pages/CategoryReport";
+import ProductsReport from "./pages/ProductsReport";
+import PaymentReport from "./pages/PaymentReport";
+import CustomerReport from "./pages/CustomerReport";
+import CareReport from "./pages/CareReport";
 import AddProduct from "./pages/AddProduct";
 import ViewProducts from "./pages/ViewProducts";
 import StockLevels from "./pages/StockLevels";
@@ -46,6 +60,20 @@ function App() {
                     if (path === "purchases") {
                       return (
                         <Route key={label} path={path} element={<Purchases />} />
+                      );
+                    }
+                    if (path === "customers") {
+                      return (
+                        <Route
+                          key={label}
+                          path={path}
+                          element={<CustomersCare />}
+                        />
+                      );
+                    }
+                    if (path === "reports") {
+                      return (
+                        <Route key={label} path={path} element={<Reports />} />
                       );
                     }
                     return (
@@ -87,6 +115,43 @@ function App() {
                   <Route
                     path="purchases/accounts-payable"
                     element={<AccountsPayable />}
+                  />
+                  <Route
+                    path="customers/directory"
+                    element={<CustomerDirectory />}
+                  />
+                  <Route
+                    path="customers/patients"
+                    element={<PatientFolders />}
+                  />
+                  <Route
+                    path="customers/follow-ups"
+                    element={<FollowUpsOutreach />}
+                  />
+                  <Route
+                    path="customers/consultations"
+                    element={<Consultations />}
+                  />
+                  <Route
+                    path="reports/overview"
+                    element={<ReportsOverview />}
+                  />
+                  <Route path="reports/sales" element={<SalesReport />} />
+                  <Route
+                    path="reports/categories"
+                    element={<CategoryReport />}
+                  />
+                  <Route path="reports/products" element={<ProductsReport />} />
+                  <Route path="reports/payments" element={<PaymentReport />} />
+                  <Route
+                    path="reports/customers"
+                    element={<CustomerReport />}
+                  />
+                  <Route path="reports/care" element={<CareReport />} />
+                  {/* Static customer sub-routes above win over this dynamic one. */}
+                  <Route
+                    path="customers/:customerId"
+                    element={<CustomerDetail />}
                   />
                 </Route>
 

@@ -1,0 +1,191 @@
+.cdw-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 84;
+  background: rgba(20, 18, 10, 0.38);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cdw-panel {
+  display: flex;
+  flex-direction: column;
+  width: 460px;
+  max-width: 94vw;
+  height: 100%;
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  box-shadow: -30px 0 70px -30px rgba(20, 18, 10, 0.45);
+}
+
+.cdw-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cdw-heading h2 {
+  margin: 4px 0 3px;
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.cdw-reason {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.cdw-meta {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.cdw-close {
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cdw-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.cdw-close:hover {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.cdw-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cdw-section {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.cdw-section-label {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cdw-section-label em {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0;
+  text-transform: none;
+  opacity: 0.75;
+}
+
+.cdw-section p {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.cdw-outcome {
+  align-self: flex-start;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* The two links that make the follow-up ↔ consultation relationship visible. */
+.cdw-link {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.cdw-link strong {
+  font-weight: 700;
+}
+
+.cdw-link-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.cdw-link-closed {
+  background: rgba(42, 120, 214, 0.09);
+  color: var(--chart-cat-1);
+}
+
+.cdw-link-produced {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.cdw-link-none {
+  background: var(--page-bg);
+  color: var(--muted);
+}
+
+.cdw-footer {
+  padding: 14px 20px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.cdw-open {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.cdw-open:hover {
+  background: var(--green-dark);
+}
+
+.cdw-open-icon {
+  width: 16px;
+  height: 16px;
+}

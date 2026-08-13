@@ -1,0 +1,263 @@
+/* Paired with index.tsx — see the module-level `now` there. */
+.out-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 86;
+  background: rgba(20, 18, 10, 0.42);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.out-modal {
+  width: 440px;
+  max-width: 100%;
+  background: var(--white);
+  border-radius: 16px;
+  box-shadow: 0 40px 90px -20px rgba(20, 18, 10, 0.4);
+}
+
+.out-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 18px 10px;
+}
+
+.out-title {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--ink);
+}
+
+.out-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.out-close {
+  width: 28px;
+  height: 28px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.out-close svg {
+  width: 15px;
+  height: 15px;
+}
+
+.out-close:hover {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.out-context {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin: 0 18px 4px;
+  padding: 8px 11px;
+  border-radius: 9px;
+  background: var(--page-bg);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.out-overdue {
+  font-weight: 700;
+  color: #c0392b;
+}
+
+:root[data-theme="dark"] .out-overdue {
+  color: #e2705f;
+}
+
+.out-body {
+  padding: 12px 18px 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.out-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.out-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.out-input {
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  width: 100%;
+}
+
+.out-input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.out-textarea {
+  height: 76px;
+  padding: 9px 11px;
+  resize: vertical;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.out-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.out-option {
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.out-option:hover {
+  color: var(--ink);
+  border-color: var(--ink);
+}
+
+.out-option-active {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.out-next {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--page-bg);
+}
+
+.out-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.out-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--green);
+  cursor: pointer;
+}
+
+.out-date {
+  margin-left: auto;
+  width: 150px;
+  height: 32px;
+}
+
+.out-escape {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  color: var(--green);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.out-escape:hover {
+  text-decoration: underline;
+}
+
+.out-escape-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.out-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 18px 18px;
+}
+
+.out-cancel {
+  height: 38px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.out-cancel:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.out-submit {
+  height: 38px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 9px;
+  background: var(--green);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--white);
+  cursor: pointer;
+}
+
+.out-submit:hover:not(:disabled) {
+  background: var(--green-dark);
+}
+
+.out-submit:disabled {
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}

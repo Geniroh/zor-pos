@@ -1,0 +1,90 @@
+.pager {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.pager-summary {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.pager-size {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.pager-size select {
+  padding: 5px 7px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  cursor: pointer;
+}
+
+.pager-size select:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.pager-controls {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-left: auto;
+}
+
+.pager-arrow,
+.pager-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 7px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pager-arrow:hover:not(:disabled),
+.pager-page:hover {
+  background: var(--cream);
+}
+
+.pager-arrow:disabled {
+  color: var(--muted);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pager-page-active {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.pager-gap {
+  padding: 0 4px;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.pager-icon {
+  width: 15px;
+  height: 15px;
+}

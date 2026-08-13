@@ -1,0 +1,459 @@
+.report-shell {
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  padding: 28px 32px 40px;
+  background: var(--page-bg);
+}
+
+.report-shell-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.report-shell-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.report-shell-back:hover {
+  color: var(--green);
+}
+
+.report-shell-back-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.report-shell-titles h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.report-shell-titles p {
+  margin: 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.report-shell-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.report-shell-picker {
+  position: relative;
+}
+
+.report-shell-picker-btn,
+.report-shell-export {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-shell-picker-btn:hover,
+.report-shell-export:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.report-shell-picker-icon,
+.report-shell-export-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+}
+
+.report-shell-chevron {
+  width: 14px;
+  height: 14px;
+  color: var(--muted);
+}
+
+/* Sits under the menu so an outside click closes it without a document listener. */
+.report-shell-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+}
+
+.report-shell-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 31;
+  min-width: 260px;
+  padding: 6px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+}
+
+.report-shell-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.report-shell-menu-item:hover {
+  background: var(--cream);
+}
+
+.report-shell-menu-item--active {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.report-shell-menu-range {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.report-shell-compare {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.report-shell-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  padding: 10px 18px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--page-bg);
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.22);
+}
+
+/* ------------------------------------------------------------------ */
+/* Shared report building blocks                                       */
+/* ------------------------------------------------------------------ */
+
+.report-card {
+  padding: 18px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.report-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+.report-card-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.report-card-note {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.report-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.report-tile {
+  padding: 14px 16px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.report-tile-label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.report-tile-value {
+  display: block;
+  font-size: 21px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.report-tile-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.report-tile-delta--up {
+  color: var(--green);
+}
+
+.report-tile-delta--down {
+  color: var(--chart-status-critical);
+}
+
+.report-tile-delta span {
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.report-tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 8px 10px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.14);
+}
+
+.report-tooltip-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.report-tooltip-value {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--green);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.report-tooltip-note {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.report-table-wrap {
+  overflow-x: auto;
+}
+
+.report-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.report-table th {
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.report-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  white-space: nowrap;
+}
+
+.report-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.report-table tbody tr:hover td {
+  background: var(--cream);
+}
+
+.report-align-right {
+  text-align: right;
+}
+
+.report-mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.report-empty {
+  padding: 32px;
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+}
+
+.report-sort-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  cursor: pointer;
+}
+
+.report-sort-btn:hover {
+  color: var(--green);
+}
+
+.report-sort-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Segmented control used for per-card period/metric switches. */
+.report-segmented {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+}
+
+.report-segmented button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  background: none;
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.report-segmented button:hover {
+  color: var(--ink);
+}
+
+.report-segmented button[aria-pressed="true"] {
+  background: var(--white);
+  color: var(--ink);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+.report-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.report-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 9px;
+  border: 1px solid transparent;
+  border-radius: 9px;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.report-legend-item:hover {
+  background: var(--cream);
+}
+
+.report-legend-item--active {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.report-legend-dot {
+  flex: none;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.report-legend-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.report-legend-text strong {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.report-legend-text span {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.report-legend-amount {
+  margin-left: auto;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@media (max-width: 1100px) {
+  .report-shell-head {
+    flex-direction: column;
+  }
+
+  .report-shell-compare {
+    order: 3;
+  }
+}

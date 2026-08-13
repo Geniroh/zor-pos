@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation } from "react-router-dom";
 import SalesActionPills from "../../components/pos/SalesActionPills";
 import HeldSalesView from "../../components/pos/HeldSalesView";
 import ProductSearch from "../../components/pos/ProductSearch";
@@ -38,13 +39,22 @@ function Sales() {
   const { collapsed: sidebarCollapsed, toggleCollapsed: toggleSidebarCollapsed } = useSidebar();
   const summaryCollapsed = !sidebarCollapsed;
 
+  // "New Sale" on a customer's detail page navigates here with their name in
+  // router state; read once on mount so the sale opens already attributed.
+  const location = useLocation();
+  const seededCustomer = (location.state as { customerName?: string } | null)?.customerName;
+
   const [view, setView] = useState<View>("sale");
   const [lines, setLines] = useState<SaleLine[]>(INITIAL_LINES);
   const [seq, setSeq] = useState(1000);
   const [selected, setSelected] = useState<number | null>(1);
   const [query, setQuery] = useState("");
-  const [customer, setCustomer] = useState(DEFAULT_CUSTOMER);
-  const [customers, setCustomers] = useState<Customer[]>(CUSTOMERS);
+  const [customer, setCustomer] = useState(seededCustomer ?? DEFAULT_CUSTOMER);
+  const [customers, setCustomers] = useState<Customer[]>(() =>
+    seededCustomer && !CUSTOMERS.some((c) => c.name === seededCustomer)
+      ? [...CUSTOMERS, { name: seededCustomer, phone: "—" }]
+      : CUSTOMERS,
+  );
   const [discountMode, setDiscountMode] = useState<"pct" | "amt">("amt");
   const [discountInput, setDiscountInput] = useState("0");
   const [checkoutOpen, setCheckoutOpen] = useState(false);

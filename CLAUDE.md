@@ -27,6 +27,9 @@ weigh before changing it — not the conclusion itself.
     pages are built from: table/summary/search/modal components plus
     `pos-data.ts`, `sales-history-data.ts`, `drug-interactions-data.ts`,
     and `lost-sales-data.ts` for dummy data. See "Point of Sale" below.
+  - `components/reports/` — `ReportShell` (the shared shell + `.report-*`
+    style primitives + `useReportPeriod`/`useToast`/`StatTile`/
+    `ChartTooltip`) and `reports-data.ts`. See "Reports" below.
   - `components/icons.tsx` — hand-rolled SVGs used only by `Login`
     (predates the lucide-react adoption below; don't add more to it). Not
     yet moved to the folder convention below since it isn't a single
@@ -88,13 +91,15 @@ http(s).
 to `/dashboard` — there is no backend, no credential check. Don't treat
 the login flow as a security boundary; it isn't one yet.
 
-**Sidebar nav items are mostly placeholders.** Every item in
-`nav-items.ts` routes to a real nested route, but all except "Sales
-(POS)" render the generic `PlaceholderPage`. That's intentional (proves
-the layout is reusable across sections) — building out a real feature
-page means adding a route in `App.tsx`, not "fixing" the placeholder.
-"Sales (POS)" is genuinely built out (see "Point of Sale" below) — it's
-the template to follow when a next section graduates from placeholder.
+**Some sidebar nav items are still placeholders.** Every item in
+`nav-items.ts` routes to a real nested route; the ones without a built-out
+section ("Users & Roles", "Settings") render the generic
+`PlaceholderPage`. That's intentional (it proves the layout is reusable
+across sections) — building out a real feature page means adding a route
+in `App.tsx`, not "fixing" the placeholder. Sales (POS), Inventory,
+Purchases, Customers & Care and Reports are genuinely built out; "Point of
+Sale" and "Reports" below are the templates to follow when a next section
+graduates.
 
 **Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` represents
 which pharmacy business/tenant you belong to; `BranchSelector` (rendered
@@ -368,6 +373,101 @@ sync, and building that was out of scope for what was asked here. If
 real cross-window persistence is ever wanted, that's the "new
 architectural pattern" the "Before adding a dependency" section below
 says to raise before building, not something to add quietly.
+
+## Reports
+
+Built from a UI design reference the user supplied, with every non-obvious
+call signed off before building rather than assumed. Like the rest of the
+app it is **local state over dummy data — no backend, nothing persists.**
+
+**Hub first, dashboard behind it.** `/dashboard/reports` is a chooser page
+(`pages/Reports`), consistent with Inventory / Purchases / Customers &
+Care; the screenshot's analytics dashboard lives at
+`/dashboard/reports/overview` (`pages/ReportsOverview`). The reference
+screenshot showed the dashboard landing directly at `/dashboard/reports` —
+consistency with the other four sections won that call deliberately. The
+hub is *not* the usual uniform 4-card grid: the overview is promoted to a
+wide featured card above a 6-card grid of the drill-downs, because it's
+the destination most visits actually want. The six drill-downs are
+`SalesReport`, `CategoryReport`, `ProductsReport`, `PaymentReport`,
+`CustomerReport`, `CareReport` at `reports/{sales,categories,products,
+payments,customers,care}`.
+
+**The page header stays lean, on purpose.** The reference screenshot drew
+Online status, a notification bell and an AI Assist button into the
+Reports page header. Those were deliberately *not* reproduced — they'd
+duplicate the controls `TitleBar` already owns (see "There is no `TopNav`"
+above), so the header carries only title, subtitle, date range, the
+read-only compare label and Export. Don't add them back.
+
+**`components/reports/ReportShell`** is the shared shell all seven screens
+render inside: back link, title, period picker, compare label, Export
+button, toast. It also exports `useReportPeriod()` (period state),
+`useToast()`, `StatTile` and `ChartTooltip` — `StatTile`/`ChartTooltip`
+live in that file rather than their own folders because they're styled
+entirely by `ReportShell/index.css`, and the folder convention exists to
+keep a component's JSX with the CSS that owns it. `ReportShell/index.css`
+also defines the `.report-*` primitives (`.report-card`, `.report-table`,
+`.report-tiles`, `.report-segmented`, `.report-legend`) every report page
+reuses — put shared report styling there, not in a page's stylesheet.
+
+**Date handling: presets only, comparison auto-derived.** `DATE_PRESETS`
+(Today / Last 7 / Last 30 / This month / This quarter) resolve to a
+`Period`; the comparison is always `precedingPeriod()` — the equal-length
+window immediately before. There is no compare picker and no calendar
+range picker; a hand-built calendar was considered and declined (adding a
+date library would need sign-off per the section below). `useReportPeriod`
+memoises the resolved `Period` for *identity*, not speed — `resolvePeriod`
+builds a fresh object per call and every page keys its `useMemo`s on
+`period`, so without the memo, opening a dropdown would re-filter every
+sale line on the page.
+
+**Data is hybrid, and that split is the point.**
+`components/reports/reports-data.ts` derives product, staff and customer
+*identity* from the datasets the rest of the app already shows (`CATALOG`,
+`STAFF`, `CARE_CUSTOMERS`, `CARE_ACTIVITIES`, `FOLLOW_UPS`) so a product
+topping the sales report is the same product Inventory lists. What no
+existing dataset carries is a *time dimension* deep enough to filter by —
+"this quarter" over `sales-history-data.ts`'s 34 days is meaningless — so
+the sale lines themselves are generated across `HISTORY_DAYS` (220).
+Generation uses an integer-hash PRNG, never `Math.random()`, same
+stability contract as `sales-history-data.ts`: don't introduce
+`Math.random()` or date-dependent branching into the generators or every
+chart starts reshuffling under the user. `stockAlerts()` reuses pos-data's
+own `stockStatus()` rather than a local threshold, so Reports and
+Inventory can't disagree about the same product. `careSeries()` is kept
+separate from `seriesFor()` because it reads the care datasets, not sale
+lines — don't substitute one for the other just because both feed a
+sparkline.
+
+**Categories are defined over the ten real CATALOG products**, which
+yields four non-empty categories (Prescription Drugs, OTC & Vitamins,
+Health & Wellness, Baby & Child Care). The reference screenshot showed six
+including Personal Care and Others; those were dropped rather than
+rendered as zero-value wedges, since an empty slice is a lie about the
+catalog. Adding them means adding real products to `CATALOG`, not padding
+`CATEGORY_BY_PRODUCT`.
+
+**Each drill-down is bespoke, not a shared template.** Sales is trend-led,
+Category is donut-led with the legend doubling as a filter, Products is
+table-led (share bar inside the sales cell rather than a second chart),
+Payment is stacked-mix-over-time led, Customer splits "who's coming in"
+from "who's worth most", Care is timeline-led and reads only the care
+datasets. They share `ReportShell` and the `.report-*` styles, not a
+layout.
+
+**Export writes a real CSV**, via `downloadCsv()` — the renderer-side Blob
++ `<a download>` approach `PurchaseHistory` already uses. No main-process
+file IPC is involved; don't add any.
+
+**AI Insight reuses the existing drawer.** The overview's insight bar
+composes a summary from the current period's real figures and passes it to
+`useAiAssist().openWithExchange()` — the same seeded-exchange path the POS
+drug-interaction icons use (see "AI Assist can now explain a drug
+interaction" above). It does not get its own panel.
+
+**Stock Alerts is display-only.** The card reports counts and links
+nowhere — Reports summarises stock, Inventory manages it.
 
 ## Splash screen
 
