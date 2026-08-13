@@ -8,6 +8,12 @@ import ReceiveNewStock from "./pages/ReceiveNewStock";
 import PurchaseHistory from "./pages/PurchaseHistory";
 import SupplierManagement from "./pages/SupplierManagement";
 import AccountsPayable from "./pages/AccountsPayable";
+import CustomersCare from "./pages/CustomersCare";
+import CustomerDirectory from "./pages/CustomerDirectory";
+import PatientFolders from "./pages/PatientFolders";
+import CustomerDetail from "./pages/CustomerDetail";
+import FollowUpsOutreach from "./pages/FollowUpsOutreach";
+import Consultations from "./pages/Consultations";
 import AddProduct from "./pages/AddProduct";
 import ViewProducts from "./pages/ViewProducts";
 import StockLevels from "./pages/StockLevels";
@@ -46,6 +52,15 @@ function App() {
                     if (path === "purchases") {
                       return (
                         <Route key={label} path={path} element={<Purchases />} />
+                      );
+                    }
+                    if (path === "customers") {
+                      return (
+                        <Route
+                          key={label}
+                          path={path}
+                          element={<CustomersCare />}
+                        />
                       );
                     }
                     return (
@@ -87,6 +102,27 @@ function App() {
                   <Route
                     path="purchases/accounts-payable"
                     element={<AccountsPayable />}
+                  />
+                  <Route
+                    path="customers/directory"
+                    element={<CustomerDirectory />}
+                  />
+                  <Route
+                    path="customers/patients"
+                    element={<PatientFolders />}
+                  />
+                  <Route
+                    path="customers/follow-ups"
+                    element={<FollowUpsOutreach />}
+                  />
+                  <Route
+                    path="customers/consultations"
+                    element={<Consultations />}
+                  />
+                  {/* Static customer sub-routes above win over this dynamic one. */}
+                  <Route
+                    path="customers/:customerId"
+                    element={<CustomerDetail />}
                   />
                 </Route>
 
