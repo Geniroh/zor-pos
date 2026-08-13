@@ -1,0 +1,94 @@
+.cr-top {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: start;
+}
+
+.cr-donut-row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px;
+  align-items: center;
+}
+
+.cr-donut {
+  position: relative;
+  width: 210px;
+}
+
+.cr-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.cr-donut-value {
+  font-size: 17px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.cr-donut-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Stacked under the amount in the legend, so the row keeps one column. */
+.cr-delta {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-align: right;
+}
+
+.cr-delta--up {
+  color: var(--green);
+}
+
+.cr-delta--down {
+  color: var(--chart-status-critical);
+}
+
+.cr-clear {
+  padding: 5px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--muted);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cr-clear:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.cr-tag {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+@media (max-width: 1200px) {
+  .cr-top {
+    grid-template-columns: 1fr;
+  }
+}

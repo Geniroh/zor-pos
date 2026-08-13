@@ -1,0 +1,79 @@
+.pm-top {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: start;
+}
+
+.pm-donut {
+  position: relative;
+}
+
+.pm-donut-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.pm-donut-value {
+  font-size: 16px;
+  font-weight: 800;
+  color: var(--ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.pm-donut-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.pm-legend {
+  margin-top: 8px;
+}
+
+/* Legend rows here are readouts, not filters — no hover affordance. */
+.pm-legend-row {
+  cursor: default;
+}
+
+.pm-legend-row:hover {
+  background: none;
+}
+
+.pm-method {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.pm-method-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pm-change--up {
+  color: var(--green);
+  font-weight: 700;
+}
+
+.pm-change--down {
+  color: var(--chart-status-critical);
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .pm-top {
+    grid-template-columns: 1fr;
+  }
+}
