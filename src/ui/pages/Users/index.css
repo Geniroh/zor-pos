@@ -1,0 +1,146 @@
+.users-filters {
+  gap: 10px;
+  align-items: center;
+}
+
+.users-search {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  max-width: 380px;
+}
+
+.users-search-icon {
+  position: absolute;
+  top: 50%;
+  left: 11px;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.users-search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 11px 0 33px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12.5px;
+}
+
+.users-search-input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.users-role-filter {
+  width: auto;
+  height: 36px;
+  flex-shrink: 0;
+  font-size: 12.5px;
+}
+
+/* Dense enough to compare people at a glance; scrolls in its own box rather
+   than pushing the page sideways on a narrow window. */
+.users-table-wrap {
+  overflow-x: auto;
+}
+
+.users-table {
+  min-width: 820px;
+}
+
+.users-row {
+  cursor: pointer;
+}
+
+.users-row:hover {
+  background: var(--cream);
+}
+
+.users-row:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: -2px;
+}
+
+.users-identity {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.users-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+.users-identity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.users-identity-text strong {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.users-identity-text small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.users-you {
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: var(--green-bg);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.users-role {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Access can list several branches, so it wraps rather than forcing the table
+   wider than the columns that actually need the room. */
+.users-access {
+  font-size: 12.5px;
+  color: var(--muted);
+  min-width: 150px;
+}
+
+.users-last-active {
+  font-size: 12.5px;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.users-empty {
+  padding: 28px 18px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+}

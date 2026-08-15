@@ -1,3 +1,6 @@
+/* Folder card styling lives in components/common/folder-cards.css. This file
+   only holds the page frame, the illustration panel and this hub's grid. */
+
 .care-page {
   height: 100%;
   min-height: 0;
@@ -48,110 +51,7 @@
 }
 
 .care-folders {
-  display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-}
-
-.care-folder {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 172px;
-  padding-top: 14px;
-  text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-.care-folder:hover {
-  transform: translateY(-2px);
-}
-
-.care-folder:hover .care-folder-body {
-  box-shadow: 0 16px 32px -18px rgba(0, 0, 0, 0.45);
-}
-
-/* Folder tab: a small rounded stub peeking above the card body. */
-.care-folder-tab {
-  position: absolute;
-  top: 0;
-  left: 16px;
-  width: 92px;
-  height: 18px;
-  border-radius: 8px 8px 0 0;
-  background: var(--folder-accent);
-}
-
-.care-folder-body {
-  position: relative;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  padding: 16px;
-  border-radius: 4px 14px 14px 14px;
-  background: var(--folder-accent);
-  color: #fff;
-  transition: box-shadow 0.15s ease;
-}
-
-.care-folder-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-}
-
-.care-icon {
-  width: 20px;
-  height: 20px;
-}
-
-.care-folder-text {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-top: auto;
-}
-
-.care-folder-text strong {
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.care-folder-text span {
-  font-size: 12.5px;
-  opacity: 0.85;
-}
-
-.care-folder-meta {
-  align-self: flex-start;
-  padding: 3px 9px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.18);
-  font-size: 11.5px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-}
-
-.care-folder-green {
-  --folder-accent: linear-gradient(135deg, #4f7d52, #263b28);
-}
-
-.care-folder-navy {
-  --folder-accent: linear-gradient(135deg, #1c2b3a, #3d5069);
-}
-
-.care-folder-sand {
-  --folder-accent: linear-gradient(135deg, #d8cfa8, #ab8f4c);
-}
-
-.care-folder-plum {
-  --folder-accent: linear-gradient(135deg, #8a4b6b, #4a2438);
 }
 
 @media (max-width: 1024px) {

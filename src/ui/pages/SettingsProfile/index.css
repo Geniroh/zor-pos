@@ -1,0 +1,151 @@
+.profile-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.profile-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 84px;
+  height: 84px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--cream);
+  overflow: hidden;
+}
+
+.profile-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.profile-logo-fallback {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+.profile-logo-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.profile-logo-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* Kept in the DOM so the visible buttons can drive it, but never shown. */
+.profile-file-input {
+  display: none;
+}
+
+.profile-doc {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.profile-doc-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.profile-doc-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* A slot with nothing in it shouldn't wear the "done" green. */
+.profile-doc-icon--empty {
+  background: var(--cream);
+  color: var(--muted);
+}
+
+.profile-receipt-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.profile-receipt-card:hover {
+  border-color: var(--green);
+}
+
+.profile-receipt-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.profile-receipt-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.profile-receipt-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+  min-width: 0;
+}
+
+.profile-receipt-text strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.profile-receipt-text span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.profile-receipt-arrow {
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.profile-receipt-card:hover .profile-receipt-arrow {
+  color: var(--green);
+}
+
+@media (max-width: 720px) {
+  .profile-identity {
+    flex-direction: column;
+  }
+}

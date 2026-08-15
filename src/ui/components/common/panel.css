@@ -1,0 +1,427 @@
+/**
+ * Panel primitives — the card / row / field / button / chip / table vocabulary
+ * shared by the admin-style sections (Settings, Users & Roles).
+ *
+ * These were born inside SettingsShell and were pulled out here when Users &
+ * Roles needed the same set. Anything genuinely generic belongs in this file;
+ * a shell's own chrome (its header, back link, page padding) stays in that
+ * shell's stylesheet. Imported by SettingsShell and UsersShell — a page gets
+ * them for free by rendering inside either.
+ */
+
+/* ---------------------------------------------------------------- *
+ * Cards
+ * ---------------------------------------------------------------- */
+
+.panel-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.panel-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-card-head h2 {
+  margin: 0 0 3px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.panel-card-head p {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.panel-card-body {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Rows separated by hairlines rather than gaps — a settings list reads as one
+   surface, not a stack of floating items. */
+.panel-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-row:last-child {
+  border-bottom: none;
+}
+
+.panel-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.panel-row-text strong {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.panel-row-text small {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.panel-row-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ---------------------------------------------------------------- *
+ * Fields
+ * ---------------------------------------------------------------- */
+
+.panel-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.panel-label {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.panel-label em {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 10.5px;
+  opacity: 0.8;
+}
+
+.panel-input {
+  height: 38px;
+  width: 100%;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.panel-input:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.panel-textarea {
+  height: auto;
+  min-height: 76px;
+  padding: 9px 11px;
+  resize: vertical;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.panel-hint {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* Numeric settings sit in a short field with their unit pinned inside. */
+.panel-unit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 38px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+}
+
+.panel-unit:focus-within {
+  border-color: var(--green);
+}
+
+.panel-unit input {
+  width: 58px;
+  border: none;
+  background: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel-unit span {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.panel-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Buttons
+ * ---------------------------------------------------------------- */
+
+.panel-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  background: var(--white);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.panel-btn:hover:not(:disabled) {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.panel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.panel-btn svg {
+  width: 15px;
+  height: 15px;
+}
+
+.panel-btn--primary {
+  border-color: var(--green);
+  background: var(--green);
+  color: #fff;
+}
+
+.panel-btn--primary:hover:not(:disabled) {
+  background: var(--green-dark);
+  border-color: var(--green-dark);
+  color: #fff;
+}
+
+.panel-btn--ghost {
+  border-color: transparent;
+  background: transparent;
+  color: var(--muted);
+}
+
+.panel-btn--ghost:hover:not(:disabled) {
+  background: var(--cream);
+  color: var(--ink);
+  border-color: transparent;
+}
+
+.panel-btn--danger {
+  border-color: transparent;
+  background: transparent;
+  color: var(--chart-status-critical);
+}
+
+.panel-btn--danger:hover:not(:disabled) {
+  border-color: var(--chart-status-critical);
+  color: var(--chart-status-critical);
+}
+
+.panel-btn--sm {
+  height: 30px;
+  padding: 0 11px;
+  font-size: 11.5px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Chips, pills, meters
+ * ---------------------------------------------------------------- */
+
+.panel-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.panel-chip:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.panel-chip--active {
+  border-color: var(--green);
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.panel-chip--active:hover {
+  border-color: var(--green);
+  color: var(--green);
+}
+
+.panel-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.35;
+}
+
+.panel-chip--active .panel-chip-dot {
+  opacity: 1;
+}
+
+.panel-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.panel-pill--on {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.panel-pill--off {
+  background: rgba(163, 18, 31, 0.1);
+  color: var(--chart-status-critical);
+}
+
+.panel-meter {
+  height: 8px;
+  border-radius: 999px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.panel-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--green);
+}
+
+/* ---------------------------------------------------------------- *
+ * Tables
+ * ---------------------------------------------------------------- */
+
+.panel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.panel-table th {
+  padding: 10px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--cream);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: left;
+}
+
+.panel-table td {
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.panel-table tr:last-child td {
+  border-bottom: none;
+}
+
+.panel-table .panel-num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+/* ---------------------------------------------------------------- *
+ * Toast
+ * ---------------------------------------------------------------- */
+
+.panel-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 70;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: var(--ink);
+  color: var(--page-bg);
+  font-size: 12.5px;
+  font-weight: 700;
+  box-shadow: 0 18px 36px -18px rgba(20, 18, 10, 0.6);
+}
+
+@media (max-width: 720px) {
+  .panel-grid-2 {
+    grid-template-columns: 1fr;
+  }
+
+  .panel-row {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

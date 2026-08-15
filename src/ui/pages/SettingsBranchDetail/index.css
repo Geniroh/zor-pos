@@ -1,0 +1,79 @@
+.branch-detail-pill-icon {
+  width: 12px;
+  height: 12px;
+}
+
+.branch-detail-manager {
+  max-width: 280px;
+}
+
+.branch-detail-printer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--cream);
+  color: var(--muted);
+}
+
+.branch-detail-printer-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.branch-detail-widths {
+  display: flex;
+  gap: 7px;
+}
+
+/* These rows navigate rather than hold a control, so they get link affordances
+   on top of the shared .panel-row layout. */
+.branch-detail-link {
+  text-decoration: none;
+}
+
+.branch-detail-link:hover {
+  background: var(--cream);
+}
+
+.branch-detail-link-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.branch-detail-link-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.branch-detail-link-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.branch-detail-link-arrow {
+  width: 17px;
+  height: 17px;
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.branch-detail-link:hover .branch-detail-link-arrow {
+  color: var(--green);
+}
+
+.branch-detail-danger {
+  border-color: rgba(163, 18, 31, 0.28);
+}

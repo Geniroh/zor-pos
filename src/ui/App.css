@@ -1,7 +1,13 @@
+/* `overflow: hidden` is load-bearing, not tidying. This is a frameless window
+   whose only chrome is TitleBar, so the outer document must never gain a
+   scrollbar — if it does, the title bar (and its window controls) scrolls out
+   of reach and there is no way to get it back. Clipping here forces every
+   overflow to be handled by an inner scroll container instead. */
 .app-shell {
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
 }
 
 .app-content {

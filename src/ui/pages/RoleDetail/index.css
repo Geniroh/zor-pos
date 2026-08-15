@@ -1,0 +1,210 @@
+.rd-lock {
+  width: 12px;
+  height: 12px;
+}
+
+.rd-overview {
+  gap: 10px;
+}
+
+.rd-can,
+.rd-cannot {
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.rd-can::before {
+  content: "Can ";
+  font-weight: 700;
+  color: var(--green);
+}
+
+.rd-cannot {
+  color: var(--muted);
+}
+
+.rd-cannot::before {
+  content: "Cannot ";
+  font-weight: 700;
+  color: var(--chart-status-critical);
+}
+
+.rd-scope {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 4px;
+  padding: 11px 13px;
+  border-radius: 10px;
+  background: var(--cream);
+}
+
+.rd-scope strong {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rd-scope span {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+.rd-legend {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  flex-shrink: 0;
+}
+
+.rd-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.rd-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.rd-dot--yes {
+  background: var(--green);
+}
+
+.rd-dot--approval {
+  background: var(--chart-status-outstanding);
+}
+
+.rd-dot--no {
+  background: var(--border);
+}
+
+/* Two columns of groups: the matrix is reference material, and five stacked
+   single-column groups make it a long scroll for no benefit. */
+.rd-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+}
+
+.rd-group {
+  padding: 16px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.rd-group:nth-child(odd) {
+  border-right: 1px solid var(--border);
+}
+
+.rd-group h3 {
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.rd-group ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.rd-perm {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 13px;
+  color: var(--ink);
+}
+
+/* A denied permission shouldn't compete for attention with the granted ones. */
+.rd-perm--no {
+  color: var(--muted);
+}
+
+.rd-mark {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+.rd-mark-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.rd-mark--yes {
+  color: var(--green);
+}
+
+.rd-mark--approval {
+  color: var(--chart-status-overdue);
+}
+
+.rd-mark--no {
+  color: var(--muted);
+  opacity: 0.7;
+}
+
+.rd-holder {
+  text-decoration: none;
+}
+
+.rd-holder:hover {
+  background: var(--cream);
+}
+
+.rd-holder-left {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-width: 0;
+}
+
+.rd-holder-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--green-bg);
+  color: var(--green-dark);
+  font-size: 11.5px;
+  font-weight: 700;
+}
+
+@media (max-width: 860px) {
+  .rd-groups {
+    grid-template-columns: 1fr;
+  }
+
+  .rd-group:nth-child(odd) {
+    border-right: none;
+  }
+
+  /* The coloured icon carries the state on narrow widths; its title attribute
+     keeps the wording available on hover and to assistive tech. */
+  .rd-mark-text {
+    display: none;
+  }
+}

@@ -14,10 +14,12 @@ weigh before changing it — not the conclusion itself.
   points at `src/ui/main.tsx`).
   - `pages/` — routed screens (`Login`, `PlaceholderPage`, `Sales`,
     `SalesHistory`, `Inventory`, `AddProduct`, `ViewProducts`,
-    `StockLevels`, `StockAdjustment`), each its own `Name/index.tsx` +
-    `index.css` folder (see "Component file layout" below). `Sales` and
-    `SalesHistory` are real, built-out features, not placeholders — see
-    "Point of Sale" below.
+    `StockLevels`, `StockAdjustment`, the `Settings*` family, and
+    `UsersRoles`/`Users`/`UserDetail`/`Roles`/`RoleDetail`/
+    `Invitations`/`DevicesSecurity`/`MyProfile`), each its own
+    `Name/index.tsx` + `index.css` folder (see "Component file layout"
+    below). `Sales` and `SalesHistory` are real, built-out features, not
+    placeholders — see "Point of Sale" below.
   - `components/layout/` — `TitleBar`, `Sidebar`, `DashboardLayout`,
     `WorkspaceSwitcher`, `BranchSelector`, `UserMenu`, plus `nav-items.ts`
     (the single source of truth for sidebar links, shared between
@@ -34,10 +36,22 @@ weigh before changing it — not the conclusion itself.
     (predates the lucide-react adoption below; don't add more to it). Not
     yet moved to the folder convention below since it isn't a single
     component's JSX/CSS pair.
+  - `components/settings/` — `SettingsShell` (the shared shell +
+    `.settings-*` style primitives), `SettingsModal`, `BranchPicker`,
+    `HoursEditor`, `ReceiptDrawer`, the billing modals, and
+    `settings-data.ts`. See "Settings" below.
+  - `components/users/` — `UsersShell` (shell + the My Profile button),
+    `AccessPicker`, `UserActionsMenu`, the four Users modals, and
+    `users-data.ts`. See "Users & Roles" below.
   - `components/common/` — shared components with no feature-specific
     home: `Tooltip` (the app's one tooltip primitive — see "Custom
-    tooltip" below before touching hover labels anywhere) and
-    `Accordion` (used by `AddProduct`).
+    tooltip" below before touching hover labels anywhere), `Accordion`
+    (used by `AddProduct`), `Switch` (the app's on/off toggle) and
+    `Modal` (backdrop/header/body/footer chrome for every Settings and
+    Users modal). It also holds two stylesheets with no component of
+    their own — `panel.css` (`.panel-*` card/row/field/button/chip/table
+    primitives) and `folder-cards.css` (`.folder-*` hub cards). See
+    "Shared UI primitives" below before adding a fourth copy of either.
   - `context/SidebarContext.tsx` — sidebar collapsed/expanded state,
     lifted out of `Sidebar` because `TitleBar` (a sibling, not a
     descendant) also needs to toggle it. `Sales` also reads it now, to
@@ -47,6 +61,15 @@ weigh before changing it — not the conclusion itself.
     `SidebarContext` (something outside `TitleBar` needs to control
     `AiAssistDrawer`, which renders inside it), solved the same way. See
     "Point of Sale" below for what actually opens it and why.
+  - `context/UsersContext.tsx` — users, invitations, devices, security
+    settings, the signed-in user, and the section's toast. Same
+    survives-navigation-not-restart contract as `SettingsContext`. Read
+    outside the section by `Sidebar` (whose name/role it supplies) and by
+    `SettingsBranchDetail` (which derives its staff count from it).
+  - `context/SettingsContext.tsx` — all Settings state, plus the section's
+    shared toast and the active-branch selection. The one context whose
+    edits are expected to survive navigation; see "Settings" below for
+    why, and for the explicit limits on that.
   - `context/ThemeContext.tsx` — app-wide light/dark theme. Sets
     `document.documentElement.dataset.theme`, which drives the global
     `:root` / `:root[data-theme="dark"]` token blocks in `index.css` (see
@@ -91,15 +114,13 @@ http(s).
 to `/dashboard` — there is no backend, no credential check. Don't treat
 the login flow as a security boundary; it isn't one yet.
 
-**Some sidebar nav items are still placeholders.** Every item in
-`nav-items.ts` routes to a real nested route; the ones without a built-out
-section ("Users & Roles", "Settings") render the generic
-`PlaceholderPage`. That's intentional (it proves the layout is reusable
-across sections) — building out a real feature page means adding a route
-in `App.tsx`, not "fixing" the placeholder. Sales (POS), Inventory,
-Purchases, Customers & Care and Reports are genuinely built out; "Point of
-Sale" and "Reports" below are the templates to follow when a next section
-graduates.
+**Every sidebar nav item is now a real section.** `PlaceholderPage` is
+still in the tree and still routed to by nothing — keep it for the next
+section that needs scaffolding, but there is no longer a placeholder in
+the sidebar. Sales (POS), Inventory, Purchases, Customers & Care,
+Reports, Users & Roles and Settings are all built out; "Point of Sale",
+"Reports", "Settings" and "Users & Roles" below are the templates to
+follow for the next one.
 
 **Workspace switcher ≠ branch selector.** `WorkspaceSwitcher` represents
 which pharmacy business/tenant you belong to; `BranchSelector` (rendered
@@ -468,6 +489,227 @@ interaction" above). It does not get its own panel.
 
 **Stock Alerts is display-only.** The card reports counts and links
 nowhere — Reports summarises stock, Inventory manages it.
+
+## Settings
+
+Built from a written spec plus an ASCII mockup the user supplied, with
+every fork between the two signed off before building. Like the rest of
+the app it is **dummy data over local state**, with one difference noted
+below. `components/settings/settings-data.ts` holds the seed data;
+identity is derived from datasets the rest of the app already shows
+(`CATALOG` for the main branch's product count, `STAFF` for managers,
+`VAT_RATE` for the tax preference) so Settings can't disagree with the
+screen it claims to configure.
+
+**State lives in `context/SettingsContext.tsx`, not per page.** This is
+the one place in the app where edits survive navigation: the six screens
+are siblings and the hub's meta lines are derived from the same state, so
+holding it per page would mean Hours forgot itself the moment you opened
+Preferences. Scope was explicitly signed off as **survives navigation,
+not restart** — there is deliberately no `localStorage`, no IPC
+write-through, and no wiring into the POS's own totals. If real
+persistence is ever wanted, that's the "new architectural pattern" the
+last section of this file says to raise before building.
+
+**Save model is instant everywhere, with one deliberate exception.**
+Every setter commits on click and the caller pairs it with `flash()`;
+text fields commit on change and flash on blur. No screen owns a Save
+button or dirty state. The exception is `CancelPlanModal`, which requires
+typing `CANCEL` before its button arms — the section's instant-save rule
+holds *because* everything else is cheap to undo, and cancelling isn't.
+`SettingsShell` reads the toast straight from context rather than taking
+it as a prop, so modals nested inside a screen can flash without prop
+drilling.
+
+**Hub is the shared folder card, laid out three-up.** The user's ASCII
+drew wide arrow-led rows; the folder treatment won because the brief also
+asked for "a folder like card similar to the customer and care page". Six
+cards fit 3×2 with no illustration panel — the three images in `/images`
+each already belong to another screen, and reusing one here would weaken
+both.
+
+**The pharmacy-level / branch-level split is expressed as a picker, not
+as sections.** Pharmacy-level screens (Profile & Branding, Preferences,
+Plan & Billing) render no branch control at all. Branch-level screens
+(Hours) render `BranchPicker` in the shell header — "Hours for: Main
+Branch ▾" — so the user sees *whose* settings they're editing without
+ever meeting the word "level". `BranchPicker` drives `activeBranchId` in
+`SettingsContext`, which is also what Location & Branches calls the
+"current branch"; switching in one place shows up in the other. It is
+deliberately **separate from the sidebar's `BranchSelector`**, which
+stays cosmetic per the decision above. VAT is kept pharmacy-wide even
+though the settings model marks it as arguably per-branch: a business
+files one VAT rate, and splitting it would be a tax decision, not a UI
+one.
+
+**`SettingsShell` is the shared shell** (back link, title, header
+controls, toast) — the role `ReportShell` plays for Reports. The card /
+row / field / button primitives these screens are built from now live in
+`components/common/panel.css` as `.panel-*`, shared with Users & Roles —
+see "Shared UI primitives" above. `SettingsShell/index.css` keeps only
+its own chrome.
+
+**Two components were extracted because two screens wanted them:**
+- `HoursEditor` — the seven-row week editor with open/closed, multiple
+  periods per day, and the "apply this day's hours to other days" copy
+  menu. Used by the Hours screen *and* embedded in each branch's own
+  page: two routes onto the same data, reached from different intents
+  ("set opening times" vs "finish setting up this location"). Times are
+  native `<input type="time">`, whose value format is already the "HH:MM"
+  24-hour string the data uses, so there's no parsing layer.
+- `common/Modal` (was `SettingsModal`) — backdrop, header, body, footer,
+  Escape-to-close. `AddBranchModal`, `UpgradePlanModal`, `UsageModal` and
+  `CancelPlanModal` all build on it and carry no modal chrome of their
+  own (`AddBranchModal` has no stylesheet at all). All four are
+  **conditionally rendered by their parent**, not `open`-prop mounted —
+  they seed draft state from props, which is `DiscountModal`'s case.
+
+**`components/common/Switch`** is the app's first real toggle primitive,
+added here because Settings is the first section built mostly out of
+booleans. It's a visually-hidden real `<input type="checkbox">` with the
+track drawn from `:checked`, so it's keyboard- and form-native for free.
+Use it rather than hand-rolling another toggle.
+
+**Receipt appearance is a drawer, not a page.** `ReceiptDrawer` slides in
+from the right over Profile & Branding with a live paper preview above
+its controls — every toggle changes the paper immediately, which is the
+whole point of not making it a long form. It hardcodes `top: 44px` for
+the same reason `AiAssistDrawer` does; that constant is duplicated in
+both stylesheets, so grep for it if `.titlebar`'s height ever changes.
+The preview paper is **deliberately always light** in both themes —
+thermal paper is white, and inverting it would misrepresent the print.
+
+**File handling is real but in-memory.** Logo and business documents use
+a genuine `<input type="file">`; the picked file renders via an object
+URL and shows its real name, size and date, and URLs are revoked as
+they're replaced. Nothing is copied to disk. The seeded document rows
+describe files that were never on disk, so their "View" says so honestly
+rather than pretending. Don't add main-process file IPC for this —
+Reports deliberately avoided it for CSV export too.
+
+**Notifications are per-alert channel chips, with no global block.** The
+original spec had both a per-alert toggle *and* a "where should we send
+notifications?" section; that's the same duplication the POS panels were
+refactored to remove, and it makes "email me expiry warnings but only
+ping me in-app for purchase orders" impossible to express. An alert with
+no chip lit is simply off, so the hub's "N notifications enabled" count
+falls out of the data rather than tracking a separate flag.
+
+**Holiday hours are not built.** The user's own IA marked them "(later)",
+and a fake section would have been padding.
+
+## Shared UI primitives
+
+Three things were extracted once a third consumer wanted them, and each
+is now the only copy. Adding a fourth copy of any of these is drift —
+extend the shared file instead.
+
+- **`components/common/panel.css`** — `.panel-card`, `.panel-row`,
+  `.panel-field`, `.panel-input`, `.panel-btn` (+ `--primary/--ghost/
+  --danger/--sm`), `.panel-chip`, `.panel-pill`, `.panel-meter`,
+  `.panel-table`, `.panel-toast`. Born inside `SettingsShell`; pulled out
+  and renamed from `.settings-*` when Users & Roles needed them.
+  Imported by `SettingsShell` and `UsersShell`, so any page rendering
+  inside either shell gets them without its own import.
+- **`components/common/folder-cards.css`** — `.folder-card` and friends,
+  plus the six tints (`.folder-green/navy/sand/plum/teal/clay`). The
+  tabbed hub cards used by Customers & Care, Settings and Users & Roles.
+  Each hub supplies its own grid (`.care-folders`, `.settings-folders`,
+  `.users-folders` set only `grid-template-columns`).
+- **`components/common/Modal`** — backdrop, header with icon/title,
+  scrolling body, footer, Escape and backdrop-click to close. Was
+  `components/settings/SettingsModal`. Everything built on it is
+  **conditionally rendered by its parent**, not `open`-prop mounted,
+  because they all seed draft state from props (see `DiscountModal`).
+
+A shell's *own* chrome (page padding, header, back link) stays in that
+shell's stylesheet — only genuinely generic rules belong in the shared
+files.
+
+## Users & Roles
+
+Built from a written spec plus an ASCII mockup, with every fork between
+the two signed off first. Dummy data over local state, like everything
+else; `components/users/users-data.ts` holds the seed.
+
+**The access model is `user → role → permissions + branch scope`, and the
+two halves are kept separate everywhere.** The **role** says what someone
+may do; the **branch scope** says where. They are different fields on
+`User`, different columns in the table, different rows on the detail
+page. Don't collapse them back into one "Branch" column — that was
+considered and rejected, since it can't express "Pharmacy Administrator,
+all branches" or "Pharmacist, Main + Lekki".
+
+**Scope is derived from the role, so the user never meets the two-level
+model.** Each `Role` carries a `scope` of `"all" | "single" | "multi"`,
+and `AccessPicker`'s `BranchScopeField` renders a different control for
+each: pharmacy-wide roles show a locked "All branches" explainer with no
+choice, Branch Manager picks exactly one, everyone else gets a
+multi-select. A role with scope `"all"` stores an **empty** `branchIds`
+array rather than every branch id — listing them would mean a newly
+added branch silently failing to reach existing admins. `scopeLabel()`
+and `hasBranchAccess()` both special-case it; use them rather than
+reading `branchIds` directly.
+
+**Seven system roles, read-only.** Owner, Pharmacy Administrator, Branch
+Manager, Pharmacist, Pharmacy Technician, Cashier, Inventory Manager.
+There is no "create custom role" and the permission matrix is a
+description, not a form — an editable matrix implies enforcement that
+doesn't exist yet. The only in-matrix boundary between Owner and
+Pharmacy Administrator is `manage-roles`; the rest of the difference
+(billing) lives in Settings.
+
+**Permissions have three states, not two.** `PermissionLevel` is
+`"yes" | "approval" | "no"`. "With approval" is a real answer — a
+pharmacist may refund a sale, but a manager signs it off — and the
+original spec's `✓/—` cells are exactly that case. Don't flatten it to a
+boolean.
+
+**Add user creates an invitation, not a user.** The two-step wizard
+(`AddUserModal`: person, then access) ends in "Send invitation", and the
+new record lands in `invitations` with status `Pending`. Accepted
+invitations deliberately never render on the Invitations screen — once
+accepted the person is a User and belongs there instead. That is the
+whole `Invitation → User` model; keeping them in both lists would blur
+it. The wizard shows the role's plain-language can/cannot rather than the
+permission matrix: at creation time the question is "what job is this",
+not "may they void a sale".
+
+**"Change role" and "Change branch" are one modal.** `ChangeAccessModal`
+takes a `mode` that only decides which control leads and what the title
+says — both are editable either way. Changing a role can invalidate the
+branch scope (promote a cashier to administrator and their branch list
+stops meaning anything), so `changeRole()` in the context takes both and
+clears `branchIds` for pharmacy-wide roles. Two separate modals would
+allow a state neither could show you.
+
+**Destructive actions scale with severity.** Suspend is reversible and
+confirms in one click; Remove requires typing `REMOVE`, the same
+treatment `CancelPlanModal` uses. Removing a user also drops their
+devices — leaving live sessions behind would misreport who still has
+access. The signed-in user can't suspend or remove themselves, so those
+entries are hidden for their own row.
+
+**My Profile is a shell-level action, not a card.** It renders in
+`UsersShell`'s header on all five screens (suppressed on the profile page
+itself), because the four cards manage *other people's* access while My
+Profile manages *your own identity*. On that page the split that matters
+is editable vs not: name, photo, email and phone are yours; role and
+branch access render as facts with who assigned them, never as disabled
+inputs — a greyed-out field invites people to try.
+
+**The signed-in user is real data.** `CURRENT_USER_ID` points at the
+Owner in `USERS`, and `Sidebar` reads their name and role from
+`UsersContext` rather than `UserMenu`'s old "Guest User" defaults.
+`USERS`' first four entries reuse pos-data's `STAFF` names, so whoever
+"served" a sale is a user you can open. `SettingsBranchDetail` derives
+its staff count from `USERS` via `hasBranchAccess()` instead of a stored
+`staffCount` — the field was removed so the two sections can't disagree.
+
+**Relative timestamps are measured from a module-load constant.**
+`users-data.ts` fixes `NOW` once and offsets from it, so "5 min ago"
+stays put across renders instead of drifting. `formatRelative()` is the
+one place that reads the live clock.
 
 ## Splash screen
 

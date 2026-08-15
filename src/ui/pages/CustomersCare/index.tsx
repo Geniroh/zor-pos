@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { Users, CalendarCheck, Stethoscope, FolderHeart } from "lucide-react";
 import careImg from "../../../../images/img1.png";
 import { CARE_CUSTOMERS, PATIENTS, FOLLOW_UPS, CARE_ACTIVITIES } from "../../components/care/care-data";
+import "../../components/common/folder-cards.css";
 import "./index.css";
 
 const scheduledFollowUps = FOLLOW_UPS.filter((f) => f.status === "Scheduled").length;
@@ -55,20 +56,19 @@ function CustomersCare() {
           <img src={careImg} alt="" />
         </div>
 
-        <div className="care-folders">
+        <div className="folder-grid care-folders">
           {CARE_SECTIONS.map(({ icon: Icon, title, subtitle, meta, path, tint }) => (
-            <Link key={path} to={path} className={"care-folder care-folder-" + tint}>
-              {/* The tab is what makes the card read as a physical folder. */}
-              <span className="care-folder-tab" />
-              <span className="care-folder-body">
-                <span className="care-folder-icon">
-                  <Icon className="care-icon" />
+            <Link key={path} to={path} className={"folder-card folder-" + tint}>
+              <span className="folder-card-tab" />
+              <span className="folder-card-body">
+                <span className="folder-card-icon">
+                  <Icon className="folder-card-glyph" />
                 </span>
-                <span className="care-folder-text">
+                <span className="folder-card-text">
                   <strong>{title}</strong>
                   <span>{subtitle}</span>
                 </span>
-                <span className="care-folder-meta">{meta}</span>
+                <span className="folder-card-meta">{meta}</span>
               </span>
             </Link>
           ))}

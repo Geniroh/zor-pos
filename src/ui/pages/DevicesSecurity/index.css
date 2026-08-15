@@ -1,0 +1,160 @@
+.ds-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.ds-card {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--cream);
+}
+
+.ds-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+
+.ds-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--white);
+  color: var(--green);
+}
+
+.ds-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.ds-client {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ds-client strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ds-client small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.ds-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.ds-line-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+.ds-branch {
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+.ds-owner {
+  margin-top: 7px;
+  padding-top: 9px;
+  border-top: 1px solid var(--border);
+}
+
+.ds-owner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.ds-owner-text strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ds-owner-text small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.ds-meta {
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.ds-revoke {
+  margin-top: 8px;
+  align-self: flex-start;
+}
+
+/* The 2FA overview is a button because it opens the "who's outstanding" list —
+   it should look pressable without looking like a form control. */
+.ds-tfa {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+  padding: 14px 18px;
+  border: none;
+  border-top: 1px solid var(--border);
+  background: transparent;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ds-tfa:hover {
+  background: var(--cream);
+}
+
+.ds-tfa-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ds-tfa-head strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ds-tfa-link {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--green);
+}
+
+.ds-tfa .panel-meter {
+  display: block;
+  width: 100%;
+}
+
+.ds-tfa .panel-meter-fill {
+  display: block;
+}

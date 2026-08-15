@@ -1,0 +1,50 @@
+.cancel-plan-lead {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+}
+
+.cancel-plan-lead strong {
+  font-weight: 700;
+}
+
+.cancel-plan-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.cancel-plan-list li::marker {
+  color: var(--chart-status-critical);
+}
+
+/* The destructive button is solid red rather than a .panel-btn variant —
+   this is the only irreversible confirm in the app, and it should not look
+   like the green "save" buttons the user has been clicking all session. */
+.cancel-plan-confirm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  padding: 0 14px;
+  border: 1.5px solid var(--chart-status-critical);
+  border-radius: 9px;
+  background: var(--chart-status-critical);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cancel-plan-confirm:disabled {
+  border-color: var(--border);
+  background: var(--border);
+  color: var(--muted);
+  cursor: not-allowed;
+}

@@ -1,0 +1,98 @@
+.ud-identity {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+}
+
+.ud-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.ud-identity-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.ud-identity-text strong {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.ud-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.ud-line-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.ud-joined {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: flex-end;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.ud-joined small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.ud-joined strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+/* The icon sits inside the row's <strong>, which is a flex column by default
+   in panel-row-text — so the line itself needs to lay out as a row. */
+.panel-row-text strong .ud-row-icon,
+.ud-row-icon {
+  width: 14px;
+  height: 14px;
+  color: var(--green);
+}
+
+.panel-row-text strong:has(.ud-row-icon) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ud-danger {
+  border-color: rgba(163, 18, 31, 0.28);
+}
+
+@media (max-width: 720px) {
+  .ud-identity {
+    flex-direction: column;
+  }
+
+  .ud-joined {
+    align-items: flex-start;
+    text-align: left;
+  }
+}

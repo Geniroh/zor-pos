@@ -1,0 +1,53 @@
+/* Step indicator. Two steps don't warrant a progress bar — the point is only
+   to say which half you're in and that there is another. */
+.add-user-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 4px;
+  padding: 0;
+  list-style: none;
+}
+
+.add-user-steps li {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.add-user-steps li + li::before {
+  content: "";
+  width: 22px;
+  height: 1px;
+  background: var(--border);
+  margin-right: 8px;
+}
+
+.add-user-steps li span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--cream);
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.add-user-step--on {
+  color: var(--ink) !important;
+}
+
+.add-user-step--on span {
+  background: var(--green);
+  color: #fff;
+}
+
+.add-user-step--done span {
+  background: var(--green-bg);
+  color: var(--green);
+}

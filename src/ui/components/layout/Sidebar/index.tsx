@@ -6,10 +6,13 @@ import BranchSelector from "../BranchSelector";
 import UserMenu from "../UserMenu";
 import Tooltip from "../../common/Tooltip";
 import { useSidebar } from "../../../context/SidebarContext";
+import { useUsers } from "../../../context/UsersContext";
+import { roleById } from "../../users/users-data";
 import "./index.css";
 
 function Sidebar() {
   const { collapsed } = useSidebar();
+  const { currentUser } = useUsers();
 
   return (
     <aside className={`sidebar${collapsed ? " sidebar--collapsed" : ""}`}>
@@ -48,7 +51,13 @@ function Sidebar() {
       </div>
 
       <div className="sidebar-user">
-        <UserMenu collapsed={collapsed} />
+        {/* Who's signed in comes from UsersContext rather than UserMenu's
+            placeholder defaults, so the sidebar and My Profile agree. */}
+        <UserMenu
+          collapsed={collapsed}
+          userName={currentUser.name}
+          userRole={roleById(currentUser.roleId).name}
+        />
       </div>
     </aside>
   );

@@ -1,0 +1,41 @@
+.tfa-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.tfa-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.tfa-row:last-child {
+  border-bottom: none;
+}
+
+.tfa-row-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.tfa-row-text strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.tfa-row-text small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.tfa-empty {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}

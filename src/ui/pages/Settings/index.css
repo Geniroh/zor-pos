@@ -1,0 +1,44 @@
+/* Folder card styling lives in components/common/folder-cards.css. This file
+   only holds the page frame and this hub's grid shape. */
+
+.settings-page {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 32px 40px;
+  background: var(--page-bg);
+}
+
+.settings-page h1 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.settings-page-subtitle {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.settings-folders {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 1080px;
+}
+
+@media (max-width: 1100px) {
+  .settings-folders {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .settings-folders {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-page {
+    padding: 22px 18px 32px;
+  }
+}

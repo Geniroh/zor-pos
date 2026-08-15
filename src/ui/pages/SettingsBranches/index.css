@@ -1,0 +1,121 @@
+.branches-current-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 18px;
+}
+
+.branches-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 11px;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.branches-avatar svg {
+  width: 19px;
+  height: 19px;
+}
+
+.branches-avatar--lg {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+}
+
+.branches-avatar--lg svg {
+  width: 24px;
+  height: 24px;
+}
+
+.branches-current-text {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.branches-current-text strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.branches-line {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.branches-line-icon {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+.branches-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.branches-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--cream);
+}
+
+.branches-card-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  flex: 1;
+  min-width: 0;
+}
+
+.branches-card-text strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.branches-card-text small {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+/* Actions sit under the text on narrow cards rather than fighting it for
+   width, so a long branch address never squeezes the buttons. */
+.branches-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 860px) {
+  .branches-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .branches-current-body {
+    flex-direction: column;
+  }
+}
