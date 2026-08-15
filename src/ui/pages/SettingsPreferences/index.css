@@ -1,0 +1,37 @@
+.prefs-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.prefs-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 9px;
+}
+
+.prefs-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* Each group gets its own tint so the three cards are distinguishable at a
+   glance while scrolling, rather than three identical white slabs. */
+.prefs-icon--sales {
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.prefs-icon--meds {
+  background: rgba(42, 120, 214, 0.12);
+  color: var(--chart-cat-1);
+}
+
+.prefs-icon--receipts {
+  background: rgba(235, 104, 52, 0.12);
+  color: var(--chart-cat-2);
+}

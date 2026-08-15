@@ -1,0 +1,145 @@
+.access-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 12px 14px;
+  border-radius: 11px;
+  background: var(--green-bg);
+}
+
+.access-summary strong {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.access-summary-can,
+.access-summary-cannot {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* The "cannot" half is the part people skim past, so it gets a marker rather
+   than being another identical paragraph. */
+.access-summary-cannot {
+  color: var(--muted);
+}
+
+.access-summary-can::before {
+  content: "Can ";
+  font-weight: 700;
+  color: var(--green-dark);
+}
+
+.access-summary-cannot::before {
+  content: "Cannot ";
+  font-weight: 700;
+  color: var(--chart-status-critical);
+}
+
+.access-all {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+}
+
+.access-all-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: var(--green);
+}
+
+.access-all-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.access-all-text strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.access-all-text small {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.access-options {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.access-option {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  background: var(--white);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.access-option:hover {
+  border-color: var(--muted);
+}
+
+.access-option--on {
+  border-color: var(--green);
+  background: var(--green-bg);
+}
+
+.access-option-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.access-option--on .access-option-icon {
+  color: var(--green);
+}
+
+.access-option-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  min-width: 0;
+}
+
+.access-option-text strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.access-option-text small {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.access-option-check {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--green);
+}
+
+.access-warning {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--chart-status-overdue);
+}

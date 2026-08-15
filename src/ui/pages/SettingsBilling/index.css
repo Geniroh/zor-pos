@@ -1,0 +1,132 @@
+.billing-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.billing-plan-icon,
+.billing-credits-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  flex-shrink: 0;
+  border-radius: 9px;
+  background: var(--green-bg);
+  color: var(--green);
+}
+
+.billing-plan-icon svg,
+.billing-credits-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.billing-credits-icon {
+  background: rgba(235, 104, 52, 0.12);
+  color: var(--chart-cat-2);
+}
+
+.billing-plan .panel-card-body,
+.billing-credits .panel-card-body {
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.billing-plan-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.billing-plan-name strong {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.billing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--green);
+  font-variant-numeric: tabular-nums;
+}
+
+.billing-price small {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.billing-next {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.billing-next strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.billing-credits-count {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.billing-credits-count strong {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.billing-credits-count span {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+/* The meter is a block-level child of a flex column with align-items:
+   flex-start, so it needs to claim the full width explicitly. */
+.billing-credits .panel-meter {
+  width: 100%;
+}
+
+.billing-credits-note {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+/* The history table can outgrow a narrow window; it scrolls inside its own
+   box rather than pushing the page sideways. */
+.billing-table-wrap {
+  overflow-x: auto;
+}
+
+.billing-table-wrap .panel-table {
+  min-width: 620px;
+}
+
+.billing-date {
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.billing-invoice-cell {
+  text-align: right;
+}
+
+.billing-danger {
+  border-color: rgba(163, 18, 31, 0.28);
+}
+
+@media (max-width: 860px) {
+  .billing-top {
+    grid-template-columns: 1fr;
+  }
+}

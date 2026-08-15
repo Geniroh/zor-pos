@@ -63,8 +63,14 @@
   --chart-axis: #383835;
 }
 
+/* The page background is painted here as well as by the app's own surfaces.
+   Without it, body falls back to white — a different colour from --page-bg —
+   so any region the app doesn't cover (a resize in progress, the moment
+   before React mounts, a viewport unit lagging a window resize) flashes as a
+   white band rather than blending in. */
 body {
   margin: 0;
+  background: var(--page-bg);
 }
 
 #root {

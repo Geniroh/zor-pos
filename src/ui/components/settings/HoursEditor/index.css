@@ -1,0 +1,217 @@
+.hours-editor {
+  display: flex;
+  flex-direction: column;
+}
+
+.hours-row {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 16px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.hours-row:last-child {
+  border-bottom: none;
+}
+
+/* A closed day stays legible but visibly recedes from the open ones. */
+.hours-row--closed .hours-day-name {
+  color: var(--muted);
+}
+
+.hours-day {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* Line the switch up with the first period row rather than the row's centre. */
+  min-height: 34px;
+}
+
+.hours-day-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.hours-periods {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 34px;
+  justify-content: center;
+}
+
+.hours-period {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hours-time {
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--white);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12.5px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.hours-time:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.hours-dash {
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.hours-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.hours-remove svg {
+  width: 13px;
+  height: 13px;
+}
+
+.hours-remove:hover {
+  background: rgba(163, 18, 31, 0.1);
+  color: var(--chart-status-critical);
+}
+
+.hours-closed {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.hours-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 34px;
+}
+
+.hours-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 28px;
+  padding: 0 9px;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.hours-action svg {
+  width: 13px;
+  height: 13px;
+}
+
+.hours-action:hover {
+  background: var(--cream);
+  color: var(--green);
+}
+
+.hours-copy {
+  position: relative;
+}
+
+.hours-copy-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 40;
+  width: 262px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--white);
+  box-shadow: 0 20px 44px -20px rgba(20, 18, 10, 0.4);
+}
+
+.hours-copy-title {
+  margin-bottom: 9px;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.hours-copy-title strong {
+  color: var(--ink);
+}
+
+.hours-copy-quick {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 9px;
+}
+
+.hours-copy-quick button {
+  border: none;
+  background: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--green);
+  cursor: pointer;
+}
+
+.hours-copy-quick button:hover {
+  text-decoration: underline;
+}
+
+.hours-copy-days {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 11px;
+}
+
+.hours-copy-days .panel-chip {
+  height: 26px;
+  padding: 0 9px;
+}
+
+.hours-copy-apply {
+  width: 100%;
+}
+
+@media (max-width: 860px) {
+  .hours-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .hours-actions {
+    min-height: 0;
+  }
+
+  .hours-copy-menu {
+    right: auto;
+    left: 0;
+  }
+}

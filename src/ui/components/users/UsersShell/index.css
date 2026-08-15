@@ -1,0 +1,131 @@
+/* Shell chrome only — the card/row/field primitives come from
+   components/common/panel.css, shared with Settings. */
+
+.users-shell {
+  height: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 28px 32px 40px;
+  background: var(--page-bg);
+}
+
+.users-shell-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: 1080px;
+  margin-bottom: 22px;
+}
+
+.users-shell-titles h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.users-shell-titles p {
+  font-size: 13.5px;
+  color: var(--muted);
+}
+
+.users-shell-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.users-shell-back:hover {
+  color: var(--green);
+}
+
+.users-shell-back-icon {
+  width: 14px;
+  height: 14px;
+}
+
+.users-shell-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.users-shell-body {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 1080px;
+}
+
+/* My Profile reads as an identity chip rather than a plain button, so it is
+   visibly about *you* and not another action on the list of people. */
+.users-profile-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 14px 0 6px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--white);
+  text-decoration: none;
+  transition: border-color 0.15s ease;
+}
+
+.users-profile-btn:hover {
+  border-color: var(--green);
+}
+
+.users-profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: var(--green);
+  color: #fff;
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.users-profile-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.2;
+}
+
+.users-profile-text small {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.users-profile-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--muted);
+}
+
+.users-profile-btn:hover .users-profile-icon {
+  color: var(--green);
+}
+
+@media (max-width: 720px) {
+  .users-shell {
+    padding: 22px 18px 32px;
+  }
+}

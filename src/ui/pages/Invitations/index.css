@@ -1,0 +1,77 @@
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px;
+}
+
+.inv-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--cream);
+}
+
+.inv-name {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.inv-email {
+  font-size: 12.5px;
+  color: var(--muted);
+  word-break: break-all;
+}
+
+.inv-access {
+  margin-top: 2px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--green-dark);
+}
+
+.inv-meta {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.inv-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.inv-empty {
+  padding: 28px 18px;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+/* A dead invitation should read as inactive without being unreadable. */
+.inv-closed .panel-row-text strong {
+  color: var(--muted);
+}
+
+.inv-note {
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.inv-note a {
+  color: var(--green);
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .inv-grid {
+    grid-template-columns: 1fr;
+  }
+}

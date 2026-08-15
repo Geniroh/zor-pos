@@ -1,0 +1,317 @@
+/* `top: 44px` matches .titlebar's height in TitleBar.css so the drawer sits
+   below the title bar rather than covering it — the same duplicated constant
+   AiAssistDrawer carries. Change one, grep for the other. */
+.receipt-drawer {
+  position: fixed;
+  top: 44px;
+  right: 0;
+  bottom: 0;
+  width: 440px;
+  max-width: calc(100vw - 32px);
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+  border-left: 1px solid var(--border);
+  box-shadow: -20px 0 40px -20px rgba(20, 18, 10, 0.25);
+  transform: translateX(100%);
+  transition: transform 0.2s ease;
+  z-index: 80;
+  pointer-events: none;
+}
+
+.receipt-drawer.open {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+
+.receipt-drawer-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.receipt-drawer-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.receipt-drawer-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--green-bg);
+  color: var(--green);
+  flex-shrink: 0;
+}
+
+.receipt-drawer-icon svg {
+  width: 17px;
+  height: 17px;
+}
+
+.receipt-drawer-title-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.receipt-drawer-title-text small {
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.receipt-drawer-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.receipt-drawer-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.receipt-drawer-close:hover {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+.receipt-drawer-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ---------------------------------------------------------------- *
+ * Paper preview
+ * ---------------------------------------------------------------- */
+
+.receipt-preview-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--page-bg);
+}
+
+.receipt-preview-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* The receipt itself is deliberately always light — thermal paper is white,
+   and inverting it in dark mode would misrepresent the print. */
+.receipt-paper {
+  position: relative;
+  align-self: center;
+  width: 260px;
+  max-width: 100%;
+  padding: 18px 16px 22px;
+  background: #fffdf7;
+  color: #1a1a1a;
+  font-size: 11px;
+  line-height: 1.45;
+  box-shadow: 0 10px 24px -12px rgba(20, 18, 10, 0.45);
+}
+
+/* Torn top and bottom edges, drawn as a zigzag gradient. */
+.receipt-paper::before,
+.receipt-paper::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background:
+    linear-gradient(-45deg, transparent 66%, #fffdf7 67%) 0 0/10px 6px repeat-x,
+    linear-gradient(45deg, transparent 66%, #fffdf7 67%) 0 0/10px 6px repeat-x;
+}
+
+.receipt-paper::before {
+  top: -6px;
+  transform: scaleY(-1);
+}
+
+.receipt-paper::after {
+  bottom: -6px;
+}
+
+.receipt-paper-logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.receipt-paper-logo img {
+  max-width: 76px;
+  max-height: 46px;
+  object-fit: contain;
+}
+
+.receipt-paper-logo-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9px;
+  background: #4f7d52;
+  color: #fff;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.receipt-paper-store {
+  margin-bottom: 4px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.receipt-paper-meta {
+  text-align: center;
+  font-size: 10.5px;
+  color: #4a4a4a;
+}
+
+.receipt-paper-invoice {
+  display: flex;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.receipt-paper-rule {
+  margin: 9px 0;
+  border-top: 1px dashed #b9b4a4;
+}
+
+.receipt-paper-line {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.receipt-paper-line-name {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.receipt-paper-line-name small {
+  font-size: 9.5px;
+  color: #6a6a6a;
+}
+
+.receipt-paper-line-amount {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.receipt-paper-total {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0 8px;
+  padding-top: 6px;
+  border-top: 1px solid #1a1a1a;
+  font-size: 12.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.receipt-paper-footer {
+  margin-top: 8px;
+  text-align: center;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.receipt-paper-terms {
+  margin-top: 6px;
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.4;
+  color: #6a6a6a;
+}
+
+.receipt-preview-note {
+  font-size: 11px;
+  line-height: 1.45;
+  text-align: center;
+  color: var(--muted);
+}
+
+.receipt-preview-note strong {
+  color: var(--ink);
+}
+
+/* ---------------------------------------------------------------- *
+ * Controls
+ * ---------------------------------------------------------------- */
+
+.receipt-controls {
+  display: flex;
+  flex-direction: column;
+}
+
+.receipt-control-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.receipt-control-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.receipt-control-text strong {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.receipt-control-text small {
+  font-size: 11.5px;
+  line-height: 1.4;
+  color: var(--muted);
+}
+
+.receipt-control-field {
+  padding-top: 14px;
+}

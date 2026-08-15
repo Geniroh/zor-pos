@@ -1,0 +1,10 @@
+.hours-page-note {
+  padding: 0 2px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
+.hours-page-note strong {
+  color: var(--ink);
+}

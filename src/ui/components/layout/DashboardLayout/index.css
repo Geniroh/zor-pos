@@ -12,9 +12,12 @@
   box-sizing: border-box;
 }
 
+/* min-width: 0 lets it shrink along the row; min-height: 0 stops a tall page
+   from forcing the row taller than the viewport. Page roots size themselves
+   against this box's height (`height: 100%`), so it has to stay clamped. */
 .dashboard-content {
   flex: 1;
   min-width: 0;
+  min-height: 0;
   overflow: auto;
-  /* padding: 24px 28px; */
 }
